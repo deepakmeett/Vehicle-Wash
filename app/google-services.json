@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "679410083812",
+    "project_id": "bike-wash-8c322",
+    "storage_bucket": "bike-wash-8c322.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:679410083812:android:5f4e5a0537b27aab0249f1",
+        "android_client_info": {
+          "package_name": "com.example.bikewash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "679410083812-tkqr4v6n8v0nrv0tc8ednnu201q6vh2a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bikewash",
+            "certificate_hash": "5b4f3baf50f76cd762d6a7bbf2f05b3abbee7962"
+          }
+        },
+        {
+          "client_id": "679410083812-377dktqvdsmv56pp7035duagjcfm8aj5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKfAu4HDxr3jWCFoNQhlyhCw8FyQSIFGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "679410083812-377dktqvdsmv56pp7035duagjcfm8aj5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
