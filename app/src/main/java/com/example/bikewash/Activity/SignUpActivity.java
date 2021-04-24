@@ -1,22 +1,15 @@
 package com.example.bikewash.Activity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.example.bikewash.R;
 import com.example.bikewash.Utility.BaseActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -40,7 +33,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         Initialize();
         findView();
     }
-    
+
     private void Initialize() {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -78,21 +71,18 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
     private void registerUser() {
         mAuth.createUserWithEmailAndPassword( email, password )
-                .addOnCompleteListener( this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d( TAG, "createUserWithEmail:success" );
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Log.d( TAG, "onComplete: " + user);
-                            setResult(FROM_SIGN_UP);
-                            onBackPressed();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w( TAG, "createUserWithEmail:failure", task.getException() );
-                            showSnackBar( "Authentication failed", Snackbar.LENGTH_SHORT );
-                        }
+                .addOnCompleteListener( this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d( TAG, "createUserWithEmail:success" );
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        Log.d( TAG, "onComplete: " + user );
+                        setResult( FROM_SIGN_UP );
+                        onBackPressed();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w( TAG, "createUserWithEmail:failure", task.getException() );
+                        showSnackBar( "Authentication failed", Snackbar.LENGTH_SHORT );
                     }
                 } );
     }

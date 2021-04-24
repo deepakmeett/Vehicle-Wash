@@ -140,7 +140,7 @@
     <string name="task_should_have_30_letters">task name should have 30 letters</string>
     <string name="please_add_start_time">Please add start time</string>
     <string name="please_add_end_time">please add end time</string>
-    <string name="description_should_have_60_words">Description should have have 60 letters</string>
+    <string name="description_should_have_60_words">Description should have 60 letters</string>
     <string name="please_select_date">Please select date</string>
     <string name="not_getting_child_id">Not getting child id</string>
     <string name="no_task_assigned_to_you">No task assigned to you</string>
@@ -157,4 +157,6 @@
     <string name="designation">Designation</string>
     <string name="user_email">User email</string>
     <string name="update_profile">Update Profile</string>
+    <string name="or">Or</string>
+    <string name="sign_in_with_google">Sign In With Google</string>
 </resources>

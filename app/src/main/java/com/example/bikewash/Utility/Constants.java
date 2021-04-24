@@ -8,6 +8,8 @@ public class Constants {
     public static final int EXTERNAL_STORAGE_REQUEST = 102;
     public static final int UPDATE_PROFILE_CODE = 103;
     public static final int FROM_SIGN_UP = 104;
+    public static final int RC_SIGN_IN = 105;
+    
     //SharePref
     public static final String AUTH_TOKEN = "authToken";
     public static final String BEARER = "Bearer ";
