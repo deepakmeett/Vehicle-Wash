@@ -11,23 +11,32 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/_10sdp">
+        android:paddingHorizontal="@dimen/_20sdp">
 
         <ImageView
             android:id="@+id/loginLogo"
-            android:layout_width="@dimen/_90sdp"
-            android:layout_height="@dimen/_90sdp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_28sdp"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginTop="50dp"
             android:contentDescription="@string/image_desc"
-            android:src="@mipmap/ic_launcher_round"/>
+            android:src="@drawable/ic_scooty_girl"/>
+
+
+        <TextView
+            android:id="@+id/loginText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/loginLogo"
+            android:text="Proceed with you login"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/EmailTL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/loginLogo"
-            android:layout_marginTop="@dimen/_90sdp"
+            android:layout_below="@+id/loginText"
+            android:layout_marginTop="@dimen/_50sdp"
             android:hint="@string/email"
             android:theme="@style/textInputLayout">
 
@@ -76,11 +85,10 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/round_btn_pressed"
-            android:elevation="0dp"
             android:text="@string/login"
             android:textAllCaps="false"
             android:textColor="@drawable/button_text_color"
-            android:textSize="@dimen/_12sdp"/>
+            android:textSize="@dimen/_13sdp"/>
 
         <TextView
             android:id="@+id/or"

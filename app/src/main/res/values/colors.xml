@@ -10,14 +10,7 @@
 
 
     <color name="colorAccent">#438ef2</color>
-    <color name="colorPrimaryDark">#9A86DD</color>
-    <color name="hintTxt">#999999</color>
-    <color name="card_bg">#F8F8F8</color>
-    <color name="text_color">#1b1b1b</color>
-
-
-
-<!--    <color name="primaryColor">#28b5f4</color>-->
+    <!--    <color name="primaryColor">#28b5f4</color>-->
 <!--    <color name="primaryLightColor">#72e7ff</color>-->
 <!--    <color name="primaryDarkColor">#0085c1</color>-->
 <!--    <color name="primaryTextColor">#000000</color>-->

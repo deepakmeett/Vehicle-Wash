@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.SelectServiceActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="@drawable/ic_back"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/selectServices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="55dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/select_services"
+                android:textColor="@color/white"
+                android:textSize="30sp"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/bikeCard"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/selectServices"
+                android:layout_marginTop="20dp"
+                android:elevation="1dp"
+                app:cardCornerRadius="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/bikeIcon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:contentDescription="@string/image_desc"
+                        android:src="@drawable/ic_motorcycle"/>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_40sdp"
+                        android:layout_toEndOf="@+id/bikeIcon">
+
+                        <TextView
+                            android:id="@+id/bikeWash"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_toEndOf="@+id/bikeCheckBox"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/bike_wash"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"/>
+
+                        <CheckBox
+                            android:id="@+id/bikeCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:theme="@style/textInputLayout"/>
+
+                        <TextView
+                            android:id="@+id/bikeRupees"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/bikeWash"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/rupees_symbol"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/bikePrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/bikeWash"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_toEndOf="@+id/bikeRupees"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/ask_at_service_station"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/carCard"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/bikeCard"
+                android:layout_marginTop="20dp"
+                android:elevation="1dp"
+                app:cardCornerRadius="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/carIcon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:contentDescription="@string/image_desc"
+                        android:src="@drawable/ic_car"/>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_40sdp"
+                        android:layout_toEndOf="@+id/carIcon">
+
+                        <TextView
+                            android:id="@+id/carWash"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_toEndOf="@+id/carCheckBox"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/car_wash"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"/>
+
+                        <CheckBox
+                            android:id="@+id/carCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/textInputLayout"/>
+
+                        <TextView
+                            android:id="@+id/carRupees"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/carWash"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/rupees_symbol"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/carPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/carWash"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_toEndOf="@+id/carRupees"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/ask_at_service_station"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/tempoCard"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/carCard"
+                android:layout_marginTop="20dp"
+                android:elevation="1dp"
+                app:cardCornerRadius="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/tempoIcon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:contentDescription="@string/image_desc"
+                        android:src="@drawable/ic_tempo"/>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_40sdp"
+                        android:layout_toEndOf="@+id/tempoIcon">
+
+                        <TextView
+                            android:id="@+id/tempoWash"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_toEndOf="@+id/tempoCheckBox"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/tempo_407_wash"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"/>
+
+                        <CheckBox
+                            android:id="@+id/tempoCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/textInputLayout"/>
+
+                        <TextView
+                            android:id="@+id/tempoRupees"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tempoWash"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/rupees_symbol"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/tempoPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tempoWash"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_toEndOf="@+id/tempoRupees"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/ask_at_service_station"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/tractorCard"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/tempoCard"
+                android:layout_marginTop="20dp"
+                android:elevation="1dp"
+                app:cardCornerRadius="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/tractorIcon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:contentDescription="@string/image_desc"
+                        android:scaleX="-1"
+                        android:src="@drawable/ic_tractor"/>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_40sdp"
+                        android:layout_toEndOf="@+id/tractorIcon">
+
+                        <TextView
+                            android:id="@+id/tractorWash"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_toEndOf="@+id/tractorCheckBox"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/tractor_wash"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"/>
+
+                        <CheckBox
+                            android:id="@+id/tractorCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/textInputLayout"/>
+
+                        <TextView
+                            android:id="@+id/tractorRupees"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tractorWash"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/rupees_symbol"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/tractorPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tractorWash"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_toEndOf="@+id/tractorRupees"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/ask_at_service_station"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/truckCard"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/tractorCard"
+                android:layout_marginTop="20dp"
+                android:elevation="1dp"
+                app:cardCornerRadius="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/truckIcon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:contentDescription="@string/image_desc"
+                        android:src="@drawable/ic_mini_truck"/>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_40sdp"
+                        android:layout_toEndOf="@+id/truckIcon">
+
+                        <TextView
+                            android:id="@+id/truckWash"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_toEndOf="@+id/truckCheckBox"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/mini_truck_wash"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"/>
+
+                        <CheckBox
+                            android:id="@+id/truckCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/textInputLayout"/>
+
+                        <TextView
+                            android:id="@+id/truckRupees"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/truckWash"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/rupees_symbol"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/truckPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/truckWash"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_toEndOf="@+id/truckRupees"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/ask_at_service_station"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/autoCard"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/truckCard"
+                android:layout_marginTop="20dp"
+                android:elevation="1dp"
+                app:cardCornerRadius="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/autoIcon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:contentDescription="@string/image_desc"
+                        android:src="@drawable/ic_rickshaw"/>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_40sdp"
+                        android:layout_toEndOf="@+id/autoIcon">
+
+                        <TextView
+                            android:id="@+id/autoWash"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_toEndOf="@+id/autoCheckBox"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/auto_wash"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"/>
+
+                        <CheckBox
+                            android:id="@+id/autoCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/textInputLayout"/>
+
+                        <TextView
+                            android:id="@+id/autoRupees"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/autoWash"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/rupees_symbol"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/autoPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/autoWash"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_toEndOf="@+id/autoRupees"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/ask_at_service_station"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/otherCard"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/autoCard"
+                android:layout_marginTop="20dp"
+                android:elevation="1dp"
+                app:cardCornerRadius="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/otherIcon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:contentDescription="@string/image_desc"
+                        android:src="@drawable/ic_steering_wheel"/>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_40sdp"
+                        android:layout_toEndOf="@+id/otherIcon">
+
+                        <TextView
+                            android:id="@+id/otherWash"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_toEndOf="@+id/otherCheckBox"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/any_other_vehicle"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"/>
+
+                        <CheckBox
+                            android:id="@+id/otherCheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/textInputLayout"/>
+
+                        <TextView
+                            android:id="@+id/otherRupees"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/otherWash"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/rupees_symbol"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/otherPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/otherWash"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_toEndOf="@+id/otherRupees"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/ask_at_service_station"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <EditText
+                android:id="@+id/timeToReach"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/otherCard"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:autofillHints="Please put time that you take to reach at bike/car service station"
+                android:background="@drawable/edit"
+                android:hint="@string/time_mins_to_reach_at_service_station"
+                android:inputType="number"
+                android:paddingStart="30dp"
+                android:paddingEnd="30dp"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:theme="@style/textInputLayout"
+                android:visibility="visible"/>
+
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_below="@+id/timeToReach"
+                android:layout_centerHorizontal="true"
+                android:layout_marginVertical="@dimen/_20sdp"
+                android:background="@drawable/round_btn_pressed"
+                android:elevation="0dp"
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="@drawable/button_text_color"
+                android:textSize="@dimen/_13sdp"/>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</FrameLayout>
