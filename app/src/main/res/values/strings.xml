@@ -12,7 +12,6 @@
     <string name="login">Login</string>
     <string name="it">Its easier to sign up now</string>
     <string name="or">Or</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="rupees_symbol">&#x20B9;</string>
     <string name="select_services">Select Services</string>
     <string name="bike_wash">Bike wash</string>
@@ -23,4 +22,5 @@
     <string name="mini_truck_wash">Mini Truck Wash</string>
     <string name="auto_wash">Auto Wash</string>
     <string name="time_mins_to_reach_at_service_station">Time(Mins) to reach at service station</string>
+    <string name="vehicle_name">Vehicle Name</string>
 </resources>
