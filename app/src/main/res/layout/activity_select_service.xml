@@ -26,7 +26,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="55dp"
-                android:fontFamily="sans-serif-light"
                 android:text="@string/select_services"
                 android:textColor="@color/white"
                 android:textSize="30sp"/>
@@ -67,10 +66,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:layout_toEndOf="@+id/bikeCheckBox"
-                            android:fontFamily="sans-serif-light"
                             android:text="@string/bike_wash"
                             android:textColor="@color/black"
-                            android:textSize="16sp"/>
+                            android:textSize="18sp"/>
 
                         <CheckBox
                             android:id="@+id/bikeCheckBox"
@@ -145,10 +143,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:layout_toEndOf="@+id/carCheckBox"
-                            android:fontFamily="sans-serif-light"
                             android:text="@string/car_wash"
                             android:textColor="@color/black"
-                            android:textSize="16sp"/>
+                            android:textSize="18sp"/>
 
                         <CheckBox
                             android:id="@+id/carCheckBox"
@@ -190,10 +187,10 @@
                 android:id="@+id/tempoCard"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@id/carCard"
+                android:layout_below="@id/truckCard"
                 android:layout_marginTop="20dp"
-                android:visibility="gone"
                 android:elevation="1dp"
+                android:visibility="visible"
                 app:cardCornerRadius="10dp">
 
                 <RelativeLayout
@@ -223,10 +220,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:layout_toEndOf="@+id/tempoCheckBox"
-                            android:fontFamily="sans-serif-light"
                             android:text="@string/tempo_407_wash"
                             android:textColor="@color/black"
-                            android:textSize="16sp"/>
+                            android:textSize="18sp"/>
 
                         <CheckBox
                             android:id="@+id/tempoCheckBox"
@@ -268,7 +264,7 @@
                 android:id="@+id/tractorCard"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@id/tempoCard"
+                android:layout_below="@id/autoCard"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
                 app:cardCornerRadius="10dp">
@@ -301,10 +297,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:layout_toEndOf="@+id/tractorCheckBox"
-                            android:fontFamily="sans-serif-light"
                             android:text="@string/tractor_wash"
                             android:textColor="@color/black"
-                            android:textSize="16sp"/>
+                            android:textSize="18sp"/>
 
                         <CheckBox
                             android:id="@+id/tractorCheckBox"
@@ -349,7 +344,7 @@
                 android:layout_below="@id/tractorCard"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:cardCornerRadius="10dp">
 
                 <RelativeLayout
@@ -379,10 +374,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:layout_toEndOf="@+id/truckCheckBox"
-                            android:fontFamily="sans-serif-light"
                             android:text="@string/mini_truck_wash"
                             android:textColor="@color/black"
-                            android:textSize="16sp"/>
+                            android:textSize="18sp"/>
 
                         <CheckBox
                             android:id="@+id/truckCheckBox"
@@ -424,7 +418,7 @@
                 android:id="@+id/autoCard"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@id/truckCard"
+                android:layout_below="@id/carCard"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
                 app:cardCornerRadius="10dp">
@@ -456,10 +450,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:layout_toEndOf="@+id/autoCheckBox"
-                            android:fontFamily="sans-serif-light"
                             android:text="@string/auto_wash"
                             android:textColor="@color/black"
-                            android:textSize="16sp"/>
+                            android:textSize="18sp"/>
 
                         <CheckBox
                             android:id="@+id/autoCheckBox"
@@ -501,10 +494,10 @@
                 android:id="@+id/otherCard"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@id/autoCard"
+                android:layout_below="@id/tempoCard"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:cardCornerRadius="10dp">
 
                 <RelativeLayout
@@ -534,10 +527,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:layout_toEndOf="@+id/otherCheckBox"
-                            android:fontFamily="sans-serif-light"
                             android:text="@string/any_other_vehicle"
                             android:textColor="@color/black"
-                            android:textSize="16sp"/>
+                            android:textSize="18sp"/>
 
                         <CheckBox
                             android:id="@+id/otherCheckBox"
@@ -578,7 +570,7 @@
             <EditText
                 android:id="@+id/vehicleName"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="45dp"
                 android:layout_below="@+id/otherCard"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
@@ -590,14 +582,13 @@
                 android:paddingEnd="30dp"
                 android:textAllCaps="false"
                 android:textSize="16sp"
-                android:theme="@style/textInputLayout"
-                android:visibility="visible"/>
+                android:theme="@style/textInputLayout"/>
             //TODO editText height fix
 
             <EditText
                 android:id="@+id/timeToReach"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="45dp"
                 android:layout_below="@+id/vehicleName"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
@@ -605,8 +596,8 @@
                 android:background="@drawable/edit"
                 android:hint="@string/time_mins_to_reach_at_service_station"
                 android:inputType="number"
-                android:paddingStart="30dp"
                 android:maxLength="2"
+                android:paddingStart="30dp"
                 android:paddingEnd="30dp"
                 android:textAllCaps="false"
                 android:textSize="16sp"
@@ -615,7 +606,7 @@
             <Button
                 android:id="@+id/submitButton"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_35sdp"
+                android:layout_height="@dimen/_36sdp"
                 android:layout_below="@+id/timeToReach"
                 android:layout_centerHorizontal="true"
                 android:layout_marginVertical="@dimen/_20sdp"
