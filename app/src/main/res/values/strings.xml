@@ -21,6 +21,7 @@
     <string name="tractor_wash">Tractor Wash</string>
     <string name="mini_truck_wash">Mini Truck Wash</string>
     <string name="auto_wash">Auto Wash</string>
-    <string name="time_mins_to_reach_at_service_station">Time(Mins) to reach at service station</string>
+    <string name="time_minutes_to_reach_at_service_station">Time(Mins) to reach at service station</string>
     <string name="vehicle_name">Vehicle Name</string>
+    <string name="proceed_with_you_login">Proceed with you login</string>
 </resources>

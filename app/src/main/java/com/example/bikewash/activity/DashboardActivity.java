@@ -1,4 +1,4 @@
-package com.example.bikewash.Activity;
+package com.example.bikewash.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;

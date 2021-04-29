@@ -1,4 +1,4 @@
-package com.example.bikewash.Adapter;
+package com.example.bikewash.adapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bikewash.R;
 public class SelectServiceAdapter extends RecyclerView.Adapter<SelectServiceAdapter.ViewHolder> {
-    
+
     private final Context context;
 
     public SelectServiceAdapter(Context context) {

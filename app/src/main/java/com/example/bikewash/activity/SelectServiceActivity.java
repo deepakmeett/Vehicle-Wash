@@ -1,4 +1,4 @@
-package com.example.bikewash.Activity;
+package com.example.bikewash.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,18 +9,20 @@ import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 
 import com.example.bikewash.R;
-import com.example.bikewash.Utility.BaseActivity;
+import com.example.bikewash.utility.BaseActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import static com.example.bikewash.Utility.Constants.AUTO_SERVICE;
-import static com.example.bikewash.Utility.Constants.BIKE_SERVICE;
-import static com.example.bikewash.Utility.Constants.CAR_SERVICE;
-import static com.example.bikewash.Utility.Constants.OTHER_SERVICE;
-import static com.example.bikewash.Utility.Constants.TEMPO_SERVICE;
-import static com.example.bikewash.Utility.Constants.TRACTOR_SERVICE;
-import static com.example.bikewash.Utility.Constants.TRUCK_SERVICE;
+import java.util.Objects;
+
+import static com.example.bikewash.utility.Constants.AUTO_SERVICE;
+import static com.example.bikewash.utility.Constants.BIKE_SERVICE;
+import static com.example.bikewash.utility.Constants.CAR_SERVICE;
+import static com.example.bikewash.utility.Constants.OTHER_SERVICE;
+import static com.example.bikewash.utility.Constants.TEMPO_SERVICE;
+import static com.example.bikewash.utility.Constants.TRACTOR_SERVICE;
+import static com.example.bikewash.utility.Constants.TRUCK_SERVICE;
 public class SelectServiceActivity extends BaseActivity implements View.OnClickListener {
 
     private CardView bikeCard, carCard, tempoCard, tractorCard, truckCard, autoCard, otherCard;
@@ -140,7 +142,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mDatabase = database.getReference( "Database" );
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        String uid = firebaseAuth.getCurrentUser().getUid();
+        String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
         mDatabase.child( uid ).child( "reach_time" ).setValue( reachTime );
         mDatabase.child( uid ).child( "vehicle_name" ).setValue( vehicle_Name );
         mDatabase.child( uid ).child( "vehicle_type" ).setValue( vehicle_type );

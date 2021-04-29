@@ -1,4 +1,4 @@
-package com.example.bikewash.Activity;
+package com.example.bikewash.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.example.bikewash.R;
-import com.example.bikewash.Utility.BaseActivity;
+import com.example.bikewash.utility.BaseActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -27,8 +27,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.Objects;
 
-import static com.example.bikewash.Utility.Constants.FROM_SIGN_UP;
-import static com.example.bikewash.Utility.Constants.RC_SIGN_IN;
+import static com.example.bikewash.utility.Constants.FROM_SIGN_UP;
+import static com.example.bikewash.utility.Constants.RC_SIGN_IN;
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
@@ -148,7 +148,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     try {
                         // Google Sign In was successful, authenticate with Firebase
                         GoogleSignInAccount account = task.getResult( ApiException.class );
-                        Log.d( TAG, "firebaseAuthWithGoogle:" + account.getId() );
+//                        Log.d( TAG, "firebaseAuthWithGoogle:" + account.getId() );
+                        assert account != null;
                         firebaseAuthWithGoogle( account.getIdToken() );
                     } catch (ApiException e) {
                         // Google Sign In failed, update UI appropriately

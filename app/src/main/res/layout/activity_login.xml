@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:scrollbarThumbVertical="@android:color/transparent"
-    tools:context=".Activity.LoginActivity">
+    tools:context=".activity.LoginActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/loginLogo"
-            android:text="Proceed with you login"
+            android:text="@string/proceed_with_you_login"
             android:textColor="@color/black"
             android:textSize="20sp"/>
 

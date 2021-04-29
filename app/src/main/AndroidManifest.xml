@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BikeWash">
         <activity
-            android:name=".Activity.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -18,13 +18,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.SignUpActivity"
+            android:name=".activity.SignUpActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Activity.SelectServiceActivity"
+            android:name=".activity.SelectServiceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".Activity.DashboardActivity"
+        <activity android:name=".activity.DashboardActivity"
             android:screenOrientation="portrait"/>
     </application>
 </manifest>

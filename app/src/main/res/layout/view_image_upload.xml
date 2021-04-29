@@ -12,6 +12,7 @@
         android:layout_margin="@dimen/_5sdp"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="@dimen/_82sdp"
-        android:src="@drawable/ic_image_upload"/>
+        android:src="@drawable/ic_image_upload"
+        android:contentDescription="@string/image_desc"/>
     
 </androidx.cardview.widget.CardView>

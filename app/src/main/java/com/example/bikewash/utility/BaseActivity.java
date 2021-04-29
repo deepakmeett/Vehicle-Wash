@@ -1,4 +1,4 @@
-package com.example.bikewash.Utility;
+package com.example.bikewash.utility;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.TextUtils;

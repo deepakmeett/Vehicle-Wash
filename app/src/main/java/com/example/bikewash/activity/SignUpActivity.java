@@ -1,4 +1,4 @@
-package com.example.bikewash.Activity;
+package com.example.bikewash.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.bikewash.R;
-import com.example.bikewash.Utility.BaseActivity;
+import com.example.bikewash.utility.BaseActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
-import static com.example.bikewash.Utility.Constants.FROM_SIGN_UP;
+import static com.example.bikewash.utility.Constants.FROM_SIGN_UP;
 public class SignUpActivity extends BaseActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;

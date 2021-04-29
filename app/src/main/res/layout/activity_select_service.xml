@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.SelectServiceActivity">
+    tools:context=".activity.SelectServiceActivity">
 
     <View
         android:layout_width="match_parent"
@@ -26,9 +26,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="55dp"
+                android:fontFamily="sans-serif-light"
                 android:text="@string/select_services"
                 android:textColor="@color/white"
-                android:textSize="30sp"/>
+                android:textSize="32sp"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/bikeCard"
@@ -583,7 +584,6 @@
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 android:theme="@style/textInputLayout"/>
-            //TODO editText height fix
 
             <EditText
                 android:id="@+id/timeToReach"
@@ -594,7 +594,7 @@
                 android:layout_marginTop="20dp"
                 android:autofillHints="Please provide time that you take to reach at bike/car service station"
                 android:background="@drawable/edit"
-                android:hint="@string/time_mins_to_reach_at_service_station"
+                android:hint="@string/time_minutes_to_reach_at_service_station"
                 android:inputType="number"
                 android:maxLength="2"
                 android:paddingStart="30dp"
