@@ -9,7 +9,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:background="@drawable/ic_back"/>
+        android:background="@drawable/ic_blue_green_gradient"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -569,7 +569,7 @@
             </androidx.cardview.widget.CardView>
 
             <EditText
-                android:id="@+id/vehicleName"
+                android:id="@+id/vehicleModelNumber"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_below="@+id/otherCard"
@@ -577,7 +577,7 @@
                 android:layout_marginTop="20dp"
                 android:autofillHints="Please put time that you take to reach at bike/car service station"
                 android:background="@drawable/edit"
-                android:hint="@string/vehicle_name"
+                android:hint="@string/vehicle_model_no."
                 android:inputType="text"
                 android:paddingStart="30dp"
                 android:paddingEnd="30dp"
@@ -589,7 +589,7 @@
                 android:id="@+id/timeToReach"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_below="@+id/vehicleName"
+                android:layout_below="@+id/vehicleModelNumber"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:autofillHints="Please provide time that you take to reach at bike/car service station"

@@ -7,11 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
-
-    <color name="colorAccent">#438ef2</color>
-    <!--    <color name="primaryColor">#28b5f4</color>-->
-<!--    <color name="primaryLightColor">#72e7ff</color>-->
-<!--    <color name="primaryDarkColor">#0085c1</color>-->
-<!--    <color name="primaryTextColor">#000000</color>-->
+    
+    <color name="dark_sky_blue">#438ef2</color>
+    <color name="periwinkle_blue">#88A4F1</color>
 </resources>

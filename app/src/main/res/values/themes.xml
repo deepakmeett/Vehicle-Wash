@@ -15,6 +15,6 @@
     </style>
 
     <style name="textInputLayout" parent="Theme.AppCompat.DayNight">
-        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/dark_sky_blue</item>
     </style>
 </resources>

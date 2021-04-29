@@ -28,7 +28,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
     private CardView bikeCard, carCard, tempoCard, tractorCard, truckCard, autoCard, otherCard;
     private CheckBox bikeCheckBox, carCheckBox, tempoCheckBox, tractorCheckBox, truckCheckBox,
             autoCheckBox, otherCheckBox;
-    private EditText timeToReach, vehicleName;
+    private EditText timeToReach, vehicleModel;
     private Button submitButton;
     int serviceSelectedIs = BIKE_SERVICE;
 
@@ -54,7 +54,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         autoCheckBox = findViewById( R.id.autoCheckBox );
         otherCard = findViewById( R.id.otherCard );
         otherCheckBox = findViewById( R.id.otherCheckBox );
-        vehicleName = findViewById( R.id.vehicleName );
+        vehicleModel = findViewById( R.id.vehicleModelNumber );
         timeToReach = findViewById( R.id.timeToReach );
         submitButton = findViewById( R.id.submitButton );
         bikeCard.setOnClickListener( this );
@@ -72,41 +72,41 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         if (v == bikeCard) {
             checkBoxChecked( true, false, false, false, false, false, false );
             serviceSelectedIs = BIKE_SERVICE;
-            vehicleName.setText( "" );
+            vehicleModel.setText( "" );
         } else if (v == carCard) {
             checkBoxChecked( false, true, false, false, false, false, false );
             serviceSelectedIs = CAR_SERVICE;
-            vehicleName.setText( "" );
+            vehicleModel.setText( "" );
         } else if (v == tempoCard) {
             checkBoxChecked( false, false, true, false, false, false, false );
             serviceSelectedIs = TEMPO_SERVICE;
-            vehicleName.setText( "" );
+            vehicleModel.setText( "" );
         } else if (v == truckCard) {
             checkBoxChecked( false, false, false, true, false, false, false );
             serviceSelectedIs = TRUCK_SERVICE;
-            vehicleName.setText( "" );
+            vehicleModel.setText( "" );
         } else if (v == tractorCard) {
             checkBoxChecked( false, false, false, false, true, false, false );
             serviceSelectedIs = TRACTOR_SERVICE;
-            vehicleName.setText( "" );
+            vehicleModel.setText( "" );
         } else if (v == autoCard) {
             checkBoxChecked( false, false, false, false, false, true, false );
             serviceSelectedIs = AUTO_SERVICE;
-            vehicleName.setText( "" );
+            vehicleModel.setText( "" );
         } else if (v == otherCard) {
             checkBoxChecked( false, false, false, false, false, false, true );
             serviceSelectedIs = OTHER_SERVICE;
-            vehicleName.setText( "" );
+            vehicleModel.setText( "" );
         } else if (v == submitButton) {
             String reachingTime = timeToReach.getText().toString();
-            String vehicleNameData = vehicleName.getText().toString();
-            if (vehicleNameData.equalsIgnoreCase( "" )) {
-                vehicleName.setError( "Please provide vehicle name" );
+            String vehicleModelData = vehicleModel.getText().toString();
+            if (vehicleModelData.equalsIgnoreCase( "" )) {
+                vehicleModel.setError( "Please provide vehicle name" );
             } else if (reachingTime.equalsIgnoreCase( "" )) {
                 timeToReach.setError( "Please provide time to reach at service station" );
             } else {
                 Toast.makeText( this, String.valueOf( serviceSelectedIs ), Toast.LENGTH_SHORT ).show();
-                sendDataToFireBase( serviceSelectedIs, vehicleNameData, reachingTime );
+                sendDataToFireBase( serviceSelectedIs, vehicleModelData, reachingTime );
             }
         }
     }
@@ -121,7 +121,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         otherCheckBox.setChecked( other );
     }
 
-    private void sendDataToFireBase(int serviceSelectedIs, String vehicle_Name, String reachTime) {
+    private void sendDataToFireBase(int serviceSelectedIs, String vehicle_Model, String reachTime) {
         String vehicle_type = "";
         if (serviceSelectedIs == BIKE_SERVICE) {
             vehicle_type = "Bike";
@@ -144,7 +144,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
         mDatabase.child( uid ).child( "reach_time" ).setValue( reachTime );
-        mDatabase.child( uid ).child( "vehicle_name" ).setValue( vehicle_Name );
+        mDatabase.child( uid ).child( "vehicle_model" ).setValue( vehicle_Model );
         mDatabase.child( uid ).child( "vehicle_type" ).setValue( vehicle_type );
 
     }

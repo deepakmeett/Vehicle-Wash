@@ -73,7 +73,7 @@
             android:layout_below="@+id/passwordTL"
             android:layout_alignParentEnd="true"
             android:text="@string/forgot_password"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/dark_sky_blue"
             android:textSize="@dimen/_12sdp"
             android:visibility="invisible"/>
 
@@ -139,7 +139,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:text="Don't have account? SignUp"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/dark_sky_blue"
                 android:textSize="@dimen/_12sdp"/>
         </RelativeLayout>
     </RelativeLayout>
