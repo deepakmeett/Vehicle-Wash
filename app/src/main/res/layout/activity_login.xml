@@ -8,15 +8,18 @@
     android:scrollbarThumbVertical="@android:color/transparent"
     tools:context=".activity.LoginActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:paddingHorizontal="@dimen/_20sdp">
 
         <ImageView
             android:id="@+id/loginLogo"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
+            android:layout_gravity="start"
             android:layout_marginTop="50dp"
             android:contentDescription="@string/image_desc"
             android:src="@drawable/ic_girl"/>
@@ -25,7 +28,7 @@
             android:id="@+id/loginText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/loginLogo"
+            android:layout_gravity="start"
             android:text="@string/proceed_with_you_login"
             android:textColor="@color/black"
             android:textSize="20sp"/>
@@ -34,10 +37,9 @@
             android:id="@+id/EmailTL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/loginText"
             android:layout_marginTop="@dimen/_50sdp"
             android:hint="@string/email"
-            android:theme="@style/textInputLayout">
+            android:theme="@style/textInputStyle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginEmail"
@@ -51,9 +53,8 @@
             android:id="@+id/passwordTL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/EmailTL"
             android:layout_marginTop="4dp"
-            android:theme="@style/textInputLayout"
+            android:theme="@style/textInputStyle"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -69,8 +70,6 @@
             android:id="@+id/logForgotPass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/passwordTL"
-            android:layout_alignParentEnd="true"
             android:text="@string/forgot_password"
             android:textColor="@color/dark_sky_blue"
             android:textSize="@dimen/_12sdp"
@@ -79,8 +78,6 @@
         <Button
             android:id="@+id/logLoginBtn"
             style="@style/buttonStyle"
-            android:layout_below="@+id/logForgotPass"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_20sdp"
             android:text="@string/login"/>
 
@@ -88,8 +85,6 @@
             android:id="@+id/or"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/logLoginBtn"
-            android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/_20sdp"
             android:text="@string/or"/>
 
@@ -97,7 +92,6 @@
             android:id="@+id/googleSignInButton"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_36sdp"
-            android:layout_below="@+id/or"
             android:background="@drawable/round_white_only"
             android:elevation="@dimen/_1sdp"
             android:gravity="center"
@@ -121,8 +115,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/googleSignInButton"
-            android:layout_alignParentBottom="true"
             android:layout_marginTop="@dimen/_20sdp"
             android:paddingBottom="@dimen/_10sdp">
 
@@ -136,5 +128,5 @@
                 android:textColor="@color/dark_sky_blue"
                 android:textSize="@dimen/_12sdp"/>
         </RelativeLayout>
-    </RelativeLayout>
+    </LinearLayout>
 </ScrollView>

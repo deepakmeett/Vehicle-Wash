@@ -7,16 +7,17 @@
     android:fillViewport="true"
     tools:context=".activity.SignUpActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:paddingHorizontal="@dimen/_20sdp">
 
         <ImageView
             android:id="@+id/registerLogo"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_90sdp"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_28sdp"
             android:contentDescription="@string/image_desc"
             android:src="@drawable/ic_girl"/>
@@ -25,8 +26,6 @@
             android:id="@+id/it"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/registerLogo"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="2dp"
             android:text="@string/it"
             android:textColor="@color/black"
@@ -37,10 +36,9 @@
             android:id="@+id/registerEmailTL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/registerLogo"
             android:layout_marginTop="@dimen/_100sdp"
             android:hint="@string/email"
-            android:theme="@style/textInputLayout">
+            android:theme="@style/textInputStyle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/registerEmail"
@@ -54,9 +52,8 @@
             android:id="@+id/registerPasswordTL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/registerEmailTL"
             android:hint="@string/password"
-            android:theme="@style/textInputLayout"
+            android:theme="@style/textInputStyle"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -70,16 +67,12 @@
         <Button
             android:id="@+id/registerBtn"
             style="@style/buttonStyle"
-            android:layout_below="@+id/registerPasswordTL"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_22sdp"
             android:text="@string/sign_up"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/registerBtn"
-            android:layout_alignParentBottom="true"
             android:layout_marginTop="@dimen/_80sdp"
             android:paddingBottom="@dimen/_10sdp">
 
@@ -93,5 +86,5 @@
                 android:textColor="@color/dark_sky_blue"
                 android:textSize="@dimen/_12sdp"/>
         </RelativeLayout>
-    </RelativeLayout>
+    </LinearLayout>
 </ScrollView>

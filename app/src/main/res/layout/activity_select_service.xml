@@ -15,9 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
             android:padding="10dp">
 
             <TextView
@@ -25,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:layout_gravity="start"
                 android:layout_marginTop="55dp"
                 android:fontFamily="sans-serif-light"
                 android:text="@string/select_services"
@@ -35,7 +38,6 @@
                 android:id="@+id/bikeCard"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@id/selectServices"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
                 app:cardCornerRadius="10dp">
@@ -77,7 +79,7 @@
                             android:layout_height="wrap_content"
                             android:checked="true"
                             android:clickable="false"
-                            android:theme="@style/textInputLayout"/>
+                            android:theme="@style/textInputStyle"/>
 
                         <TextView
                             android:id="@+id/bikeRupees"
@@ -112,7 +114,6 @@
                 android:id="@+id/carCard"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@id/bikeCard"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
                 app:cardCornerRadius="10dp">
@@ -153,7 +154,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="false"
-                            android:theme="@style/textInputLayout"/>
+                            android:theme="@style/textInputStyle"/>
 
                         <TextView
                             android:id="@+id/carRupees"
@@ -188,7 +189,6 @@
                 android:id="@+id/tempoCard"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@id/truckCard"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
                 android:visibility="visible"
@@ -230,7 +230,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="false"
-                            android:theme="@style/textInputLayout"/>
+                            android:theme="@style/textInputStyle"/>
 
                         <TextView
                             android:id="@+id/tempoRupees"
@@ -265,7 +265,6 @@
                 android:id="@+id/tractorCard"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@id/autoCard"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
                 app:cardCornerRadius="10dp">
@@ -307,7 +306,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="false"
-                            android:theme="@style/textInputLayout"/>
+                            android:theme="@style/textInputStyle"/>
 
                         <TextView
                             android:id="@+id/tractorRupees"
@@ -342,7 +341,6 @@
                 android:id="@+id/truckCard"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@id/tractorCard"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
                 app:cardCornerRadius="10dp">
@@ -383,7 +381,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="false"
-                            android:theme="@style/textInputLayout"/>
+                            android:theme="@style/textInputStyle"/>
 
                         <TextView
                             android:id="@+id/truckRupees"
@@ -418,7 +416,6 @@
                 android:id="@+id/autoCard"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@id/carCard"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
                 app:cardCornerRadius="10dp">
@@ -459,7 +456,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="false"
-                            android:theme="@style/textInputLayout"/>
+                            android:theme="@style/textInputStyle"/>
 
                         <TextView
                             android:id="@+id/autoRupees"
@@ -494,7 +491,6 @@
                 android:id="@+id/otherCard"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@id/tempoCard"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
                 app:cardCornerRadius="10dp">
@@ -535,7 +531,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="false"
-                            android:theme="@style/textInputLayout"/>
+                            android:theme="@style/textInputStyle"/>
 
                         <TextView
                             android:id="@+id/otherRupees"
@@ -568,46 +564,26 @@
 
             <EditText
                 android:id="@+id/vehicleModel"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/otherCard"
-                android:layout_centerHorizontal="true"
+                style="@style/editTextStyle"
                 android:layout_marginTop="20dp"
-                android:autofillHints="Please put time that you take to reach at bike/car service station"
-                android:background="@drawable/edit"
+                android:autofillHints="Please provide vehicle model to know which vehicle is being washed"
                 android:hint="@string/vehicle_model_no."
-                android:inputType="text"
-                android:paddingStart="30dp"
-                android:paddingEnd="30dp"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                android:theme="@style/textInputLayout"/>
+                android:inputType="text"/>
 
             <EditText
                 android:id="@+id/timeToReach"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/vehicleModel"
-                android:layout_centerHorizontal="true"
+                style="@style/editTextStyle"
                 android:layout_marginTop="20dp"
                 android:autofillHints="Please provide time that you take to reach at bike/car service station"
-                android:background="@drawable/edit"
                 android:hint="@string/time_minutes_to_reach_at_service_station"
                 android:inputType="number"
-                android:maxLength="2"
-                android:paddingStart="30dp"
-                android:paddingEnd="30dp"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                android:theme="@style/textInputLayout"/>
+                android:maxLength="2"/>
 
             <Button
                 android:id="@+id/submitButton"
                 style="@style/buttonStyle"
-                android:layout_below="@+id/timeToReach"
-                android:layout_centerHorizontal="true"
                 android:layout_marginVertical="@dimen/_20sdp"
                 android:text="@string/submit"/>
-        </RelativeLayout>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </FrameLayout>

@@ -33,4 +33,8 @@
     <string name="reach_time_00_min">Reach time : 00 min</string>
     <string name="not_yet">NOT YET</string>
     <string name="done">DONE</string>
+    <string name="please_select_who_are_you">Please select, who are you?</string>
+    <string name="user">User</string>
+    <string name="vehicle_washer">Vehicle washer</string>
+    <string name="type_key_here">Type key here...</string>
 </resources>
