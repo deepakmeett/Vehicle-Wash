@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,7 +19,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_28sdp"
             android:contentDescription="@string/image_desc"
-            android:src="@drawable/ic_scooty_girl"/>
+            android:src="@drawable/ic_girl"/>
 
         <TextView
             android:id="@+id/it"
@@ -33,8 +32,6 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="normal"/>
-
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/registerEmailTL"
@@ -70,19 +67,13 @@
                 android:textSize="@dimen/_12sdp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-
         <Button
             android:id="@+id/registerBtn"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_36sdp"
+            style="@style/buttonStyle"
             android:layout_below="@+id/registerPasswordTL"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_22sdp"
-            android:background="@drawable/round_btn_pressed"
-            android:text="@string/sign_up"
-            android:textAllCaps="false"
-            android:textColor="@drawable/button_text_color"
-            android:textSize="@dimen/_13sdp"/>
+            android:text="@string/sign_up"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -103,5 +94,4 @@
                 android:textSize="@dimen/_12sdp"/>
         </RelativeLayout>
     </RelativeLayout>
-    
 </ScrollView>

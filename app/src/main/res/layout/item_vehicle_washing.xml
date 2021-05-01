@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/_148sdp"
+    android:layout_margin="@dimen/_5sdp"
+    app:cardCornerRadius="@dimen/_20sdp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/vehicleWashingLabel"
+            android:layout_width="@dimen/_114sdp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="@dimen/_114sdp"
+                android:layout_height="@dimen/_23sdp"
+                android:contentDescription="@string/image_desc"
+                android:src="@color/dragon_green"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="sans-serif-medium"
+                android:includeFontPadding="false"
+                android:text="@string/vehicle_washing"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_8sdp"
+            android:paddingTop="@dimen/_10sdp">
+
+            <ImageView
+                android:id="@+id/vehicleImage"
+                android:layout_width="@dimen/_90sdp"
+                android:layout_height="@dimen/_61sdp"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:contentDescription="@string/image_desc"
+                android:src="@drawable/ic_bike"/>
+
+            <TextView
+                android:id="@+id/runningNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vehicleImage"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:maxLength="2"
+                android:maxLines="1"
+                android:includeFontPadding="false"
+                android:text="@string/_02"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_46sdp"/>
+
+            <TextView
+                android:id="@+id/washingNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/runningNumber"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="@string/washing_no"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13sdp"/>
+
+            <TextView
+                android:id="@+id/vehicleModel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_35sdp"
+                android:maxLines="1"
+                android:maxLength="20"
+                android:layout_toEndOf="@id/vehicleImage"
+                android:includeFontPadding="false"
+                android:text="@string/vehicle_model_no."
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16sdp"/>
+
+            <TextView
+                android:id="@+id/reachTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vehicleModel"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:maxLines="1"
+                android:maxLength="19"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_toEndOf="@id/vehicleImage"
+                android:includeFontPadding="false"
+                android:text="@string/reach_time_00_min"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16sdp"/>
+
+            <Button
+                android:id="@+id/notYetButton"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_32sdp"
+                android:layout_below="@+id/reachTime"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_toStartOf="@+id/doneButton"
+                android:background="@drawable/round_btn_pressed"
+                android:gravity="center"
+                android:text="@string/not_yet"
+                android:textAllCaps="false"
+                android:textColor="@drawable/button_text_color"
+                android:textSize="@dimen/_13sdp"/>
+
+            <Button
+                android:id="@+id/doneButton"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_32sdp"
+                android:layout_below="@+id/reachTime"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/round_blue"
+                android:gravity="center"
+                android:text="@string/done"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13sdp"/>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/inactiveButtonsView"
+            android:layout_width="@dimen/_177sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:background="@drawable/round_white_blur"
+            android:visibility="gone"/>
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

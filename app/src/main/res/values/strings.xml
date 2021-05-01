@@ -24,4 +24,13 @@
     <string name="submit">Submit</string>
     <string name="image_desc">Image description</string>
     <string name="rupees_symbol">&#x20B9;</string>
+    <string name="your_vehicle_details">Your vehicle details___</string>
+    <string name="_10_min">10 Min</string>
+    <string name="_02">02</string>
+    <string name="vehicle_washing">Vehicle washing</string>
+    <string name="model_number">Model number</string>
+    <string name="washing_no">Washing no.</string>
+    <string name="reach_time_00_min">Reach time : 00 min</string>
+    <string name="not_yet">NOT YET</string>
+    <string name="done">DONE</string>
 </resources>

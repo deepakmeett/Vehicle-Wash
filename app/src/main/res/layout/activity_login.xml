@@ -19,8 +19,7 @@
             android:layout_height="@dimen/_100sdp"
             android:layout_marginTop="50dp"
             android:contentDescription="@string/image_desc"
-            android:src="@drawable/ic_scooty_girl"/>
-
+            android:src="@drawable/ic_girl"/>
 
         <TextView
             android:id="@+id/loginText"
@@ -79,16 +78,11 @@
 
         <Button
             android:id="@+id/logLoginBtn"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_36sdp"
+            style="@style/buttonStyle"
             android:layout_below="@+id/logForgotPass"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_20sdp"
-            android:background="@drawable/round_btn_pressed"
-            android:text="@string/login"
-            android:textAllCaps="false"
-            android:textColor="@drawable/button_text_color"
-            android:textSize="@dimen/_13sdp"/>
+            android:text="@string/login"/>
 
         <TextView
             android:id="@+id/or"

@@ -52,7 +52,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:contentDescription="@string/image_desc"
-                        android:src="@drawable/ic_motorcycle"/>
+                        android:src="@drawable/ic_bike"/>
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -345,7 +345,6 @@
                 android:layout_below="@id/tractorCard"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
-                android:visibility="visible"
                 app:cardCornerRadius="10dp">
 
                 <RelativeLayout
@@ -498,7 +497,6 @@
                 android:layout_below="@id/tempoCard"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
-                android:visibility="visible"
                 app:cardCornerRadius="10dp">
 
                 <RelativeLayout
@@ -569,7 +567,7 @@
             </androidx.cardview.widget.CardView>
 
             <EditText
-                android:id="@+id/vehicleModelNumber"
+                android:id="@+id/vehicleModel"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_below="@+id/otherCard"
@@ -589,7 +587,7 @@
                 android:id="@+id/timeToReach"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_below="@+id/vehicleModelNumber"
+                android:layout_below="@+id/vehicleModel"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:autofillHints="Please provide time that you take to reach at bike/car service station"
@@ -605,16 +603,11 @@
 
             <Button
                 android:id="@+id/submitButton"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_36sdp"
+                style="@style/buttonStyle"
                 android:layout_below="@+id/timeToReach"
                 android:layout_centerHorizontal="true"
                 android:layout_marginVertical="@dimen/_20sdp"
-                android:background="@drawable/round_btn_pressed"
-                android:text="@string/submit"
-                android:textAllCaps="false"
-                android:textColor="@drawable/button_text_color"
-                android:textSize="@dimen/_13sdp"/>
+                android:text="@string/submit"/>
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 </FrameLayout>
