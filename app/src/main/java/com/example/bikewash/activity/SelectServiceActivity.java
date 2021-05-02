@@ -1,6 +1,5 @@
 package com.example.bikewash.activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -14,7 +13,6 @@ import com.example.bikewash.R;
 import com.example.bikewash.utility.BaseActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,7 +39,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
     private Button submitButton;
     int serviceSelectedIs = BIKE_SERVICE;
     private static final String TAG = "SelectServiceActivity";
-    DatabaseReference databaseReference,dr,dr1;
+    DatabaseReference databaseReference, dr, dr1;
     FirebaseAuth firebaseAuth;
 
     @Override
@@ -49,10 +47,8 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_select_service );
         findView();
-
-        dr = FirebaseDatabase.getInstance().getReference().child("all");
-        dr1 = FirebaseDatabase.getInstance().getReference().child("all");
-
+        dr = FirebaseDatabase.getInstance().getReference().child( "all" );
+        dr1 = FirebaseDatabase.getInstance().getReference().child( "all" );
         firebaseAuth = FirebaseAuth.getInstance();
         String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
 
@@ -124,7 +120,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
             } else if (reachingTime.equalsIgnoreCase( "" )) {
                 timeToReach.setError( "Please provide time to reach at service station" );
             } else {
-              //  Toast.makeText( this, String.valueOf( serviceSelectedIs ), Toast.LENGTH_SHORT ).show();
+                //  Toast.makeText( this, String.valueOf( serviceSelectedIs ), Toast.LENGTH_SHORT ).show();
                 sendDataToFireBase( serviceSelectedIs, vehicleModelData, reachingTime );
             }
         }
@@ -140,13 +136,11 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         otherCheckBox.setChecked( other );
     }
 
-    private void sendDataToFireBase(int serviceSelectedIs, String vehicle_Model, String reachTime){
-
-        dr1.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void sendDataToFireBase(int serviceSelectedIs, String vehicle_Model, String reachTime) {
+        dr1.addListenerForSingleValueEvent( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int size = (int) snapshot.getChildrenCount();
-
                 String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
                 String vehicle_type = "";
                 if (serviceSelectedIs == BIKE_SERVICE) {
@@ -165,36 +159,23 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                     vehicle_type = "Other";
                 }
                 HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put("vehicle", vehicle_Model);
-                hashMap.put("reach_time", reachTime);
-                hashMap.put("type", vehicle_type);
-                hashMap.put("uid", uid);
-                hashMap.put("number", String.valueOf(size+1));
-
-
-                    dr.push().setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-
-                            if(task.isSuccessful()){
-                                Toast.makeText(SelectServiceActivity.this, "Done", Toast.LENGTH_SHORT).show();
-                            }
+                hashMap.put( "vehicle", vehicle_Model );
+                hashMap.put( "reach_time", reachTime );
+                hashMap.put( "type", vehicle_type );
+                hashMap.put( "uid", uid );
+                hashMap.put( "number", String.valueOf( size + 1 ) );
+                dr.push().setValue( hashMap ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText( SelectServiceActivity.this, "Done", Toast.LENGTH_SHORT ).show();
                         }
-                    });
-
+                    }
+                } );
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
-        });
-
-
-
-
-
-
+        } );
     }
-
 }

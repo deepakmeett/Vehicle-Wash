@@ -18,16 +18,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:gravity="center_horizontal"
+            android:orientation="vertical"
             android:padding="10dp">
 
             <TextView
                 android:id="@+id/selectServices"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
                 android:layout_gravity="start"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="55dp"
                 android:fontFamily="sans-serif-light"
                 android:text="@string/select_services"
@@ -186,12 +186,11 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/tempoCard"
+                android:id="@+id/autoCard"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
-                android:visibility="visible"
                 app:cardCornerRadius="10dp">
 
                 <RelativeLayout
@@ -200,43 +199,43 @@
                     android:padding="10dp">
 
                     <ImageView
-                        android:id="@+id/tempoIcon"
+                        android:id="@+id/autoIcon"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:contentDescription="@string/image_desc"
-                        android:src="@drawable/ic_tempo"/>
+                        android:src="@drawable/ic_rickshaw"/>
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/_40sdp"
-                        android:layout_toEndOf="@+id/tempoIcon">
+                        android:layout_toEndOf="@+id/autoIcon">
 
                         <TextView
-                            android:id="@+id/tempoWash"
+                            android:id="@+id/autoWash"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@+id/tempoCheckBox"
-                            android:text="@string/tempo_407_wash"
+                            android:layout_toEndOf="@+id/autoCheckBox"
+                            android:text="@string/auto_wash"
                             android:textColor="@color/black"
                             android:textSize="18sp"/>
 
                         <CheckBox
-                            android:id="@+id/tempoCheckBox"
+                            android:id="@+id/autoCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="false"
                             android:theme="@style/textInputStyle"/>
 
                         <TextView
-                            android:id="@+id/tempoRupees"
+                            android:id="@+id/autoRupees"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/tempoWash"
+                            android:layout_below="@+id/autoWash"
                             android:layout_alignParentStart="true"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="2dp"
@@ -246,13 +245,13 @@
                             android:textSize="14sp"/>
 
                         <TextView
-                            android:id="@+id/tempoPrice"
+                            android:id="@+id/autoPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/tempoWash"
+                            android:layout_below="@+id/autoWash"
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="2dp"
-                            android:layout_toEndOf="@+id/tempoRupees"
+                            android:layout_toEndOf="@+id/autoRupees"
                             android:fontFamily="sans-serif-light"
                             android:text="@string/ask_at_service_station"
                             android:textColor="@color/black"
@@ -413,11 +412,12 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/autoCard"
+                android:id="@+id/tempoCard"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginTop="20dp"
                 android:elevation="1dp"
+                android:visibility="visible"
                 app:cardCornerRadius="10dp">
 
                 <RelativeLayout
@@ -426,43 +426,43 @@
                     android:padding="10dp">
 
                     <ImageView
-                        android:id="@+id/autoIcon"
+                        android:id="@+id/tempoIcon"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:contentDescription="@string/image_desc"
-                        android:src="@drawable/ic_rickshaw"/>
+                        android:src="@drawable/ic_tempo"/>
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/_40sdp"
-                        android:layout_toEndOf="@+id/autoIcon">
+                        android:layout_toEndOf="@+id/tempoIcon">
 
                         <TextView
-                            android:id="@+id/autoWash"
+                            android:id="@+id/tempoWash"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@+id/autoCheckBox"
-                            android:text="@string/auto_wash"
+                            android:layout_toEndOf="@+id/tempoCheckBox"
+                            android:text="@string/tempo_407_wash"
                             android:textColor="@color/black"
                             android:textSize="18sp"/>
 
                         <CheckBox
-                            android:id="@+id/autoCheckBox"
+                            android:id="@+id/tempoCheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="false"
                             android:theme="@style/textInputStyle"/>
 
                         <TextView
-                            android:id="@+id/autoRupees"
+                            android:id="@+id/tempoRupees"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/autoWash"
+                            android:layout_below="@+id/tempoWash"
                             android:layout_alignParentStart="true"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="2dp"
@@ -472,13 +472,13 @@
                             android:textSize="14sp"/>
 
                         <TextView
-                            android:id="@+id/autoPrice"
+                            android:id="@+id/tempoPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/autoWash"
+                            android:layout_below="@+id/tempoWash"
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="2dp"
-                            android:layout_toEndOf="@+id/autoRupees"
+                            android:layout_toEndOf="@+id/tempoRupees"
                             android:fontFamily="sans-serif-light"
                             android:text="@string/ask_at_service_station"
                             android:textColor="@color/black"
