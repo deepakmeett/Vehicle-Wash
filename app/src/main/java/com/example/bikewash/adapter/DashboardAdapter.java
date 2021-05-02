@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,14 +17,21 @@ import com.example.bikewash.model.DashboardModel;
 import com.example.bikewash.utility.SharePreference;
 
 import java.util.List;
+
+import static com.example.bikewash.utility.Constants.GET_BACK;
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
 
+    public interface GetBack{
+        void Back(int back);
+    }
     private final Context context;
     private final List<DashboardModel> list;
+    private final GetBack getBack;
 
-    public DashboardAdapter(Context context, List<DashboardModel> list) {
+    public DashboardAdapter(Context context, List<DashboardModel> list, GetBack GetBack) {
         this.context = context;
         this.list = list;
+        this.getBack = GetBack;
     }
 
     @NonNull
@@ -86,15 +92,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             holder.vehicleWashingLabel.setVisibility( View.GONE );
             holder.inactiveButtonsView.setVisibility( View.VISIBLE );
         }
-        holder.inactiveButtonsView.setOnClickListener( v -> {
-            Toast.makeText( context, "Buttons inactive", Toast.LENGTH_SHORT ).show();
-        } );
-        holder.notYetButton.setOnClickListener( v -> {
-            Toast.makeText( context, "Not yet", Toast.LENGTH_SHORT ).show();
-        } );
-        holder.doneButton.setOnClickListener( v -> {
-            Toast.makeText( context, "Done", Toast.LENGTH_SHORT ).show();
-        } );
+        holder.inactiveButtonsView.setOnClickListener( v -> { } );
+        holder.doneButton.setOnClickListener( v -> getBack.Back( GET_BACK ) );
     }
 
     @Override
@@ -110,7 +109,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         RelativeLayout vehicleWashingLabel;
         ImageView vehicleImage;
         TextView runningNumber, vehicleModel, reachTime;
-        Button notYetButton, doneButton;
+        Button doneButton;
         View inactiveButtonsView;
 
         public ViewHolder(@NonNull View itemView) {
@@ -120,7 +119,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             runningNumber = itemView.findViewById( R.id.runningNumber );
             vehicleModel = itemView.findViewById( R.id.vehicleModel );
             reachTime = itemView.findViewById( R.id.reachTime );
-            notYetButton = itemView.findViewById( R.id.notYetButton );
             doneButton = itemView.findViewById( R.id.doneButton );
             inactiveButtonsView = itemView.findViewById( R.id.inactiveButtonsView );
         }

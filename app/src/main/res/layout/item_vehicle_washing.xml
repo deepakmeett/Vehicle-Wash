@@ -102,35 +102,18 @@
                 android:text="@string/reach_time_00_min"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16sdp"/>
-
-            <Button
-                android:id="@+id/notYetButton"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_32sdp"
-                android:layout_below="@+id/reachTime"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_16sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:layout_toStartOf="@+id/doneButton"
-                android:background="@drawable/round_btn_pressed"
-                android:gravity="center"
-                android:text="@string/not_yet"
-                android:textAllCaps="false"
-                android:textColor="@drawable/button_text_color"
-                android:textSize="@dimen/_13sdp"/>
-
+            
             <Button
                 android:id="@+id/doneButton"
-                android:layout_width="@dimen/_80sdp"
+                android:layout_width="@dimen/_150sdp"
                 android:layout_height="@dimen/_32sdp"
                 android:layout_below="@+id/reachTime"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_alignStart="@id/reachTime"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:background="@drawable/round_blue"
                 android:gravity="center"
-                android:text="@string/done"
+                android:text="@string/completed"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13sdp"/>

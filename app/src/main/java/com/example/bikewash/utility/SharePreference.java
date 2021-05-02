@@ -39,5 +39,12 @@ public class SharePreference {
         }
         return runningNumber;
     }
-    
+
+
+    public static void removeRunningNumber(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences( FILE_DATA, MODE_PRIVATE );
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove( RUNNING_NUMBER );
+        editor.apply();
+    }
 }

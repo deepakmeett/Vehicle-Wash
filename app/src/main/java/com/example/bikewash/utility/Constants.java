@@ -16,5 +16,8 @@ public class Constants {
     public static final String FILE_DATA = "data";
     public static final String USER_EXIST = "user_exist";
     public static final String RUNNING_NUMBER = "running_number";
+    //Intent
+    public static final int GET_BACK = 8;
+    
 
 }
