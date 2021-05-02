@@ -70,8 +70,10 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void registerUser() {
+        commonProgressbar( true, false );
         mAuth.createUserWithEmailAndPassword( email, password )
                 .addOnCompleteListener( this, task -> {
+                    commonProgressbar( false, true );
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d( TAG, "createUserWithEmail:success" );

@@ -1,5 +1,6 @@
 package com.example.bikewash.activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -137,6 +138,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
     }
 
     private void sendDataToFireBase(int serviceSelectedIs, String vehicle_Model, String reachTime) {
+        commonProgressbar( true, false );
         dr1.addListenerForSingleValueEvent( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -164,17 +166,17 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                 hashMap.put( "type", vehicle_type );
                 hashMap.put( "uid", uid );
                 hashMap.put( "number", String.valueOf( size + 1 ) );
-                dr.push().setValue( hashMap ).addOnCompleteListener( new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText( SelectServiceActivity.this, "Done", Toast.LENGTH_SHORT ).show();
-                        }
+                dr.push().setValue( hashMap ).addOnCompleteListener( task -> {
+                    commonProgressbar( false, true);
+                    if (task.isSuccessful()) {
+                        Toast.makeText( SelectServiceActivity.this, "Done", Toast.LENGTH_SHORT ).show();
                     }
                 } );
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                commonProgressbar( false, true);
+                Log.e( TAG, "onCancelled: " + error );
             }
         } );
     }

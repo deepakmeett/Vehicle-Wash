@@ -114,8 +114,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void loginUser() {
+        commonProgressbar( true, false );
         mAuth.signInWithEmailAndPassword( email, password )
                 .addOnCompleteListener( this, task -> {
+                    commonProgressbar( false, true );
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d( TAG, "signInWithEmail:success" );
@@ -162,9 +164,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
+        commonProgressbar( true, false );
         AuthCredential credential = GoogleAuthProvider.getCredential( idToken, null );
         mAuth.signInWithCredential( credential )
                 .addOnCompleteListener( this, task -> {
+                    commonProgressbar( false, true );
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d( TAG, "signInWithCredential:success" );
