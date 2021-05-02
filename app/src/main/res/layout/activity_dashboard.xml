@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/vehicleModel"
             android:layout_marginTop="@dimen/_2sdp"
-            android:text="@string/_10_min"
+            android:text="@string/_00_min"
             android:maxLines="1"
             android:maxLength="7"
             android:textColor="@color/white"
@@ -61,7 +61,7 @@
             android:includeFontPadding="false"
             android:maxLength="2"
             android:maxLines="1"
-            android:text="@string/_02"
+            android:text="@string/_00"
             android:textColor="@color/white"
             android:textSize="150sp"/>
 

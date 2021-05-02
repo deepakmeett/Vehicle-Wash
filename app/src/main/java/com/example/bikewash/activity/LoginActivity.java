@@ -49,6 +49,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         findView();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            Intent intent = new Intent( LoginActivity.this, UserOrWasherActivity.class );
+            startActivityForResult( intent, FROM_SIGN_UP );
+            finish();
+        }
+    }
+
     private void Initialize() {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -58,18 +70,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient( this, gso );
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            Intent intent = new Intent( LoginActivity.this, SelectServiceActivity.class );
-            startActivityForResult( intent, FROM_SIGN_UP );
-            finish();
-        }
     }
 
     private void findView() {
@@ -132,7 +132,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void goToDashboard() {
-        Intent intent = new Intent( LoginActivity.this, SelectServiceActivity.class );
+        Intent intent = new Intent( LoginActivity.this, UserOrWasherActivity.class );
         startActivity( intent );
         finish();
     }

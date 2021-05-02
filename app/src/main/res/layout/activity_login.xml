@@ -16,7 +16,6 @@
         android:paddingHorizontal="@dimen/_20sdp">
 
         <ImageView
-            android:id="@+id/loginLogo"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
             android:layout_gravity="start"
@@ -25,7 +24,6 @@
             android:src="@drawable/ic_girl"/>
 
         <TextView
-            android:id="@+id/loginText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -67,9 +65,9 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/logForgotPass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:text="@string/forgot_password"
             android:textColor="@color/dark_sky_blue"
             android:textSize="@dimen/_12sdp"
@@ -82,7 +80,6 @@
             android:text="@string/login"/>
 
         <TextView
-            android:id="@+id/or"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_20sdp"

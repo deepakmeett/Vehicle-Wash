@@ -12,4 +12,9 @@ public class Constants {
     public static final int TRUCK_SERVICE = 5;
     public static final int TEMPO_SERVICE = 6;
     public static final int OTHER_SERVICE = 7;
+    //SharePreference
+    public static final String FILE_DATA = "data";
+    public static final String USER_EXIST = "user_exist";
+    public static final String RUNNING_NUMBER = "running_number";
+
 }

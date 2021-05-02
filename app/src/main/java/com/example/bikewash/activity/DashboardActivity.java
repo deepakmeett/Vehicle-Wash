@@ -1,24 +1,104 @@
 package com.example.bikewash.activity;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bikewash.R;
 import com.example.bikewash.adapter.DashboardAdapter;
-public class DashboardActivity extends AppCompatActivity {
+import com.example.bikewash.model.DashboardModel;
+import com.example.bikewash.utility.BaseActivity;
+import com.example.bikewash.utility.SharePreference;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-    RecyclerView dashboardRecycler;
+import java.util.ArrayList;
+import java.util.List;
+public class DashboardActivity extends BaseActivity {
+
+    private TextView vehicleDetails, vehicleModel, reachTime, runningNumber;
+    private RecyclerView dashboardRecycler;
+    private final List<DashboardModel> list = new ArrayList<>();
+    private static final String TAG = "DashboardActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_dashboard );
         findView();
+        setDataToRecyclerview();
     }
 
     private void findView() {
+        vehicleDetails = findViewById( R.id.vehicleDetails );
+        vehicleModel = findViewById( R.id.vehicleModel );
+        reachTime = findViewById( R.id.reachTime );
+        runningNumber = findViewById( R.id.runningNumber );
         dashboardRecycler = findViewById( R.id.dashboardRecycler );
         dashboardRecycler.setHasFixedSize( true );
-        dashboardRecycler.setAdapter( new DashboardAdapter( this ) );
+    }
+
+    private void setDataToRecyclerview() {
+        commonProgressbar( true, false );
+        DatabaseReference mUsersDatabase = FirebaseDatabase.getInstance().getReference().child( "all" );
+        mUsersDatabase.addValueEventListener( new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                commonProgressbar( false, true );
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    DashboardModel dashboardModel =  ds.getValue(DashboardModel.class);
+                    list.add( dashboardModel );
+                }
+                dashboardRecycler.setAdapter( new DashboardAdapter( DashboardActivity.this, list ) );
+                setDataToUi();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                commonProgressbar( false, true );
+                Log.e( TAG, "onCancelled: " + error );
+            }
+        } );
+    }
+
+    private void setDataToUi() {
+        commonProgressbar( true, false );
+        String ifRunningNumber = SharePreference.getRunningNumber( this );
+        if (ifRunningNumber != null && !ifRunningNumber.equalsIgnoreCase( "" )) {
+            if (list.size() != 0) {
+                vehicleDetails.setText( R.string.your_vehicle_details );
+                //Below two line for auto scroll(Suppose if item gets more than (Out of screen))
+                int getPosition = list.size() - Integer.parseInt(ifRunningNumber);
+                dashboardRecycler.scrollToPosition( list.size() - (getPosition+1) );
+                String vehicleModelNum = list.get( Integer.parseInt( ifRunningNumber )-1 ).getVehicle_model();
+                if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
+                    vehicleModel.setText( vehicleModelNum );
+                }
+                String reachTiming = list.get( Integer.parseInt( ifRunningNumber )-1 ).getReach_time();
+                if (reachTiming != null && !reachTiming.equalsIgnoreCase( "" )) {
+                    String reachMin = reachTiming + " Min";
+                    reachTime.setText( reachMin );
+                }
+                String washingNum = list.get( Integer.parseInt( ifRunningNumber )-1 ).getRunning_number();
+                if (washingNum != null && !washingNum.equalsIgnoreCase( "" )) {
+                    if (washingNum.length() == 1){
+                        String washingNumWithZero = "0" + washingNum;
+                        runningNumber.setText( washingNumWithZero );
+                    }else{
+                        runningNumber.setText( washingNum );
+                    }
+                }
+            }else {
+                showSnackBar( "Data not found", Snackbar.LENGTH_SHORT );
+            }
+            commonProgressbar( false, true );
+
+        }
     }
 }

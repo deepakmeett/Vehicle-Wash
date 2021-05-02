@@ -15,7 +15,6 @@
         android:paddingHorizontal="@dimen/_20sdp">
 
         <ImageView
-            android:id="@+id/registerLogo"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_90sdp"
             android:layout_marginTop="@dimen/_28sdp"
@@ -23,7 +22,6 @@
             android:src="@drawable/ic_girl"/>
 
         <TextView
-            android:id="@+id/it"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"

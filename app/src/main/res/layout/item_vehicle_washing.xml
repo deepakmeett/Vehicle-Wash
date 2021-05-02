@@ -21,7 +21,7 @@
                 android:layout_width="@dimen/_114sdp"
                 android:layout_height="@dimen/_23sdp"
                 android:contentDescription="@string/image_desc"
-                android:src="@color/dragon_green"/>
+                android:src="@color/apricot"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
                 android:maxLength="2"
                 android:maxLines="1"
                 android:includeFontPadding="false"
-                android:text="@string/_02"
+                android:text="@string/_00"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_46sdp"/>
 

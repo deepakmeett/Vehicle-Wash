@@ -25,8 +25,8 @@
     <string name="image_desc">Image description</string>
     <string name="rupees_symbol">&#x20B9;</string>
     <string name="your_vehicle_details">Your vehicle details___</string>
-    <string name="_10_min">10 Min</string>
-    <string name="_02">02</string>
+    <string name="_00_min">00 Min</string>
+    <string name="_00">00</string>
     <string name="vehicle_washing">Vehicle washing</string>
     <string name="model_number">Model number</string>
     <string name="washing_no">Washing no.</string>
@@ -36,5 +36,5 @@
     <string name="please_select_who_are_you">Please select, who are you?</string>
     <string name="user">User</string>
     <string name="vehicle_washer">Vehicle washer</string>
-    <string name="type_key_here">Type key here...</string>
+    <string name="type_key_here">Type key here…</string>
 </resources>

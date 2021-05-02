@@ -14,7 +14,6 @@
         android:padding="@dimen/_20sdp">
 
         <TextView
-            android:id="@+id/loginText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
@@ -23,7 +22,6 @@
             android:textSize="20sp"/>
 
         <ImageView
-            android:id="@+id/userIcon"
             android:layout_width="@dimen/_200sdp"
             android:layout_height="@dimen/_150sdp"
             android:layout_marginTop="@dimen/_20sdp"
@@ -43,7 +41,6 @@
             android:background="@android:color/darker_gray"/>
 
         <ImageView
-            android:id="@+id/vehicleWasherIcon"
             android:layout_width="@dimen/_200sdp"
             android:layout_height="@dimen/_110sdp"
             android:layout_marginTop="@dimen/_20sdp"
@@ -51,7 +48,7 @@
             android:contentDescription="@string/image_desc"/>
 
         <EditText
-            android:id="@+id/vehicleWasherKey"
+            android:id="@+id/washerKeyEditText"
             style="@style/editTextStyle"
             android:layout_marginTop="@dimen/_25sdp"
             android:autofillHints="Please provide key to know us you are a vehicle washer"

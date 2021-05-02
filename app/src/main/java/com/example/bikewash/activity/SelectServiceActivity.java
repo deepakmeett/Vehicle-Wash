@@ -1,19 +1,18 @@
 package com.example.bikewash.activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
 import com.example.bikewash.R;
 import com.example.bikewash.utility.BaseActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.bikewash.utility.SharePreference;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,20 +38,25 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
     private EditText timeToReach, vehicleModel;
     private Button submitButton;
     int serviceSelectedIs = BIKE_SERVICE;
+    private DatabaseReference dr, dr1;
+    private FirebaseAuth firebaseAuth;
     private static final String TAG = "SelectServiceActivity";
-    DatabaseReference databaseReference, dr, dr1;
-    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_select_service );
+        checkRunningNumber();
         findView();
-        dr = FirebaseDatabase.getInstance().getReference().child( "all" );
-        dr1 = FirebaseDatabase.getInstance().getReference().child( "all" );
-        firebaseAuth = FirebaseAuth.getInstance();
-        String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
+        initialize();
+    }
 
+    private void checkRunningNumber() {
+        String ifRunningNumber = SharePreference.getRunningNumber( this );
+        Log.d( TAG, "checkRunningNumber: " + ifRunningNumber );
+        if (ifRunningNumber != null && !ifRunningNumber.equalsIgnoreCase( "" )){
+            goToDashboard();
+        }
     }
 
     private void findView() {
@@ -81,6 +85,12 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         autoCard.setOnClickListener( this );
         otherCard.setOnClickListener( this );
         submitButton.setOnClickListener( this );
+    }
+
+    private void initialize() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        dr = FirebaseDatabase.getInstance().getReference().child( "all" );
+        dr1 = FirebaseDatabase.getInstance().getReference().child( "all" );
     }
 
     @Override
@@ -146,38 +156,47 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                 String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
                 String vehicle_type = "";
                 if (serviceSelectedIs == BIKE_SERVICE) {
-                    vehicle_type = "Bike";
+                    vehicle_type = "bike";
                 } else if (serviceSelectedIs == CAR_SERVICE) {
-                    vehicle_type = "Car";
+                    vehicle_type = "car";
                 } else if (serviceSelectedIs == TEMPO_SERVICE) {
-                    vehicle_type = "Tempo 407";
+                    vehicle_type = "tempo";
                 } else if (serviceSelectedIs == TRACTOR_SERVICE) {
-                    vehicle_type = "Tractor";
+                    vehicle_type = "tractor";
                 } else if (serviceSelectedIs == TRUCK_SERVICE) {
-                    vehicle_type = "Mini Truck";
+                    vehicle_type = "truck";
                 } else if (serviceSelectedIs == AUTO_SERVICE) {
-                    vehicle_type = "Auto";
+                    vehicle_type = "auto";
                 } else if (serviceSelectedIs == OTHER_SERVICE) {
-                    vehicle_type = "Other";
+                    vehicle_type = "other";
                 }
                 HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put( "vehicle", vehicle_Model );
+                hashMap.put( "vehicle_model", vehicle_Model );
                 hashMap.put( "reach_time", reachTime );
-                hashMap.put( "type", vehicle_type );
+                hashMap.put( "vehicle_type", vehicle_type );
                 hashMap.put( "uid", uid );
-                hashMap.put( "number", String.valueOf( size + 1 ) );
+                hashMap.put( "running_number", String.valueOf( size + 1 ) );
                 dr.push().setValue( hashMap ).addOnCompleteListener( task -> {
                     commonProgressbar( false, true);
                     if (task.isSuccessful()) {
-                        Toast.makeText( SelectServiceActivity.this, "Done", Toast.LENGTH_SHORT ).show();
+                        SharePreference.setRunningNumber( SelectServiceActivity.this, 
+                                                          String.valueOf( size + 1 ) );
+                        goToDashboard();
                     }
                 } );
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 commonProgressbar( false, true);
                 Log.e( TAG, "onCancelled: " + error );
             }
         } );
+    }
+
+    private void goToDashboard() {
+        Intent intent = new Intent( SelectServiceActivity.this, DashboardActivity.class);
+        startActivity( intent );
+        finish();
     }
 }
