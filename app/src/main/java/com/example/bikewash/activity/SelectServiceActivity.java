@@ -41,12 +41,21 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
     private Button submitButton;
     int serviceSelectedIs = BIKE_SERVICE;
     private static final String TAG = "SelectServiceActivity";
+    DatabaseReference databaseReference,dr,dr1;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_select_service );
         findView();
+
+        dr = FirebaseDatabase.getInstance().getReference().child("all");
+        dr1 = FirebaseDatabase.getInstance().getReference().child("all");
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
+
     }
 
     private void findView() {
@@ -115,7 +124,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
             } else if (reachingTime.equalsIgnoreCase( "" )) {
                 timeToReach.setError( "Please provide time to reach at service station" );
             } else {
-                Toast.makeText( this, String.valueOf( serviceSelectedIs ), Toast.LENGTH_SHORT ).show();
+              //  Toast.makeText( this, String.valueOf( serviceSelectedIs ), Toast.LENGTH_SHORT ).show();
                 sendDataToFireBase( serviceSelectedIs, vehicleModelData, reachingTime );
             }
         }
@@ -131,16 +140,14 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         otherCheckBox.setChecked( other );
     }
 
-    private void sendDataToFireBase(int serviceSelectedIs, String vehicle_Model, String reachTime) {
-        // Write a message to the database
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child( "All" );
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
-        DatabaseReference dr = FirebaseDatabase.getInstance().getReference().child( "totalNumber" );
-        DatabaseReference dr1 = FirebaseDatabase.getInstance().getReference().child( "totalNumber" );
-        dr.addValueEventListener( new ValueEventListener() {
+    private void sendDataToFireBase(int serviceSelectedIs, String vehicle_Model, String reachTime){
+
+        dr1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int size = (int) snapshot.getChildrenCount();
+
+                String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
                 String vehicle_type = "";
                 if (serviceSelectedIs == BIKE_SERVICE) {
                     vehicle_type = "Bike";
@@ -157,39 +164,37 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                 } else if (serviceSelectedIs == OTHER_SERVICE) {
                     vehicle_type = "Other";
                 }
-                String number = snapshot.getValue().toString();
-                int total = Integer.parseInt( number );
-                total = total + 1;
-                String totalNumber = total + "";
                 HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put( "vehicle", vehicle_Model );
-                hashMap.put( "reach_time", reachTime );
-                hashMap.put( "type", vehicle_type );
-                hashMap.put( "uid", uid );
-                hashMap.put( "number", totalNumber );
-                databaseReference.push().setValue( hashMap ).addOnCompleteListener(
-                        SelectServiceActivity.this, task -> {
-                            if (task.isSuccessful()) {
-                                // data submitted
-                                //write your code here
-                                //changing total number
-                                dr1.setValue( totalNumber ).addOnCompleteListener( new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        showSnackBar( "GotoNextScreen", Snackbar.LENGTH_SHORT );
-                                    }
-                                } );
+                hashMap.put("vehicle", vehicle_Model);
+                hashMap.put("reach_time", reachTime);
+                hashMap.put("type", vehicle_type);
+                hashMap.put("uid", uid);
+                hashMap.put("number", String.valueOf(size+1));
 
-                            } else {
-                                showSnackBar( "Server error", Snackbar.LENGTH_SHORT );
+
+                    dr.push().setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            if(task.isSuccessful()){
+                                Toast.makeText(SelectServiceActivity.this, "Done", Toast.LENGTH_SHORT).show();
                             }
-                        } );
+                        }
+                    });
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e( TAG, "onCancelled: " + error );
+
             }
-        } );
+        });
+
+
+
+
+
+
     }
+
 }
