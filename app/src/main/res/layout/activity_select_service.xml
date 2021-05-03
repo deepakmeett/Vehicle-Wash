@@ -8,7 +8,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="@dimen/_170sdp"
         android:background="@drawable/ic_blue_green_gradient"/>
 
     <androidx.core.widget.NestedScrollView
@@ -20,26 +20,26 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="@dimen/_8sdp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="55dp"
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_44sdp"
                 android:fontFamily="sans-serif-light"
                 android:text="@string/select_services"
                 android:textColor="@color/white"
-                android:textSize="32sp"/>
+                android:textSize="@dimen/_26sdp"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/bikeCard"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
-                android:elevation="1dp"
-                app:cardCornerRadius="10dp">
+                android:layout_height="@dimen/_80sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:elevation="@dimen/_1sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -48,8 +48,8 @@
 
                     <ImageView
                         android:id="@+id/bikeIcon"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="@dimen/_70sdp"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:contentDescription="@string/image_desc"
@@ -70,15 +70,15 @@
                             android:layout_toEndOf="@+id/bikeCheckBox"
                             android:text="@string/bike_wash"
                             android:textColor="@color/black"
-                            android:textSize="18sp"/>
+                            android:textSize="@dimen/_14sdp"/>
 
                         <CheckBox
                             android:id="@+id/bikeCheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
                             android:checked="true"
                             android:clickable="false"
-                            android:theme="@style/textInputStyle"/>
+                            android:theme="@style/accentColorStyle"/>
 
                         <TextView
                             android:id="@+id/bikeRupees"
@@ -91,7 +91,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/rupees_symbol"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/ask_at_service_station"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
                     </RelativeLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
@@ -111,10 +111,10 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/carCard"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
-                android:elevation="1dp"
-                app:cardCornerRadius="10dp">
+                android:layout_height="@dimen/_80sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:elevation="@dimen/_1sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -123,8 +123,8 @@
 
                     <ImageView
                         android:id="@+id/carIcon"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="@dimen/_70sdp"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:contentDescription="@string/image_desc"
@@ -145,14 +145,14 @@
                             android:layout_toEndOf="@+id/carCheckBox"
                             android:text="@string/car_wash"
                             android:textColor="@color/black"
-                            android:textSize="18sp"/>
+                            android:textSize="@dimen/_14sdp"/>
 
                         <CheckBox
                             android:id="@+id/carCheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
                             android:clickable="false"
-                            android:theme="@style/textInputStyle"/>
+                            android:theme="@style/accentColorStyle"/>
 
                         <TextView
                             android:id="@+id/carRupees"
@@ -165,7 +165,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/rupees_symbol"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -177,7 +177,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/ask_at_service_station"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
                     </RelativeLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
@@ -185,10 +185,10 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/autoCard"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
-                android:elevation="1dp"
-                app:cardCornerRadius="10dp">
+                android:layout_height="@dimen/_80sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:elevation="@dimen/_1sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -197,8 +197,8 @@
 
                     <ImageView
                         android:id="@+id/autoIcon"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="@dimen/_70sdp"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:contentDescription="@string/image_desc"
@@ -219,14 +219,14 @@
                             android:layout_toEndOf="@+id/autoCheckBox"
                             android:text="@string/auto_wash"
                             android:textColor="@color/black"
-                            android:textSize="18sp"/>
+                            android:textSize="@dimen/_14sdp"/>
 
                         <CheckBox
                             android:id="@+id/autoCheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
                             android:clickable="false"
-                            android:theme="@style/textInputStyle"/>
+                            android:theme="@style/accentColorStyle"/>
 
                         <TextView
                             android:id="@+id/autoRupees"
@@ -239,7 +239,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/rupees_symbol"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -251,7 +251,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/ask_at_service_station"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
                     </RelativeLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
@@ -259,10 +259,10 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/tractorCard"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
-                android:elevation="1dp"
-                app:cardCornerRadius="10dp">
+                android:layout_height="@dimen/_80sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:elevation="@dimen/_1sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -271,8 +271,8 @@
 
                     <ImageView
                         android:id="@+id/tractorIcon"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="@dimen/_70sdp"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:contentDescription="@string/image_desc"
@@ -294,14 +294,14 @@
                             android:layout_toEndOf="@+id/tractorCheckBox"
                             android:text="@string/tractor_wash"
                             android:textColor="@color/black"
-                            android:textSize="18sp"/>
+                            android:textSize="@dimen/_14sdp"/>
 
                         <CheckBox
                             android:id="@+id/tractorCheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
                             android:clickable="false"
-                            android:theme="@style/textInputStyle"/>
+                            android:theme="@style/accentColorStyle"/>
 
                         <TextView
                             android:id="@+id/tractorRupees"
@@ -314,7 +314,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/rupees_symbol"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -326,7 +326,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/ask_at_service_station"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
                     </RelativeLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
@@ -334,10 +334,10 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/truckCard"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
-                android:elevation="1dp"
-                app:cardCornerRadius="10dp">
+                android:layout_height="@dimen/_80sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:elevation="@dimen/_1sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -346,8 +346,8 @@
 
                     <ImageView
                         android:id="@+id/truckIcon"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="@dimen/_70sdp"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:contentDescription="@string/image_desc"
@@ -368,14 +368,14 @@
                             android:layout_toEndOf="@+id/truckCheckBox"
                             android:text="@string/mini_truck_wash"
                             android:textColor="@color/black"
-                            android:textSize="18sp"/>
+                            android:textSize="@dimen/_14sdp"/>
 
                         <CheckBox
                             android:id="@+id/truckCheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
                             android:clickable="false"
-                            android:theme="@style/textInputStyle"/>
+                            android:theme="@style/accentColorStyle"/>
 
                         <TextView
                             android:id="@+id/truckRupees"
@@ -388,7 +388,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/rupees_symbol"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -400,7 +400,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/ask_at_service_station"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
                     </RelativeLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
@@ -408,11 +408,11 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/tempoCard"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
-                android:elevation="1dp"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:elevation="@dimen/_1sdp"
                 android:visibility="visible"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="@dimen/_8sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -421,8 +421,8 @@
 
                     <ImageView
                         android:id="@+id/tempoIcon"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="@dimen/_70sdp"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:contentDescription="@string/image_desc"
@@ -443,14 +443,14 @@
                             android:layout_toEndOf="@+id/tempoCheckBox"
                             android:text="@string/tempo_407_wash"
                             android:textColor="@color/black"
-                            android:textSize="18sp"/>
+                            android:textSize="@dimen/_14sdp"/>
 
                         <CheckBox
                             android:id="@+id/tempoCheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
                             android:clickable="false"
-                            android:theme="@style/textInputStyle"/>
+                            android:theme="@style/accentColorStyle"/>
 
                         <TextView
                             android:id="@+id/tempoRupees"
@@ -463,7 +463,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/rupees_symbol"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -475,7 +475,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/ask_at_service_station"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
                     </RelativeLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
@@ -483,10 +483,10 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/otherCard"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
-                android:elevation="1dp"
-                app:cardCornerRadius="10dp">
+                android:layout_height="@dimen/_80sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:elevation="@dimen/_1sdp"
+                app:cardCornerRadius="@dimen/_8sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -495,8 +495,8 @@
 
                     <ImageView
                         android:id="@+id/otherIcon"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="@dimen/_70sdp"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:contentDescription="@string/image_desc"
@@ -517,14 +517,14 @@
                             android:layout_toEndOf="@+id/otherCheckBox"
                             android:text="@string/any_other_vehicle"
                             android:textColor="@color/black"
-                            android:textSize="18sp"/>
+                            android:textSize="@dimen/_14sdp"/>
 
                         <CheckBox
                             android:id="@+id/otherCheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
                             android:clickable="false"
-                            android:theme="@style/textInputStyle"/>
+                            android:theme="@style/accentColorStyle"/>
 
                         <TextView
                             android:id="@+id/otherRupees"
@@ -537,7 +537,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/rupees_symbol"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -549,7 +549,7 @@
                             android:fontFamily="sans-serif-light"
                             android:text="@string/ask_at_service_station"
                             android:textColor="@color/black"
-                            android:textSize="14sp"/>
+                            android:textSize="@dimen/_11sdp"/>
                     </RelativeLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
@@ -557,7 +557,7 @@
             <EditText
                 android:id="@+id/vehicleModel"
                 style="@style/editTextStyle"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:autofillHints="Please provide vehicle model to know which vehicle is being washed"
                 android:hint="@string/vehicle_model_no."
                 android:inputType="textCapCharacters"/>
@@ -565,7 +565,7 @@
             <EditText
                 android:id="@+id/timeToReach"
                 style="@style/editTextStyle"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:autofillHints="Please provide time that you take to reach at bike/car service station"
                 android:hint="@string/time_minutes_to_reach_at_service_station"
                 android:inputType="number"

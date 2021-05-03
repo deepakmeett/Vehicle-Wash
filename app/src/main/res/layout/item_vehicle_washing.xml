@@ -44,6 +44,7 @@
                 android:id="@+id/vehicleImage"
                 android:layout_width="@dimen/_90sdp"
                 android:layout_height="@dimen/_61sdp"
+                android:layout_alignParentStart="true"
                 android:layout_marginStart="@dimen/_2sdp"
                 android:contentDescription="@string/image_desc"
                 android:src="@drawable/ic_bike"/>

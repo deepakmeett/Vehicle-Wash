@@ -77,9 +77,10 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
         if (ifRunningNumber != null && !ifRunningNumber.equalsIgnoreCase( "" )) {
             if (list.size() != 0) {
                 vehicleDetails.setText( R.string.your_vehicle_details );
-                //Below two line for auto scroll(Suppose if item gets more than (Out of screen))
+                //Below two line for auto scroll(to reach on this user's card view instantly)
                 int getPosition = list.size() - Integer.parseInt( ifRunningNumber );
                 dashboardRecycler.scrollToPosition( list.size() - (getPosition + 1) );
+                
                 String vehicleModelNum = list.get( Integer.parseInt( ifRunningNumber ) - 1 ).getVehicle_model();
                 if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
                     vehicleModel.setText( vehicleModelNum );

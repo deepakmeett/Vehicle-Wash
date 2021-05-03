@@ -27,7 +27,7 @@
             android:layout_marginTop="2dp"
             android:text="@string/it"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="@dimen/_16sdp"
             android:textStyle="normal"/>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_100sdp"
             android:hint="@string/email"
-            android:theme="@style/textInputStyle">
+            android:theme="@style/accentColorStyle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/registerEmail"
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
-            android:theme="@style/textInputStyle"
+            android:theme="@style/accentColorStyle"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText

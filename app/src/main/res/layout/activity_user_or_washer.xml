@@ -19,7 +19,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:text="@string/please_select_who_are_you"
             android:textColor="@color/black"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/_16sdp"/>
 
         <ImageView
             android:layout_width="@dimen/_200sdp"

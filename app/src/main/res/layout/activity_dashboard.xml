@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_weight="2"
+    android:orientation="vertical"
     tools:context=".activity.DashboardActivity">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="315dp"
-        android:background="@drawable/round_blue_bottom"/>
-
     <RelativeLayout
+        android:id="@+id/blueBgRL"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/round_blue_bottom"
         android:paddingHorizontal="@dimen/_10sdp"
         android:paddingTop="@dimen/_10sdp">
 
@@ -46,9 +46,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/vehicleModel"
             android:layout_marginTop="@dimen/_2sdp"
-            android:text="@string/_00_min"
-            android:maxLines="1"
             android:maxLength="7"
+            android:maxLines="1"
+            android:text="@string/_00_min"
             android:textColor="@color/white"
             android:textSize="35sp"/>
 
@@ -69,19 +69,22 @@
             android:id="@+id/boy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/reachTime"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:contentDescription="@string/image_desc"
             android:src="@drawable/ic_boy"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/dashboardRecycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/boy"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="4"
-            tools:listitem="@layout/item_vehicle_washing"/>
     </RelativeLayout>
-</FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dashboardRecycler"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/_10sdp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="4"
+        tools:listitem="@layout/item_vehicle_washing"/>
+</LinearLayout>

@@ -128,7 +128,10 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
             String vehicleModelData = vehicleModel.getText().toString();
             if (vehicleModelData.equalsIgnoreCase( "" )) {
                 vehicleModel.setError( "Please provide vehicle name" );
-            } else if (reachingTime.equalsIgnoreCase( "" )) {
+            }else if (vehicleModelData.length() < 10){
+                vehicleModel.setError( "Please provide valid vehicle name" );
+            }
+            else if (reachingTime.equalsIgnoreCase( "" )) {
                 timeToReach.setError( "Please provide time to reach at service station" );
             } else {
                 //  Toast.makeText( this, String.valueOf( serviceSelectedIs ), Toast.LENGTH_SHORT ).show();

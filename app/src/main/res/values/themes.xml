@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.BikeWash" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="textInputStyle" parent="Theme.AppCompat.DayNight">
+    <style name="accentColorStyle" parent="Theme.AppCompat.DayNight">
         <item name="colorControlActivated">@color/dark_sky_blue</item>
     </style>
 
@@ -25,8 +25,8 @@
         <item name="android:paddingStart">@dimen/_30sdp</item>
         <item name="android:paddingEnd">@dimen/_30sdp</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:theme">@style/textInputStyle</item>
+        <item name="android:textSize">@dimen/_13sdp</item>
+        <item name="android:theme">@style/accentColorStyle</item>
     </style>
     
     <style name="buttonStyle" parent="@android:style/Widget.Button.Small">
