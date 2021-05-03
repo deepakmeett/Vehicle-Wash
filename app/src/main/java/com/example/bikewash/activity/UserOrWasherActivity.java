@@ -49,6 +49,7 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
             if (key.equalsIgnoreCase( "" )){
                 washerKeyEditText.setError( "Please provide vehicle washer key" );
             }else {
+                hideSoftKeyboard( this );
                 Toast.makeText( this, "Goto VehicleWasherProfileUpdate Page", Toast.LENGTH_SHORT ).show();
                 //Goto VehicleWasherProfileUpdate Page
             }

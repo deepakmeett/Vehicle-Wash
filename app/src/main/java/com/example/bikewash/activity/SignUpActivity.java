@@ -62,6 +62,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                 registerPasswordTL.setError( "Enter valid password" );
                 registerPasswordTL.requestFocus();
             } else {
+                hideSoftKeyboard( this );
                 registerUser();
             }
         } else if (v == backToLogin) {

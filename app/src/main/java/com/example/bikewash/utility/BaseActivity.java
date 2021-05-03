@@ -1,10 +1,12 @@
 package com.example.bikewash.utility;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +40,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void commonProgressbar(boolean isShown, boolean notShown) {
-        if (isShown && (this != null)) {
+        if (isShown) {
             progressDialog = new ProgressDialog( this, R.style.progressDialogStyle);
             progressDialog.setMessage( "Please wait..." );
             progressDialog.setCancelable( false );
@@ -48,12 +50,24 @@ public class BaseActivity extends AppCompatActivity {
                 // WindowManager$BadTokenException will be caught
             }
         }
-        if (notShown && (this != null)) {
+        if (notShown) {
             try {
                 progressDialog.dismiss();
             } catch (Exception e) {
                 // WindowManager$BadTokenException will be caught
             }
+        }
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        if(inputMethodManager.isAcceptingText()){
+            inputMethodManager.hideSoftInputFromWindow(
+                    activity.getCurrentFocus().getWindowToken(),
+                    0
+            );
         }
     }
 

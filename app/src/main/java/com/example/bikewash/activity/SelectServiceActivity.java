@@ -134,7 +134,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
             else if (reachingTime.equalsIgnoreCase( "" )) {
                 timeToReach.setError( "Please provide time to reach at service station" );
             } else {
-                //  Toast.makeText( this, String.valueOf( serviceSelectedIs ), Toast.LENGTH_SHORT ).show();
+                hideSoftKeyboard( this );
                 sendDataToFireBase( serviceSelectedIs, vehicleModelData, reachingTime );
             }
         }
