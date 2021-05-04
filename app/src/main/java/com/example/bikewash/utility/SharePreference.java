@@ -4,14 +4,16 @@ import android.content.SharedPreferences;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.bikewash.utility.Constants.FILE_DATA;
+import static com.example.bikewash.utility.Constants.KEY;
 import static com.example.bikewash.utility.Constants.RUNNING_NUMBER;
+import static com.example.bikewash.utility.Constants.UID;
 import static com.example.bikewash.utility.Constants.USER_EXIST;
 public class SharePreference {
-    
-    public static void setUserData(Context context, String childName) {
+
+    public static void setUserData(Context context, String userExist) {
         SharedPreferences sharedPreferences = context.getSharedPreferences( FILE_DATA, MODE_PRIVATE );
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString( USER_EXIST, childName );
+        editor.putString( USER_EXIST, userExist );
         editor.apply();
     }
 
@@ -40,11 +42,44 @@ public class SharePreference {
         return runningNumber;
     }
 
-
-    public static void removeRunningNumber(Context context) {
+    public static void setKey(Context context, String key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences( FILE_DATA, MODE_PRIVATE );
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString( KEY, key );
+        editor.apply();
+    }
+
+    public static String getKey(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences( FILE_DATA, Context.MODE_PRIVATE );
+        String uid = "";
+        if (sharedPreferences.contains( KEY )) {
+            uid = sharedPreferences.getString( KEY, "" );
+        }
+        return uid;
+    }
+
+    public static void setUID(Context context, String uid) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences( FILE_DATA, MODE_PRIVATE );
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString( UID, uid );
+        editor.apply();
+    }
+
+    public static String getUID(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences( FILE_DATA, Context.MODE_PRIVATE );
+        String uid = "";
+        if (sharedPreferences.contains( UID )) {
+            uid = sharedPreferences.getString( UID, "" );
+        }
+        return uid;
+    }
+
+    public static void removeUidKeyRunning(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences( FILE_DATA, MODE_PRIVATE );
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove( UID );
         editor.remove( RUNNING_NUMBER );
+        editor.remove( KEY );
         editor.apply();
     }
 }

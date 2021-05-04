@@ -23,13 +23,21 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Objects;
 
+import static com.example.bikewash.utility.Constants.ALL;
 import static com.example.bikewash.utility.Constants.AUTO_SERVICE;
 import static com.example.bikewash.utility.Constants.BIKE_SERVICE;
 import static com.example.bikewash.utility.Constants.CAR_SERVICE;
 import static com.example.bikewash.utility.Constants.OTHER_SERVICE;
+import static com.example.bikewash.utility.Constants.PENDING;
+import static com.example.bikewash.utility.Constants.REACH_TIME;
+import static com.example.bikewash.utility.Constants.RUNNING_NUMBER1;
 import static com.example.bikewash.utility.Constants.TEMPO_SERVICE;
 import static com.example.bikewash.utility.Constants.TRACTOR_SERVICE;
 import static com.example.bikewash.utility.Constants.TRUCK_SERVICE;
+import static com.example.bikewash.utility.Constants.UID;
+import static com.example.bikewash.utility.Constants.VEHICLE_MODEL;
+import static com.example.bikewash.utility.Constants.VEHICLE_TYPE;
+import static com.example.bikewash.utility.Constants.WASHING_STATUS;
 public class SelectServiceActivity extends BaseActivity implements View.OnClickListener {
 
     private CardView bikeCard, carCard, tempoCard, tractorCard, truckCard, autoCard, otherCard;
@@ -53,7 +61,6 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
 
     private void checkRunningNumber() {
         String ifRunningNumber = SharePreference.getRunningNumber( this );
-        Log.d( TAG, "checkRunningNumber: " + ifRunningNumber );
         if (ifRunningNumber != null && !ifRunningNumber.equalsIgnoreCase( "" )){
             goToDashboard();
         }
@@ -89,8 +96,8 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
 
     private void initialize() {
         firebaseAuth = FirebaseAuth.getInstance();
-        dr = FirebaseDatabase.getInstance().getReference().child( "all" );
-        dr1 = FirebaseDatabase.getInstance().getReference().child( "all" );
+        dr = FirebaseDatabase.getInstance().getReference().child( ALL );
+        dr1 = FirebaseDatabase.getInstance().getReference().child( ALL );
     }
 
     @Override
@@ -157,6 +164,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int size = (int) snapshot.getChildrenCount();
                 String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
+                SharePreference.setUID( SelectServiceActivity.this, uid );
                 String vehicle_type = "";
                 if (serviceSelectedIs == BIKE_SERVICE) {
                     vehicle_type = "bike";
@@ -174,11 +182,12 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                     vehicle_type = "other";
                 }
                 HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put( "vehicle_model", vehicle_Model );
-                hashMap.put( "reach_time", reachTime );
-                hashMap.put( "vehicle_type", vehicle_type );
-                hashMap.put( "uid", uid );
-                hashMap.put( "running_number", String.valueOf( size + 1 ) );
+                hashMap.put( VEHICLE_MODEL, vehicle_Model );
+                hashMap.put( REACH_TIME, reachTime );
+                hashMap.put( VEHICLE_TYPE, vehicle_type );
+                hashMap.put( UID, uid );
+                hashMap.put( WASHING_STATUS, PENDING );
+                hashMap.put( RUNNING_NUMBER1, String.valueOf( size + 1 ) );
                 dr.push().setValue( hashMap ).addOnCompleteListener( task -> {
                     commonProgressbar( false, true);
                     if (task.isSuccessful()) {

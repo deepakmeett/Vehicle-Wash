@@ -55,11 +55,17 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 commonProgressbar( false, true );
+                list.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     DashboardModel dashboardModel = ds.getValue( DashboardModel.class );
                     list.add( dashboardModel );
+                    if (ds.child( "uid" ).getValue().equals( SharePreference.getUID(
+                            DashboardActivity.this ) )) {
+                        SharePreference.setKey( DashboardActivity.this, ds.getKey() );
+                    }
                 }
-                dashboardRecycler.setAdapter( new DashboardAdapter( DashboardActivity.this, list, DashboardActivity.this ) );
+                dashboardRecycler.setAdapter( new DashboardAdapter(
+                        DashboardActivity.this, list, DashboardActivity.this ) );
                 setDataToUi();
             }
 
@@ -80,7 +86,6 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
                 //Below two line for auto scroll(to reach on this user's card view instantly)
                 int getPosition = list.size() - Integer.parseInt( ifRunningNumber );
                 dashboardRecycler.scrollToPosition( list.size() - (getPosition + 1) );
-                
                 String vehicleModelNum = list.get( Integer.parseInt( ifRunningNumber ) - 1 ).getVehicle_model();
                 if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
                     vehicleModel.setText( vehicleModelNum );
@@ -112,8 +117,8 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
         if (back == GET_BACK) {
             Toast.makeText( DashboardActivity.this,
                             "Thanks to choose our service!", Toast.LENGTH_SHORT ).show();
-            SharePreference.removeRunningNumber( this );
             Intent intent = new Intent( DashboardActivity.this, SelectServiceActivity.class );
+            SharePreference.removeUidKeyRunning( this );
             startActivity( intent );
             finish();
         }

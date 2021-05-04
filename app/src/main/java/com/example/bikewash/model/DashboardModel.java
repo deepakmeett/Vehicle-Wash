@@ -5,6 +5,7 @@ public class DashboardModel {
     private String reach_time;
     private String running_number;
     private String vehicle_type;
+    private String washing_status;
 
     public DashboardModel() {
     }
@@ -39,5 +40,13 @@ public class DashboardModel {
 
     public void setVehicle_type(String vehicle_type) {
         this.vehicle_type = vehicle_type;
+    }
+
+    public String getWashing_status() {
+        return washing_status;
+    }
+
+    public void setWashing_status(String washing_status) {
+        this.washing_status = washing_status;
     }
 }
