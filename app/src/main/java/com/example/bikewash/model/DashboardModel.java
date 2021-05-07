@@ -1,21 +1,14 @@
 package com.example.bikewash.model;
 public class DashboardModel {
 
-    private String vehicle_model;
     private String reach_time;
     private String running_number;
+    private String uid;
+    private String vehicle_model;
     private String vehicle_type;
     private String washing_status;
 
     public DashboardModel() {
-    }
-
-    public String getVehicle_model() {
-        return vehicle_model;
-    }
-
-    public void setVehicle_model(String vehicle_model) {
-        this.vehicle_model = vehicle_model;
     }
 
     public String getReach_time() {
@@ -32,6 +25,22 @@ public class DashboardModel {
 
     public void setRunning_number(String running_number) {
         this.running_number = running_number;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getVehicle_model() {
+        return vehicle_model;
+    }
+
+    public void setVehicle_model(String vehicle_model) {
+        this.vehicle_model = vehicle_model;
     }
 
     public String getVehicle_type() {

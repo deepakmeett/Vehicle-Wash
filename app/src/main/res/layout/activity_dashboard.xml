@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="@string/your_vehicle_details"
+            android:text="@string/current_vehicle_details"
             android:textColor="@color/white"
             android:textSize="20sp"/>
 
@@ -41,14 +41,14 @@
             android:textSize="35sp"/>
 
         <TextView
-            android:id="@+id/reachTime"
+            android:id="@+id/vehicleType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/vehicleModel"
             android:layout_marginTop="@dimen/_2sdp"
             android:maxLength="7"
             android:maxLines="1"
-            android:text="@string/_00_min"
+            android:text="@string/vehicle"
             android:textColor="@color/white"
             android:textSize="35sp"/>
 

@@ -24,7 +24,7 @@
     <string name="submit">Submit</string>
     <string name="image_desc">Image description</string>
     <string name="rupees_symbol">&#x20B9;</string>
-    <string name="your_vehicle_details">Your vehicle details___</string>
+    <string name="current_vehicle_details">Current vehicle details___</string>
     <string name="_00_min">00 Min</string>
     <string name="_00">00</string>
     <string name="vehicle_washing">Vehicle washing</string>
@@ -38,4 +38,7 @@
     <string name="vehicle_washer">Vehicle washer</string>
     <string name="type_key_here">Type key here…</string>
     <string name="completed">COMPLETED</string>
+    <string name="your_vehicle">Your vehicle</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="xxx_xxx_xxx">XXX XXX XXX</string>
 </resources>

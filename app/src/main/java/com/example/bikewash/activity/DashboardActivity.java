@@ -12,6 +12,7 @@ import com.example.bikewash.R;
 import com.example.bikewash.adapter.DashboardAdapter;
 import com.example.bikewash.model.DashboardModel;
 import com.example.bikewash.utility.BaseActivity;
+import com.example.bikewash.utility.SessionManager;
 import com.example.bikewash.utility.SharePreference;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
@@ -22,14 +23,21 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.example.bikewash.utility.Constants.GET_BACK;
+import static com.example.bikewash.utility.Constants.RUNNING_NUMBER1;
+import static com.example.bikewash.utility.Constants.VEHICLE_MODEL;
+import static com.example.bikewash.utility.Constants.VEHICLE_TYPE;
+import static com.example.bikewash.utility.Constants.WASHING;
+import static com.example.bikewash.utility.Constants.WASHING_STATUS;
 public class DashboardActivity extends BaseActivity implements DashboardAdapter.GetBack {
 
-    private TextView vehicleDetails, vehicleModel, reachTime, runningNumber;
+    private TextView vehicleDetails, vehicleModel, vehicleType, runningNumber;
     private RecyclerView dashboardRecycler;
     private final List<DashboardModel> list = new ArrayList<>();
     private static final String TAG = "DashboardActivity";
+    private String vehicleModelNum, vehicleTyp, washingNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +50,7 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
     private void findView() {
         vehicleDetails = findViewById( R.id.vehicleDetails );
         vehicleModel = findViewById( R.id.vehicleModel );
-        reachTime = findViewById( R.id.reachTime );
+        vehicleType = findViewById( R.id.vehicleType );
         runningNumber = findViewById( R.id.runningNumber );
         dashboardRecycler = findViewById( R.id.dashboardRecycler );
         dashboardRecycler.setHasFixedSize( true );
@@ -59,9 +67,18 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     DashboardModel dashboardModel = ds.getValue( DashboardModel.class );
                     list.add( dashboardModel );
-                    if (ds.child( "uid" ).getValue().equals( SharePreference.getUID(
-                            DashboardActivity.this ) )) {
-                        SharePreference.setKey( DashboardActivity.this, ds.getKey() );
+                    if (Objects.equals( ds.child( "uid" ).getValue(), SharePreference.getUID( DashboardActivity.this ) )) {
+                        SessionManager.userKey = ds.getKey();
+                    }
+                }
+                
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    if (Objects.equals( ds.child( WASHING_STATUS ).getValue(), WASHING )){
+                            vehicleModelNum = Objects.requireNonNull( ds.child( VEHICLE_MODEL ).getValue() ).toString();
+                            vehicleTyp = Objects.requireNonNull( ds.child( VEHICLE_TYPE ).getValue() ).toString();
+                            washingNum = Objects.requireNonNull( ds.child( RUNNING_NUMBER1 ).getValue() ).toString();
+                            
+                        break;
                     }
                 }
                 dashboardRecycler.setAdapter( new DashboardAdapter(
@@ -82,20 +99,24 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
         String ifRunningNumber = SharePreference.getRunningNumber( this );
         if (ifRunningNumber != null && !ifRunningNumber.equalsIgnoreCase( "" )) {
             if (list.size() != 0) {
-                vehicleDetails.setText( R.string.your_vehicle_details );
+                vehicleDetails.setText( R.string.current_vehicle_details );
                 //Below two line for auto scroll(to reach on this user's card view instantly)
                 int getPosition = list.size() - Integer.parseInt( ifRunningNumber );
                 dashboardRecycler.scrollToPosition( list.size() - (getPosition + 1) );
-                String vehicleModelNum = list.get( Integer.parseInt( ifRunningNumber ) - 1 ).getVehicle_model();
+                
                 if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
                     vehicleModel.setText( vehicleModelNum );
+                }else {
+                    vehicleModel.setText( R.string.model_number );
                 }
-                String reachTiming = list.get( Integer.parseInt( ifRunningNumber ) - 1 ).getReach_time();
-                if (reachTiming != null && !reachTiming.equalsIgnoreCase( "" )) {
-                    String reachMin = reachTiming + " Min";
-                    reachTime.setText( reachMin );
+                
+                if (vehicleTyp != null && !vehicleTyp.equalsIgnoreCase( "" )) {
+                    String reachMin = vehicleTyp;
+                    vehicleType.setText( reachMin );
+                }else {
+                    vehicleType.setText( R.string.vehicle );
                 }
-                String washingNum = list.get( Integer.parseInt( ifRunningNumber ) - 1 ).getRunning_number();
+                
                 if (washingNum != null && !washingNum.equalsIgnoreCase( "" )) {
                     if (washingNum.length() == 1) {
                         String washingNumWithZero = "0" + washingNum;
@@ -103,7 +124,10 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
                     } else {
                         runningNumber.setText( washingNum );
                     }
+                }else {
+                    runningNumber.setText( R.string._00 );
                 }
+                
             } else {
                 showSnackBar( "Data not found", Snackbar.LENGTH_SHORT );
             }

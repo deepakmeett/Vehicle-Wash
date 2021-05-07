@@ -20,7 +20,7 @@ public class Constants {
     public static final int GET_BACK = 8;
     //DashboardAdapter
     public static final String PENDING = "PENDING";
-    public static final String START = "START";
+    public static final String WASHING = "WASHING";
     public static final String COMPLETED = "COMPLETED";
     //SelectServiceActivity
     public static final String ALL = "all";
@@ -28,7 +28,6 @@ public class Constants {
     public static final String REACH_TIME = "reach_time";
     public static final String VEHICLE_TYPE = "vehicle_type";
     public static final String UID = "uid";
-    public static final String KEY = "key";
     public static final String WASHING_STATUS = "washing_status";
     public static final String RUNNING_NUMBER1 = "running_number";
     

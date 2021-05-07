@@ -167,19 +167,19 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                 SharePreference.setUID( SelectServiceActivity.this, uid );
                 String vehicle_type = "";
                 if (serviceSelectedIs == BIKE_SERVICE) {
-                    vehicle_type = "bike";
+                    vehicle_type = "Bike";
                 } else if (serviceSelectedIs == CAR_SERVICE) {
-                    vehicle_type = "car";
+                    vehicle_type = "Car";
                 } else if (serviceSelectedIs == TEMPO_SERVICE) {
-                    vehicle_type = "tempo";
+                    vehicle_type = "Tempo";
                 } else if (serviceSelectedIs == TRACTOR_SERVICE) {
-                    vehicle_type = "tractor";
+                    vehicle_type = "Tractor";
                 } else if (serviceSelectedIs == TRUCK_SERVICE) {
-                    vehicle_type = "truck";
+                    vehicle_type = "Truck";
                 } else if (serviceSelectedIs == AUTO_SERVICE) {
-                    vehicle_type = "auto";
+                    vehicle_type = "Auto";
                 } else if (serviceSelectedIs == OTHER_SERVICE) {
-                    vehicle_type = "other";
+                    vehicle_type = "Other";
                 }
                 HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put( VEHICLE_MODEL, vehicle_Model );
