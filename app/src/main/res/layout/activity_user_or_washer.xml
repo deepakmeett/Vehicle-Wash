@@ -6,60 +6,66 @@
     android:fillViewport="true"
     tools:context=".activity.UserOrWasherActivity">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/userWasherFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="@dimen/_20sdp">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="@string/please_select_who_are_you"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_16sdp"/>
-
-        <ImageView
-            android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_150sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:contentDescription="@string/image_desc"
-            android:src="@drawable/ic_user"/>
-
-        <Button
-            android:id="@+id/userButton"
-            style="@style/buttonStyle"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:text="@string/user"/>
-
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:background="@android:color/darker_gray"/>
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/_20sdp">
 
-        <ImageView
-            android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_110sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:background="@drawable/ic_vehicle_washer"
-            android:contentDescription="@string/image_desc"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="@string/please_select_who_are_you"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16sdp"/>
 
-        <EditText
-            android:id="@+id/washerKeyEditText"
-            style="@style/editTextStyle"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:autofillHints="Please provide key to know us you are a vehicle washer"
-            android:hint="@string/type_key_here"
-            android:inputType="text"
-            android:maxLength="1"/>
+            <ImageView
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:contentDescription="@string/image_desc"
+                android:src="@drawable/ic_user"/>
 
-        <Button
-            android:id="@+id/vehicleWasherButton"
-            style="@style/buttonStyle"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:text="@string/vehicle_washer"/>
-    </LinearLayout>
+            <Button
+                android:id="@+id/userButton"
+                style="@style/buttonStyle"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:text="@string/user"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:background="@android:color/darker_gray"/>
+
+            <ImageView
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_110sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/ic_vehicle_washer"
+                android:contentDescription="@string/image_desc"/>
+
+            <EditText
+                android:id="@+id/washerKeyEditText"
+                style="@style/editTextStyle"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:autofillHints="Please provide key to know us you are a vehicle washer"
+                android:hint="@string/type_key_here"
+                android:inputType="text"
+                android:maxLength="1"/>
+
+            <Button
+                android:id="@+id/vehicleWasherButton"
+                style="@style/buttonStyle"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:text="@string/vehicle_washer"/>
+        </LinearLayout>
+    </FrameLayout>
 </ScrollView>

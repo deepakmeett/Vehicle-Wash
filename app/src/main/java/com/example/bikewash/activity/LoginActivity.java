@@ -1,5 +1,7 @@
 package com.example.bikewash.activity;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,9 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.bikewash.R;
 import com.example.bikewash.utility.BaseActivity;
+import com.example.bikewash.utility.ConnectivityReceiver;
+import com.example.bikewash.utility.SessionManager;
+import com.example.bikewash.utility.ShowInternetDialog;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,8 +34,10 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.Objects;
 
 import static com.example.bikewash.utility.Constants.FROM_SIGN_UP;
+import static com.example.bikewash.utility.Constants.NOT_SHOW;
 import static com.example.bikewash.utility.Constants.RC_SIGN_IN;
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+import static com.example.bikewash.utility.Constants.SHOW;
+public class LoginActivity extends BaseActivity implements View.OnClickListener, ShowInternetDialog {
 
     private FirebaseAuth mAuth;
     private TextInputEditText loginEmail, loginPass;
@@ -39,6 +47,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private LinearLayout googleSignInButton;
     private String email, password;
     private GoogleSignInClient mGoogleSignInClient;
+    private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
     private static final String TAG = "LoginActivity";
 
     @Override
@@ -183,4 +192,35 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     }
                 } );
     }
-}
+
+    @Override
+    public void showInternetLostDialog(String showOrNot) {
+        if (showOrNot != null && !showOrNot.equalsIgnoreCase( "" )) {
+            if (showOrNot.equalsIgnoreCase( SHOW )) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace( R.id.loginFrameLayout, SessionManager.internetLostFragment );
+                transaction.setTransition( FragmentTransaction.TRANSIT_FRAGMENT_FADE );
+                transaction.commit();
+                commonProgressbar( false, true );
+            } else if (showOrNot.equalsIgnoreCase( NOT_SHOW )) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.remove( SessionManager.internetLostFragment );
+                transaction.setTransition( FragmentTransaction.TRANSIT_FRAGMENT_FADE );
+                transaction.commit();
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        IntentFilter filter = new IntentFilter( ConnectivityManager.CONNECTIVITY_ACTION );
+        this.registerReceiver( ConnectivityReceiver, filter );
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        this.unregisterReceiver( ConnectivityReceiver );
+        super.onPause();
+
+    }}

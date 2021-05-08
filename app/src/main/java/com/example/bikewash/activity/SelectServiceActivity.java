@@ -1,5 +1,7 @@
 package com.example.bikewash.activity;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,10 +11,14 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.bikewash.R;
 import com.example.bikewash.utility.BaseActivity;
+import com.example.bikewash.utility.ConnectivityReceiver;
+import com.example.bikewash.utility.SessionManager;
 import com.example.bikewash.utility.SharePreference;
+import com.example.bikewash.utility.ShowInternetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,10 +33,12 @@ import static com.example.bikewash.utility.Constants.ALL;
 import static com.example.bikewash.utility.Constants.AUTO_SERVICE;
 import static com.example.bikewash.utility.Constants.BIKE_SERVICE;
 import static com.example.bikewash.utility.Constants.CAR_SERVICE;
+import static com.example.bikewash.utility.Constants.NOT_SHOW;
 import static com.example.bikewash.utility.Constants.OTHER_SERVICE;
 import static com.example.bikewash.utility.Constants.PENDING;
 import static com.example.bikewash.utility.Constants.REACH_TIME;
 import static com.example.bikewash.utility.Constants.RUNNING_NUMBER1;
+import static com.example.bikewash.utility.Constants.SHOW;
 import static com.example.bikewash.utility.Constants.TEMPO_SERVICE;
 import static com.example.bikewash.utility.Constants.TRACTOR_SERVICE;
 import static com.example.bikewash.utility.Constants.TRUCK_SERVICE;
@@ -38,7 +46,7 @@ import static com.example.bikewash.utility.Constants.UID;
 import static com.example.bikewash.utility.Constants.VEHICLE_MODEL;
 import static com.example.bikewash.utility.Constants.VEHICLE_TYPE;
 import static com.example.bikewash.utility.Constants.WASHING_STATUS;
-public class SelectServiceActivity extends BaseActivity implements View.OnClickListener {
+public class SelectServiceActivity extends BaseActivity implements View.OnClickListener, ShowInternetDialog {
 
     private CardView bikeCard, carCard, tempoCard, tractorCard, truckCard, autoCard, otherCard;
     private CheckBox bikeCheckBox, carCheckBox, tempoCheckBox, tractorCheckBox, truckCheckBox,
@@ -48,6 +56,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
     int serviceSelectedIs = BIKE_SERVICE;
     private DatabaseReference dr, dr1;
     private FirebaseAuth firebaseAuth;
+    private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
     private static final String TAG = "SelectServiceActivity";
 
     @Override
@@ -210,5 +219,37 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         Intent intent = new Intent( SelectServiceActivity.this, DashboardActivity.class);
         startActivity( intent );
         finish();
+    }
+
+    @Override
+    public void showInternetLostDialog(String showOrNot) {
+        if (showOrNot != null && !showOrNot.equalsIgnoreCase( "" )) {
+            if (showOrNot.equalsIgnoreCase( SHOW )) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace( R.id.selectServiceFrameLayout, SessionManager.internetLostFragment );
+                transaction.setTransition( FragmentTransaction.TRANSIT_FRAGMENT_FADE );
+                transaction.commit();
+                commonProgressbar( false, true );
+            } else if (showOrNot.equalsIgnoreCase( NOT_SHOW )) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.remove( SessionManager.internetLostFragment );
+                transaction.setTransition( FragmentTransaction.TRANSIT_FRAGMENT_FADE );
+                transaction.commit();
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        IntentFilter filter = new IntentFilter( ConnectivityManager.CONNECTIVITY_ACTION );
+        this.registerReceiver( ConnectivityReceiver, filter );
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        this.unregisterReceiver( ConnectivityReceiver );
+        super.onPause();
+
     }
 }

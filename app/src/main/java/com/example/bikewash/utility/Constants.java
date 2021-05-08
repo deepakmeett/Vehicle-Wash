@@ -30,6 +30,10 @@ public class Constants {
     public static final String UID = "uid";
     public static final String WASHING_STATUS = "washing_status";
     public static final String RUNNING_NUMBER1 = "running_number";
+    //Internet connection lost
+    public static final String SHOW = "show";
+    public static final String NOT_SHOW = "notShow";
+    
     
     
     

@@ -7,82 +7,88 @@
     android:fillViewport="true"
     tools:context=".activity.SignUpActivity">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/signUpFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingHorizontal="@dimen/_20sdp">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="@dimen/_90sdp"
-            android:layout_height="@dimen/_90sdp"
-            android:layout_marginTop="@dimen/_28sdp"
-            android:contentDescription="@string/image_desc"
-            android:src="@drawable/ic_girl"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="@string/it"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_16sdp"
-            android:textStyle="normal"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/registerEmailTL"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_100sdp"
-            android:hint="@string/email"
-            android:theme="@style/accentColorStyle">
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/_20sdp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/registerEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:textSize="@dimen/_12sdp"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/registerPasswordTL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:theme="@style/accentColorStyle"
-            app:passwordToggleEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/registerPass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:textSize="@dimen/_12sdp"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/registerBtn"
-            style="@style/buttonStyle"
-            android:layout_marginTop="@dimen/_22sdp"
-            android:text="@string/sign_up"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_80sdp"
-            android:paddingBottom="@dimen/_10sdp">
+            <ImageView
+                android:layout_width="@dimen/_90sdp"
+                android:layout_height="@dimen/_90sdp"
+                android:layout_marginTop="@dimen/_28sdp"
+                android:contentDescription="@string/image_desc"
+                android:src="@drawable/ic_girl"/>
 
             <TextView
-                android:id="@+id/backToLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:text="@string/get_back_to_login"
-                android:textColor="@color/dark_sky_blue"
-                android:textSize="@dimen/_12sdp"/>
-        </RelativeLayout>
-    </LinearLayout>
+                android:layout_marginTop="2dp"
+                android:text="@string/it"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16sdp"
+                android:textStyle="normal"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/registerEmailTL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_100sdp"
+                android:hint="@string/email"
+                android:theme="@style/accentColorStyle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/registerEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:textSize="@dimen/_12sdp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/registerPasswordTL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:theme="@style/accentColorStyle"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/registerPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textSize="@dimen/_12sdp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/registerBtn"
+                style="@style/buttonStyle"
+                android:layout_marginTop="@dimen/_22sdp"
+                android:text="@string/sign_up"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_80sdp"
+                android:paddingBottom="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/backToLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/get_back_to_login"
+                    android:textColor="@color/dark_sky_blue"
+                    android:textSize="@dimen/_12sdp"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </FrameLayout>
 </ScrollView>
