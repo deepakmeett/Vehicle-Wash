@@ -4,6 +4,9 @@ public class Constants {
     //LoginActivity
     public static final int FROM_SIGN_UP = 104;
     public static final int RC_SIGN_IN = 105;
+    public static final String ENTER_VALID_EMAIL_ADDRESS = "Enter valid email address";
+    public static final String ENTER_VALID_PASSWORD = "Enter valid password";
+    public static final String AUTHENTICATION_FAILED = "Authentication failed";
     //SelectServiceActivity
     public static final int BIKE_SERVICE = 1;
     public static final int CAR_SERVICE = 2;

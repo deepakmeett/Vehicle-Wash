@@ -33,6 +33,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.Objects;
 
+import static com.example.bikewash.utility.Constants.AUTHENTICATION_FAILED;
+import static com.example.bikewash.utility.Constants.ENTER_VALID_EMAIL_ADDRESS;
+import static com.example.bikewash.utility.Constants.ENTER_VALID_PASSWORD;
 import static com.example.bikewash.utility.Constants.FROM_SIGN_UP;
 import static com.example.bikewash.utility.Constants.NOT_SHOW;
 import static com.example.bikewash.utility.Constants.RC_SIGN_IN;
@@ -101,10 +104,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             email = Objects.requireNonNull( loginEmail.getText() ).toString();
             password = Objects.requireNonNull( loginPass.getText() ).toString();
             if (isValidEmail( email )) {
-                EmailTL.setError( "Enter valid email address" );
+                EmailTL.setError( ENTER_VALID_EMAIL_ADDRESS );
                 EmailTL.requestFocus();
             } else if (password.isEmpty() && password.equalsIgnoreCase( "" )) {
-                passwordTL.setError( "Enter valid password" );
+                passwordTL.setError( ENTER_VALID_PASSWORD );
                 passwordTL.requestFocus();
             } else {
                 hideSoftKeyboard( this );
@@ -136,7 +139,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w( TAG, "signInWithEmail:failure", task.getException() );
-                        showSnackBar( "Authentication failed", Snackbar.LENGTH_SHORT );
+                        showSnackBar( AUTHENTICATION_FAILED, Snackbar.LENGTH_SHORT );
                     }
                 } );
     }
