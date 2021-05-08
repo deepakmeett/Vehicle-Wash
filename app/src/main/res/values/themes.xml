@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.BikeWash" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="Theme.BikeWash" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -14,11 +14,11 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="accentColorStyle" parent="Theme.AppCompat.DayNight">
+    <style name="accentColorStyle" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">@color/dark_sky_blue</item>
     </style>
 
-    <style name="editTextStyle" parent="Theme.AppCompat.DayNight">
+    <style name="editTextStyle" parent="Theme.AppCompat.Light">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/_36sdp</item>
         <item name="android:background">@drawable/edit_text_bg</item>
@@ -38,7 +38,7 @@
         <item name="android:textSize">@dimen/_13sdp</item>
     </style>
 
-    <style name="progressDialogStyle" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+    <style name="progressDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/dark_sky_blue</item>
     </style>
 </resources>
