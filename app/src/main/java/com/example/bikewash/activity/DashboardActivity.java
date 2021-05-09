@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
     private String vehicleModelNum, vehicleTyp, washingNum;
     private boolean matchUID;
     private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
+    private int isWashing = 0;
     private static final String TAG = "DashboardActivity";
 
     @Override
@@ -99,10 +101,13 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
                             vehicleModelNum = Objects.requireNonNull( ds.child( VEHICLE_MODEL ).getValue() ).toString();
                             vehicleTyp = Objects.requireNonNull( ds.child( VEHICLE_TYPE ).getValue() ).toString();
                             washingNum = Objects.requireNonNull( ds.child( RUNNING_NUMBER1 ).getValue() ).toString();
+                            isWashing++;
                             String userTurn = "This is your turn to wash the vehicle";
                             String currentVehicleDetail = "Current vehicle washing number is " + washingNum; 
                             createNotification(userTurn, currentVehicleDetail);
                         break;
+                    }else {
+                        isWashing = 0;
                     }
                 }
                 dashboardRecycler.setAdapter( new DashboardAdapter(
@@ -123,41 +128,46 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
         String ifRunningNumber = SharePreference.getRunningNumber( this );
         if (ifRunningNumber != null && !ifRunningNumber.equalsIgnoreCase( "" )) {
             if (list.size() != 0) {
-                vehicleDetails.setText( R.string.current_vehicle_details );
                 //Below two line for auto scroll(to reach on this user's card view instantly)
                 int getPosition = list.size() - Integer.parseInt( ifRunningNumber );
                 dashboardRecycler.scrollToPosition( list.size() - (getPosition + 1) );
-
-
-                if (matchUID) {
-                    if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
-                        vehicleModel.setText( vehicleModelNum );
+                if (isWashing > 0) {
+                    vehicleDetails.setText( R.string.current_vehicle_details );
+                    vehicleModel.setVisibility( View.VISIBLE );
+                    vehicleType.setVisibility( View.VISIBLE );
+                    runningNumber.setVisibility( View.VISIBLE );
+                    if (matchUID) {
+                        if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
+                            vehicleModel.setText( vehicleModelNum );
+                        }else {
+                            vehicleModel.setText( R.string.xxx_xxx_xxx);
+                        }
                     }else {
-                        vehicleModel.setText( R.string.xxx_xxx_xxx);
+                        vehicleModel.setText( R.string.model_number );
                     }
-                }else {
-                    vehicleModel.setText( R.string.model_number );
-                }
-               
-                
-                if (vehicleTyp != null && !vehicleTyp.equalsIgnoreCase( "" )) {
-                    String reachMin = vehicleTyp;
-                    vehicleType.setText( reachMin );
-                }else {
-                    vehicleType.setText( R.string.vehicle );
-                }
-                
-                if (washingNum != null && !washingNum.equalsIgnoreCase( "" )) {
-                    if (washingNum.length() == 1) {
-                        String washingNumWithZero = "0" + washingNum;
-                        runningNumber.setText( washingNumWithZero );
-                    } else {
-                        runningNumber.setText( washingNum );
+                    if (vehicleTyp != null && !vehicleTyp.equalsIgnoreCase( "" )) {
+                        String reachMin = vehicleTyp;
+                        vehicleType.setText( reachMin );
+                    }else {
+                        vehicleType.setText( R.string.vehicle );
                     }
-                }else {
-                    runningNumber.setText( R.string._00 );
+                    if (washingNum != null && !washingNum.equalsIgnoreCase( "" )) {
+                        if (washingNum.length() == 1) {
+                            String washingNumWithZero = "0" + washingNum;
+                            runningNumber.setText( washingNumWithZero );
+                        } else {
+                            runningNumber.setText( washingNum );
+                        }
+                    }else {
+                        runningNumber.setText( R.string._00 );
+                    }
+                } else {
+                    vehicleDetails.setText( R.string.there_is_no_vehicle_to_wash );
+                    vehicleModel.setVisibility( View.INVISIBLE );
+                    vehicleType.setVisibility( View.INVISIBLE );
+                    runningNumber.setVisibility( View.INVISIBLE );
                 }
-                
+
             } else {
                 showSnackBar( "Data not found", Snackbar.LENGTH_SHORT );
             }
