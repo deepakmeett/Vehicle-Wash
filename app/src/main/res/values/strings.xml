@@ -44,4 +44,9 @@
     <string name="xxx_xxx_xxx">XXX XXX XXX</string>
     <string name="internet_connection_lost">Internet Connection Lost</string>
     <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
+    <string name="share">Share</string>
+    <string name="review">Review</string>
+    <string name="feedback_and_suggestion">Feedback and suggestion</string>
+    <string name="not_completed_list">Not completed vehicle list</string>
 </resources>

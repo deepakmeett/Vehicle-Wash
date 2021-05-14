@@ -1,6 +1,7 @@
 package com.example.bikewash.utility;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
@@ -12,7 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bikewash.R;
+import com.example.bikewash.activity.LoginActivity;
+import com.example.bikewash.activity.UserOrWasherActivity;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 public class BaseActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
@@ -69,6 +73,16 @@ public class BaseActivity extends AppCompatActivity {
                     0
             );
         }
+    }
+    
+    public void logout(Activity activity){
+        FirebaseAuth.getInstance().signOut();
+        SharePreference.removeUidKeyRunning( this );
+        SharePreference.removeWasherKeyUserExit( this );
+        Intent intent = new Intent( activity, LoginActivity.class );
+        intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        startActivity( intent );
+        finish();
     }
 
 }

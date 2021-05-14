@@ -8,13 +8,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.bikewash.R;
+import com.example.bikewash.bottom_sheet.MoreItemsBottomSheet;
 import com.example.bikewash.utility.BaseActivity;
 import com.example.bikewash.utility.ConnectivityReceiver;
 import com.example.bikewash.utility.SessionManager;
@@ -34,11 +36,16 @@ import static com.example.bikewash.utility.Constants.ALL;
 import static com.example.bikewash.utility.Constants.AUTO_SERVICE;
 import static com.example.bikewash.utility.Constants.BIKE_SERVICE;
 import static com.example.bikewash.utility.Constants.CAR_SERVICE;
+import static com.example.bikewash.utility.Constants.FEEDBACK;
+import static com.example.bikewash.utility.Constants.LOGOUT;
+import static com.example.bikewash.utility.Constants.NOT_COMPLETED;
 import static com.example.bikewash.utility.Constants.NOT_SHOW;
 import static com.example.bikewash.utility.Constants.OTHER_SERVICE;
 import static com.example.bikewash.utility.Constants.PENDING;
 import static com.example.bikewash.utility.Constants.REACH_TIME;
+import static com.example.bikewash.utility.Constants.REVIEW;
 import static com.example.bikewash.utility.Constants.RUNNING_NUMBER1;
+import static com.example.bikewash.utility.Constants.SHARE;
 import static com.example.bikewash.utility.Constants.SHOW;
 import static com.example.bikewash.utility.Constants.TEMPO_SERVICE;
 import static com.example.bikewash.utility.Constants.TRACTOR_SERVICE;
@@ -47,9 +54,10 @@ import static com.example.bikewash.utility.Constants.UID;
 import static com.example.bikewash.utility.Constants.VEHICLE_MODEL;
 import static com.example.bikewash.utility.Constants.VEHICLE_TYPE;
 import static com.example.bikewash.utility.Constants.WASHING_STATUS;
-public class SelectServiceActivity extends BaseActivity implements View.OnClickListener, ShowInternetDialog {
+public class SelectServiceActivity extends BaseActivity implements View.OnClickListener, ShowInternetDialog
+        , MoreItemsBottomSheet.MoreOptionBottom {
 
-    private TextView logout;
+    private ImageView moreOptions;
     private CardView bikeCard, carCard, tempoCard, tractorCard, truckCard, autoCard, otherCard;
     private CheckBox bikeCheckBox, carCheckBox, tempoCheckBox, tractorCheckBox, truckCheckBox,
             autoCheckBox, otherCheckBox;
@@ -58,6 +66,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
     int serviceSelectedIs = BIKE_SERVICE;
     private DatabaseReference dr, dr1;
     private FirebaseAuth firebaseAuth;
+    private MoreItemsBottomSheet moreItemsBottomSheet;
     private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
     private static final String TAG = "SelectServiceActivity";
 
@@ -72,13 +81,13 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
 
     private void checkRunningNumber() {
         String ifRunningNumber = SharePreference.getRunningNumber( this );
-        if (ifRunningNumber != null && !ifRunningNumber.equalsIgnoreCase( "" )){
+        if (ifRunningNumber != null && !ifRunningNumber.equalsIgnoreCase( "" )) {
             goToDashboard();
         }
     }
 
     private void findView() {
-        logout = findViewById( R.id.logout );
+        moreOptions = findViewById( R.id.moreOptions );
         bikeCard = findViewById( R.id.bikeCard );
         bikeCheckBox = findViewById( R.id.bikeCheckBox );
         carCard = findViewById( R.id.carCard );
@@ -96,7 +105,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         vehicleModel = findViewById( R.id.vehicleModel );
         timeToReach = findViewById( R.id.timeToReach );
         submitButton = findViewById( R.id.submitButton );
-        logout.setOnClickListener( this );
+        moreOptions.setOnClickListener( this );
         bikeCard.setOnClickListener( this );
         carCard.setOnClickListener( this );
         tempoCard.setOnClickListener( this );
@@ -115,15 +124,10 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v == logout){
-            FirebaseAuth.getInstance().signOut();
-            SharePreference.removeUidKeyRunning( this );
-            SharePreference.removeWasherKeyUserExit( this );
-            Intent intent = new Intent( SelectServiceActivity.this, LoginActivity.class );
-            intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
-            startActivity( intent );
-            finish();
-        }else if (v == bikeCard) {
+        if (v == moreOptions) {
+            moreItemsBottomSheet = new MoreItemsBottomSheet( this );
+            moreItemsBottomSheet.show( getSupportFragmentManager(), "MoreOptions" );
+        } else if (v == bikeCard) {
             checkBoxChecked( true, false, false, false, false, false, false );
             serviceSelectedIs = BIKE_SERVICE;
             vehicleModel.setText( "" );
@@ -207,9 +211,9 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                 hashMap.put( WASHING_STATUS, PENDING );
                 hashMap.put( RUNNING_NUMBER1, String.valueOf( size + 1 ) );
                 dr.push().setValue( hashMap ).addOnCompleteListener( task -> {
-                    commonProgressbar( false, true);
+                    commonProgressbar( false, true );
                     if (task.isSuccessful()) {
-                        SharePreference.setRunningNumber( SelectServiceActivity.this, 
+                        SharePreference.setRunningNumber( SelectServiceActivity.this,
                                                           String.valueOf( size + 1 ) );
                         goToDashboard();
                     }
@@ -218,14 +222,14 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                commonProgressbar( false, true);
+                commonProgressbar( false, true );
                 Log.e( TAG, "onCancelled: " + error );
             }
         } );
     }
 
     private void goToDashboard() {
-        Intent intent = new Intent( SelectServiceActivity.this, DashboardActivity.class);
+        Intent intent = new Intent( SelectServiceActivity.this, DashboardActivity.class );
         startActivity( intent );
         finish();
     }
@@ -260,5 +264,22 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         this.unregisterReceiver( ConnectivityReceiver );
         super.onPause();
 
+    }
+
+    @Override
+    public void bottomSheet(String action) {
+        if (action != null && !action.equalsIgnoreCase( "" )) {
+            if (action.equalsIgnoreCase( SHARE )) {
+                Toast.makeText( this, "SHARE", Toast.LENGTH_SHORT ).show();
+            } else if (action.equalsIgnoreCase( REVIEW )) {
+                Toast.makeText( this, "REVIEW", Toast.LENGTH_SHORT ).show();
+            } else if (action.equalsIgnoreCase( LOGOUT )) {
+                logout( SelectServiceActivity.this );
+            } else if (action.equalsIgnoreCase( FEEDBACK )) {
+                Toast.makeText( this, "FEEDBACK", Toast.LENGTH_SHORT ).show();
+            } else if (action.equalsIgnoreCase( NOT_COMPLETED )) {
+                Toast.makeText( this, "NOT_COMPLETED", Toast.LENGTH_SHORT ).show();
+            }
+        }
     }
 }

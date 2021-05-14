@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bikewash.R;
 import com.example.bikewash.adapter.DashboardAdapter;
+import com.example.bikewash.bottom_sheet.MoreItemsBottomSheet;
 import com.example.bikewash.model.DashboardModel;
 import com.example.bikewash.model.UserKeyModel;
 import com.example.bikewash.utility.BaseActivity;
@@ -26,7 +28,6 @@ import com.example.bikewash.utility.SessionManager;
 import com.example.bikewash.utility.SharePreference;
 import com.example.bikewash.utility.ShowInternetDialog;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,12 +39,17 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.example.bikewash.utility.Constants.ALL;
+import static com.example.bikewash.utility.Constants.FEEDBACK;
 import static com.example.bikewash.utility.Constants.GET_BACK;
+import static com.example.bikewash.utility.Constants.LOGOUT;
+import static com.example.bikewash.utility.Constants.NOT_COMPLETED;
 import static com.example.bikewash.utility.Constants.NOT_SHOW;
 import static com.example.bikewash.utility.Constants.PENDING;
 import static com.example.bikewash.utility.Constants.REACH_TIME;
 import static com.example.bikewash.utility.Constants.REFRESH_LAYOUT;
+import static com.example.bikewash.utility.Constants.REVIEW;
 import static com.example.bikewash.utility.Constants.RUNNING_NUMBER1;
+import static com.example.bikewash.utility.Constants.SHARE;
 import static com.example.bikewash.utility.Constants.SHOW;
 import static com.example.bikewash.utility.Constants.UID;
 import static com.example.bikewash.utility.Constants.USER;
@@ -53,11 +59,13 @@ import static com.example.bikewash.utility.Constants.VEHICLE_WASHER;
 import static com.example.bikewash.utility.Constants.WASHING;
 import static com.example.bikewash.utility.Constants.WASHING_STATUS;
 import static com.example.bikewash.utility.NotificationChl.CHANNEL_1;
-public class DashboardActivity extends BaseActivity implements View.OnClickListener, DashboardAdapter.GetBack, ShowInternetDialog {
+public class DashboardActivity extends BaseActivity implements View.OnClickListener, DashboardAdapter.GetBack, ShowInternetDialog, MoreItemsBottomSheet.MoreOptionBottom {
 
-    private TextView vehicleDetails, logout, vehicleModel, vehicleType, runningNumber;
+    private ImageView moreOptions;
+    private TextView vehicleDetails, vehicleModel, vehicleType, runningNumber;
     private RecyclerView dashboardRecycler;
     private String vehicleModelNum, vehicleTyp, reachTime, washingNum;
+    private MoreItemsBottomSheet moreItemsBottomSheet;
     private boolean matchUID;
     private int isWashing = 0;
     private String washerKeySP;
@@ -81,25 +89,20 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
     private void findView() {
         vehicleDetails = findViewById( R.id.vehicleDetails );
-        logout = findViewById( R.id.logout );
+        moreOptions = findViewById( R.id.moreOptions );
         vehicleModel = findViewById( R.id.vehicleModel );
         vehicleType = findViewById( R.id.vehicleType );
         runningNumber = findViewById( R.id.runningNumber );
         dashboardRecycler = findViewById( R.id.dashboardRecycler );
         dashboardRecycler.setHasFixedSize( true );
-        logout.setOnClickListener( this );
+        moreOptions.setOnClickListener( this );
     }
 
     @Override
     public void onClick(View v) {
-        if (v == logout) {
-            FirebaseAuth.getInstance().signOut();
-            SharePreference.removeUidKeyRunning( this );
-            SharePreference.removeWasherKeyUserExit( this );
-            Intent intent = new Intent( DashboardActivity.this, LoginActivity.class );
-            intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
-            startActivity( intent );
-            finish();
+        if (v == moreOptions) {
+            moreItemsBottomSheet = new MoreItemsBottomSheet( this );
+            moreItemsBottomSheet.show( getSupportFragmentManager(), "MoreOptions" );
         }
     }
 
@@ -320,5 +323,22 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         this.unregisterReceiver( ConnectivityReceiver );
         super.onPause();
 
+    }
+
+    @Override
+    public void bottomSheet(String action) {
+        if (action != null && !action.equalsIgnoreCase( "" )) {
+            if (action.equalsIgnoreCase( SHARE )) {
+                Toast.makeText( this, "SHARE", Toast.LENGTH_SHORT ).show();
+            } else if (action.equalsIgnoreCase( REVIEW )) {
+                Toast.makeText( this, "REVIEW", Toast.LENGTH_SHORT ).show();
+            } else if (action.equalsIgnoreCase( LOGOUT )) {
+                logout( DashboardActivity.this );
+            } else if (action.equalsIgnoreCase( FEEDBACK )) {
+                Toast.makeText( this, "FEEDBACK", Toast.LENGTH_SHORT ).show();
+            } else if (action.equalsIgnoreCase( NOT_COMPLETED )) {
+                Toast.makeText( this, "NOT_COMPLETED", Toast.LENGTH_SHORT ).show();
+            }
+        }
     }
 }

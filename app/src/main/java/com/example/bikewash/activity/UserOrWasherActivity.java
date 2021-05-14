@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
 
@@ -22,6 +23,7 @@ import static com.example.bikewash.utility.Constants.SHOW;
 import static com.example.bikewash.utility.Constants.USER_EXIST;
 public class UserOrWasherActivity extends BaseActivity implements View.OnClickListener, ShowInternetDialog {
 
+    private TextView logout;
     private Button userButton, vehicleWasherButton;
     private EditText washerKeyEditText;
     private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
@@ -48,16 +50,20 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void findView() {
+        logout = findViewById( R.id.moreOptions );
         userButton = findViewById( R.id.userButton );
         washerKeyEditText = findViewById( R.id.washerKeyEditText );
         vehicleWasherButton = findViewById( R.id.vehicleWasherButton );
+        logout.setOnClickListener( this );
         userButton.setOnClickListener( this );
         vehicleWasherButton.setOnClickListener( this );
     }
 
     @Override
     public void onClick(View v) {
-        if (v == userButton){
+        if (v == logout){
+            logout( UserOrWasherActivity.this );
+        }else if (v == userButton){
             SharePreference.removeWasherKeyUserExit( this );
             SharePreference.setUserExit( this, USER_EXIST );
             goToSelectService(SELECT_SERVICE);

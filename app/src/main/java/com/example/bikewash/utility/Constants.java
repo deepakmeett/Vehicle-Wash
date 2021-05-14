@@ -46,4 +46,12 @@ public class Constants {
     //RecyclerView scrolling
     public static final String USER = "USER";
     public static final String VEHICLE_WASHER = "VEHICLE_WASHER";
+
+    //MoreBottomSheet
+    public static final String SHARE = "share";
+    public static final String REVIEW = "review";
+    public static final String LOGOUT = "logout";
+    public static final String FEEDBACK = "feedback";
+    public static final String NOT_COMPLETED = "not_completed";
+    
 }
