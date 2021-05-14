@@ -58,8 +58,7 @@
                 android:layout_marginTop="@dimen/_25sdp"
                 android:autofillHints="Please provide key to know us you are a vehicle washer"
                 android:hint="@string/type_key_here"
-                android:inputType="text"
-                android:maxLength="1"/>
+                android:inputType="text"/>
 
             <Button
                 android:id="@+id/vehicleWasherButton"

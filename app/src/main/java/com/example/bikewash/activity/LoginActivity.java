@@ -101,8 +101,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         if (v == logLoginBtn) {
-            email = Objects.requireNonNull( loginEmail.getText() ).toString();
-            password = Objects.requireNonNull( loginPass.getText() ).toString();
+            email = Objects.requireNonNull( loginEmail.getText() ).toString().trim();
+            password = Objects.requireNonNull( loginPass.getText() ).toString().trim();
             if (isValidEmail( email )) {
                 EmailTL.setError( ENTER_VALID_EMAIL_ADDRESS );
                 EmailTL.requestFocus();
@@ -116,6 +116,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         } else if (v == loginNewSignUp) {
             Intent intent = new Intent( LoginActivity.this, SignUpActivity.class );
             startActivityForResult( intent, FROM_SIGN_UP );
+            hideSoftKeyboard( this );
         } else if (v == googleSignInButton) {
             signIn();
         }

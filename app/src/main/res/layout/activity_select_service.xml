@@ -24,6 +24,15 @@
             android:padding="@dimen/_8sdp">
 
             <TextView
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/logout"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"/>
+            
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"

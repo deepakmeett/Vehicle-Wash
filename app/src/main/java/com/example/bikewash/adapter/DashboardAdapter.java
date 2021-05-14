@@ -14,8 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.bikewash.R;
 import com.example.bikewash.model.DashboardModel;
+import com.example.bikewash.model.UserKeyModel;
+import com.example.bikewash.utility.BaseActivity;
 import com.example.bikewash.utility.SessionManager;
 import com.example.bikewash.utility.SharePreference;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -25,22 +28,29 @@ import static com.example.bikewash.utility.Constants.ALL;
 import static com.example.bikewash.utility.Constants.COMPLETED;
 import static com.example.bikewash.utility.Constants.GET_BACK;
 import static com.example.bikewash.utility.Constants.PENDING;
+import static com.example.bikewash.utility.Constants.REFRESH_LAYOUT;
 import static com.example.bikewash.utility.Constants.WASHING;
 import static com.example.bikewash.utility.Constants.WASHING_STATUS;
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
 
     public interface GetBack {
-        void Back(int back);
+
+        void BackFromAdapter(int back);
     }
 
     private final Context context;
     private final List<DashboardModel> list;
+    private final List<UserKeyModel> userKeyModelList;
     private final GetBack getBack;
+    private final BaseActivity baseActivity;
 
-    public DashboardAdapter(Context context, List<DashboardModel> list, GetBack GetBack) {
+
+    public DashboardAdapter(Context context, List<DashboardModel> list, GetBack GetBack, List<UserKeyModel> userKeyModels, BaseActivity baseActivity) {
         this.context = context;
         this.list = list;
         this.getBack = GetBack;
+        this.userKeyModelList = userKeyModels;
+        this.baseActivity = baseActivity;
     }
 
     @NonNull
@@ -53,6 +63,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DashboardModel model = list.get( position );
+        UserKeyModel keyList = userKeyModelList.get( position );
         String vehicleType = model.getVehicle_type();
         if (vehicleType != null && !vehicleType.equalsIgnoreCase( "" )) {
             if (vehicleType.equalsIgnoreCase( "bike" )) {
@@ -75,21 +86,22 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         String userUId = model.getUid();
         final boolean matchUID = phoneUID != null && !phoneUID.equalsIgnoreCase( "" )
                                  && userUId != null && !userUId.equalsIgnoreCase( "" );
-        
         String vehicleModelNum = model.getVehicle_model();
+        String washerKey = SharePreference.getWasherKey( context );
         if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
             holder.vehicleModel.setText( vehicleModelNum );
             if (matchUID) {
                 if (phoneUID.equalsIgnoreCase( userUId )) {
-                    holder.vehicleModel.setText(vehicleModelNum);
+                    holder.vehicleModel.setText( vehicleModelNum );
                 }
-            }else {
-                holder.vehicleModel.setText( R.string.xxx_xxx_xxx);
+            }else  if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
+                holder.vehicleModel.setText( vehicleModelNum );
+            } else {
+                holder.vehicleModel.setText( R.string.xxx_xxx_xxx );
             }
         } else {
             holder.vehicleModel.setText( R.string.vehicle_model_no_ );
         }
-        
         String reachTiming = model.getReach_time();
         if (reachTiming != null && !reachTiming.equalsIgnoreCase( "" )) {
             String reachMin = "Reach time : " + reachTiming + " min";
@@ -97,7 +109,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         } else {
             holder.reachTime.setText( R.string.reach_time_00_min );
         }
-        
         String washingNum = model.getRunning_number();
         if (washingNum != null && !washingNum.equalsIgnoreCase( "" )) {
             if (washingNum.length() == 1) {
@@ -108,17 +119,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             }
         } else {
             holder.runningNumber.setText( R.string._00 );
-        }
-        
-        if (matchUID) {
-            if (phoneUID.equalsIgnoreCase( userUId )) {
-                holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
-                holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.dragon_green ) );
-                holder.labelText.setText( R.string.your_vehicle );
-                holder.inactiveButtonsView.setVisibility( View.GONE );
-            }
-        } else {
-            holder.inactiveButtonsView.setVisibility( View.VISIBLE );
         }
         String isWashing = model.getWashing_status();
         if (isWashing != null && isWashing.equalsIgnoreCase( WASHING )) {
@@ -137,24 +137,55 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 holder.doneButton.setText( washing_status );
             }
         }
+        
         holder.doneButton.setOnClickListener( v -> {
-            if (washing_status != null) {
-                if (washing_status.equalsIgnoreCase( PENDING )) {
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference mDatabase = database.getReference();
-                    mDatabase.child( ALL ).child( SessionManager.userKey ).child( WASHING_STATUS ).setValue( WASHING );
-                } else if (washing_status.equalsIgnoreCase( WASHING )) {
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference mDatabase = database.getReference();
-                    mDatabase.child( ALL ).child( SessionManager.userKey ).child( WASHING_STATUS ).setValue( COMPLETED );
-                } else if (washing_status.equalsIgnoreCase( COMPLETED )) {
-                    SharePreference.removeUidKeyRunning( context );
-                    getBack.Back( GET_BACK );
+
+            if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
+                if (washing_status != null) {
+                    if (washing_status.equalsIgnoreCase( PENDING )) {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference mDatabase = database.getReference();
+                        mDatabase.child( ALL ).child( keyList.getKey() ).child( WASHING_STATUS ).setValue( WASHING );
+                        getBack.BackFromAdapter( REFRESH_LAYOUT );
+                    } else if (washing_status.equalsIgnoreCase( WASHING )) {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference mDatabase = database.getReference();
+                        mDatabase.child( ALL ).child( keyList.getKey() ).child( WASHING_STATUS ).setValue( COMPLETED );
+                        getBack.BackFromAdapter( REFRESH_LAYOUT );
+                    } else if (washing_status.equalsIgnoreCase( COMPLETED )) {
+                        baseActivity.showSnackBar( "This vehicle is washed", Snackbar.LENGTH_SHORT );
+                    }
+                }
+            }else {
+                if (washing_status != null) {
+                    if (washing_status.equalsIgnoreCase( PENDING )) {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference mDatabase = database.getReference();
+                        mDatabase.child( ALL ).child( SessionManager.userKey ).child( WASHING_STATUS ).setValue( WASHING );
+                    } else if (washing_status.equalsIgnoreCase( WASHING )) {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference mDatabase = database.getReference();
+                        mDatabase.child( ALL ).child( SessionManager.userKey ).child( WASHING_STATUS ).setValue( COMPLETED );
+                    } else if (washing_status.equalsIgnoreCase( COMPLETED )) {
+                        getBack.BackFromAdapter( GET_BACK );
+                    }
                 }
             }
+            
         } );
-        holder.inactiveButtonsView.setOnClickListener( v -> {
-        } );
+        if (matchUID) {
+            if (phoneUID.equalsIgnoreCase( userUId )) {
+                holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
+                holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.dragon_green ) );
+                holder.labelText.setText( R.string.your_vehicle );
+                holder.inactiveButtonsView.setVisibility( View.GONE );
+            }
+        } else if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
+            holder.doneButton.setEnabled( true );
+            holder.inactiveButtonsView.setVisibility( View.GONE );
+        } else {
+            holder.inactiveButtonsView.setVisibility( View.VISIBLE );
+        }
     }
 
     @Override

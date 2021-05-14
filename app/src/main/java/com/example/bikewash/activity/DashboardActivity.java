@@ -19,12 +19,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bikewash.R;
 import com.example.bikewash.adapter.DashboardAdapter;
 import com.example.bikewash.model.DashboardModel;
+import com.example.bikewash.model.UserKeyModel;
 import com.example.bikewash.utility.BaseActivity;
 import com.example.bikewash.utility.ConnectivityReceiver;
 import com.example.bikewash.utility.SessionManager;
 import com.example.bikewash.utility.SharePreference;
 import com.example.bikewash.utility.ShowInternetDialog;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,26 +37,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.example.bikewash.utility.NotificationChl.CHANNEL_1;
 import static com.example.bikewash.utility.Constants.ALL;
 import static com.example.bikewash.utility.Constants.GET_BACK;
 import static com.example.bikewash.utility.Constants.NOT_SHOW;
+import static com.example.bikewash.utility.Constants.PENDING;
+import static com.example.bikewash.utility.Constants.REACH_TIME;
+import static com.example.bikewash.utility.Constants.REFRESH_LAYOUT;
 import static com.example.bikewash.utility.Constants.RUNNING_NUMBER1;
 import static com.example.bikewash.utility.Constants.SHOW;
 import static com.example.bikewash.utility.Constants.UID;
+import static com.example.bikewash.utility.Constants.USER;
 import static com.example.bikewash.utility.Constants.VEHICLE_MODEL;
 import static com.example.bikewash.utility.Constants.VEHICLE_TYPE;
+import static com.example.bikewash.utility.Constants.VEHICLE_WASHER;
 import static com.example.bikewash.utility.Constants.WASHING;
 import static com.example.bikewash.utility.Constants.WASHING_STATUS;
-public class DashboardActivity extends BaseActivity implements DashboardAdapter.GetBack, ShowInternetDialog {
+import static com.example.bikewash.utility.NotificationChl.CHANNEL_1;
+public class DashboardActivity extends BaseActivity implements View.OnClickListener, DashboardAdapter.GetBack, ShowInternetDialog {
 
-    private TextView vehicleDetails, vehicleModel, vehicleType, runningNumber;
+    private TextView vehicleDetails, logout, vehicleModel, vehicleType, runningNumber;
     private RecyclerView dashboardRecycler;
-    private final List<DashboardModel> list = new ArrayList<>();
-    private String vehicleModelNum, vehicleTyp, washingNum;
+    private String vehicleModelNum, vehicleTyp, reachTime, washingNum;
     private boolean matchUID;
-    private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
     private int isWashing = 0;
+    private String washerKeySP;
+    private String keyValue;
+    private int pendingPosition = -1;
+    //We are storing all data in List<DashboardModel>
+    private final List<DashboardModel> dashboardModelList = new ArrayList<>();
+    //We are storing all keys in the List<UserKeyModel>
+    private final List<UserKeyModel> userKeyModel = new ArrayList<>();
+    private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver
+            = new ConnectivityReceiver( this );
     private static final String TAG = "DashboardActivity";
 
     @Override
@@ -67,11 +81,26 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
 
     private void findView() {
         vehicleDetails = findViewById( R.id.vehicleDetails );
+        logout = findViewById( R.id.logout );
         vehicleModel = findViewById( R.id.vehicleModel );
         vehicleType = findViewById( R.id.vehicleType );
         runningNumber = findViewById( R.id.runningNumber );
         dashboardRecycler = findViewById( R.id.dashboardRecycler );
         dashboardRecycler.setHasFixedSize( true );
+        logout.setOnClickListener( this );
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == logout) {
+            FirebaseAuth.getInstance().signOut();
+            SharePreference.removeUidKeyRunning( this );
+            SharePreference.removeWasherKeyUserExit( this );
+            Intent intent = new Intent( DashboardActivity.this, LoginActivity.class );
+            intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
+            startActivity( intent );
+            finish();
+        }
     }
 
     private void setDataToRecyclerview() {
@@ -81,37 +110,41 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 commonProgressbar( false, true );
-                list.clear();
+                dashboardModelList.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     DashboardModel dashboardModel = ds.getValue( DashboardModel.class );
-                    list.add( dashboardModel );
-                    if (Objects.equals( ds.child( UID ).getValue(),
-                                        SharePreference.getUID( DashboardActivity.this ) )) {
+                    dashboardModelList.add( dashboardModel );
+                    UserKeyModel userKeyMod = ds.getValue( UserKeyModel.class );
+                    keyValue = ds.getKey();
+                    Objects.requireNonNull( userKeyMod ).setKey( keyValue );
+                    userKeyModel.add( userKeyMod );
+                    if (Objects.equals( ds.child( UID ).getValue(), SharePreference.getUID( DashboardActivity.this ) )) {
                         SessionManager.userKey = ds.getKey();
                         String phoneUID = SharePreference.getUID( DashboardActivity.this );
                         String userUId = Objects.requireNonNull( ds.child( UID ).getValue() ).toString();
-                        matchUID = phoneUID != null && !phoneUID.equalsIgnoreCase( "" ) 
+                        matchUID = phoneUID != null && !phoneUID.equalsIgnoreCase( "" )
                                    && !userUId.equalsIgnoreCase( "" );
                     }
                 }
-                
                 //We are using break inside below for loop that's we didn't put below code in above for loop
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    if (Objects.equals( ds.child( WASHING_STATUS ).getValue(), WASHING )){
-                            vehicleModelNum = Objects.requireNonNull( ds.child( VEHICLE_MODEL ).getValue() ).toString();
-                            vehicleTyp = Objects.requireNonNull( ds.child( VEHICLE_TYPE ).getValue() ).toString();
-                            washingNum = Objects.requireNonNull( ds.child( RUNNING_NUMBER1 ).getValue() ).toString();
-                            isWashing++;
-                            String userTurn = "This is your turn to wash the vehicle";
-                            String currentVehicleDetail = "Current vehicle washing number is " + washingNum; 
-                            createNotification(userTurn, currentVehicleDetail);
-                        break;
-                    }else {
-                        isWashing = 0;
+                washerKeySP = SharePreference.getWasherKey( DashboardActivity.this );
+                if (!washerKeySP.equalsIgnoreCase( "" )) {
+                    //set pending data in blue part for washer man 
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (setDataToBluePart( ds, PENDING )) {
+                            pendingPosition++;
+                            break;
+                        }
+                        pendingPosition++;
+                    }
+                } else {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        if (setDataToBluePart( ds, WASHING )) {
+                            break;
+                        }
                     }
                 }
-                dashboardRecycler.setAdapter( new DashboardAdapter(
-                        DashboardActivity.this, list, DashboardActivity.this ) );
+                dashboardRecycler.setAdapter( new DashboardAdapter( DashboardActivity.this, dashboardModelList, DashboardActivity.this, userKeyModel, DashboardActivity.this ) );
                 setDataToUi();
             }
 
@@ -123,61 +156,111 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
         } );
     }
 
+    private boolean setDataToBluePart(DataSnapshot ds, String washingPending) {
+        if (Objects.equals( ds.child( WASHING_STATUS ).getValue(), washingPending )) {
+            //set washing data in blue part for user
+            vehicleModelNum = Objects.requireNonNull( ds.child( VEHICLE_MODEL ).getValue() ).toString();
+            vehicleTyp = Objects.requireNonNull( ds.child( VEHICLE_TYPE ).getValue() ).toString();
+            reachTime = Objects.requireNonNull( ds.child( REACH_TIME ).getValue() ).toString();
+            washingNum = Objects.requireNonNull( ds.child( RUNNING_NUMBER1 ).getValue() ).toString();
+            isWashing++;
+            if (washingPending.equalsIgnoreCase( WASHING )) {
+                String userTurn = "This is your turn to wash the vehicle";
+                String currentVehicleDetail = "Current vehicle washing number is " + washingNum;
+                createNotification( userTurn, currentVehicleDetail );
+            }
+            return true;
+        } else {
+            isWashing = 0;
+        }
+        return false;
+    }
+
     private void setDataToUi() {
         commonProgressbar( true, false );
         String ifRunningNumber = SharePreference.getRunningNumber( this );
         if (ifRunningNumber != null && !ifRunningNumber.equalsIgnoreCase( "" )) {
-            if (list.size() != 0) {
-                //Below two line for auto scroll(to reach on this user's card view instantly)
-                int getPosition = list.size() - Integer.parseInt( ifRunningNumber );
-                dashboardRecycler.scrollToPosition( list.size() - (getPosition + 1) );
-                if (isWashing > 0) {
-                    vehicleDetails.setText( R.string.current_vehicle_details );
-                    vehicleModel.setVisibility( View.VISIBLE );
-                    vehicleType.setVisibility( View.VISIBLE );
-                    runningNumber.setVisibility( View.VISIBLE );
-                    if (matchUID) {
-                        if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
-                            vehicleModel.setText( vehicleModelNum );
-                        }else {
-                            vehicleModel.setText( R.string.xxx_xxx_xxx);
-                        }
-                    }else {
-                        vehicleModel.setText( R.string.model_number );
+            scrollToPosition( ifRunningNumber , USER);
+        }else {
+            if (pendingPosition<dashboardModelList.size()) {
+                scrollToPosition( String.valueOf( pendingPosition ), VEHICLE_WASHER );
+            }else {
+                scrollToPosition( String.valueOf( 0 ), VEHICLE_WASHER );
+            }
+            Log.d( TAG, "setDataToUi: " + pendingPosition );
+        }
+        if (dashboardModelList.size() != 0) {
+            if (isWashing > 0) {
+                vehicleDetails.setVisibility( View.VISIBLE );
+                vehicleDetails.setText( R.string.current_vehicle_washing_details );
+                vehicleModel.setVisibility( View.VISIBLE );
+                vehicleType.setVisibility( View.VISIBLE );
+                runningNumber.setVisibility( View.VISIBLE );
+                if (matchUID) {
+                    if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
+                        vehicleModel.setText( vehicleModelNum );
+                    } else {
+                        vehicleModel.setText( R.string.xxx_xxx_xxx );
                     }
-                    if (vehicleTyp != null && !vehicleTyp.equalsIgnoreCase( "" )) {
-                        String reachMin = vehicleTyp;
-                        vehicleType.setText( reachMin );
-                    }else {
-                        vehicleType.setText( R.string.vehicle );
-                    }
-                    if (washingNum != null && !washingNum.equalsIgnoreCase( "" )) {
-                        if (washingNum.length() == 1) {
-                            String washingNumWithZero = "0" + washingNum;
-                            runningNumber.setText( washingNumWithZero );
-                        } else {
-                            runningNumber.setText( washingNum );
-                        }
-                    }else {
-                        runningNumber.setText( R.string._00 );
+                } else if (washerKeySP != null && !washerKeySP.equalsIgnoreCase( "" )) {
+                    vehicleModel.setText( vehicleModelNum );
+                } else {
+                    vehicleModel.setText( R.string.model_number );
+                }
+                if (vehicleTyp != null && !vehicleTyp.equalsIgnoreCase( "" )) {
+                    String typeModel = reachTime + " min " + vehicleTyp;
+                    vehicleType.setText( typeModel );
+                } else {
+                    vehicleType.setText( R.string.vehicle );
+                }
+                if (washingNum != null && !washingNum.equalsIgnoreCase( "" )) {
+                    if (washingNum.length() == 1) {
+                        String washingNumWithZero = "0" + washingNum;
+                        runningNumber.setText( washingNumWithZero );
+                    } else {
+                        runningNumber.setText( washingNum );
                     }
                 } else {
-                    vehicleDetails.setText( R.string.there_is_no_vehicle_to_wash );
-                    vehicleModel.setVisibility( View.INVISIBLE );
-                    vehicleType.setVisibility( View.INVISIBLE );
-                    runningNumber.setVisibility( View.INVISIBLE );
+                    runningNumber.setText( R.string._00 );
                 }
-
             } else {
-                showSnackBar( "Data not found", Snackbar.LENGTH_SHORT );
+                vehicleDetails.setText( R.string.vehicle_is_not_washing );
+                vehicleModel.setVisibility( View.INVISIBLE );
+                vehicleType.setVisibility( View.INVISIBLE );
+                runningNumber.setVisibility( View.INVISIBLE );
             }
-            commonProgressbar( false, true );
+        } else {
+            showSnackBar( "Data not found", Snackbar.LENGTH_SHORT );
+            vehicleDetails.setVisibility( View.GONE );
+            vehicleModel.setVisibility( View.GONE );
+            vehicleType.setVisibility( View.GONE );
+            runningNumber.setVisibility( View.GONE );
+            
+        }
+        commonProgressbar( false, true );
+    }
 
+    private void scrollToPosition(String ifRunningNumber, String userWasher) {
+        if (dashboardModelList.size() != 0) {
+            //Below two line for auto scroll(to reach on this user's card view instantly)
+            int getPosition = dashboardModelList.size() - Integer.parseInt( ifRunningNumber );
+            if (userWasher.equalsIgnoreCase( USER )){
+                dashboardRecycler.scrollToPosition( dashboardModelList.size() - (getPosition + 1) );
+            }else {
+                dashboardRecycler.scrollToPosition( dashboardModelList.size() - (getPosition ) );
+            }
+            Log.d( TAG, "scrollToPosition: " + getPosition );
+        } else {
+            showSnackBar( "Data not found", Snackbar.LENGTH_SHORT );
+            vehicleDetails.setVisibility( View.GONE );
+            vehicleModel.setVisibility( View.GONE );
+            vehicleType.setVisibility( View.GONE );
+            runningNumber.setVisibility( View.GONE );
         }
     }
 
-    @Override
-    public void Back(int back) {
+    @Override       
+    public void BackFromAdapter(int back) {
         if (back == GET_BACK) {
             Toast.makeText( DashboardActivity.this,
                             "Thanks to choose our service!", Toast.LENGTH_SHORT ).show();
@@ -185,24 +268,26 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
             SharePreference.removeUidKeyRunning( this );
             startActivity( intent );
             finish();
+        }else if (back == REFRESH_LAYOUT){
+            pendingPosition = -1;
         }
     }
-    
-    private void createNotification(String currentUser, String currentVehicle){
-        Intent activityIntent = new Intent(DashboardActivity.this, DashboardActivity.class);
+
+    private void createNotification(String currentUser, String currentVehicle) {
+        Intent activityIntent = new Intent( DashboardActivity.this, DashboardActivity.class );
         PendingIntent contentIntent = PendingIntent.getActivity( DashboardActivity.this, 0, activityIntent, 0 );
         NotificationManagerCompat nmc = NotificationManagerCompat.from( DashboardActivity.this );
-        Notification notification = new NotificationCompat.Builder(DashboardActivity.this, CHANNEL_1)
+        Notification notification = new NotificationCompat.Builder( DashboardActivity.this, CHANNEL_1 )
                 .setSmallIcon( R.mipmap.ic_launcher )
                 .setContentTitle( currentUser )
                 .setContentText( currentVehicle )
-                .setPriority( Notification.PRIORITY_HIGH)
+                .setPriority( Notification.PRIORITY_HIGH )
                 .setCategory( Notification.CATEGORY_MESSAGE )
-                .setColor( getResources().getColor( R.color.dark_sky_blue  ))
+                .setColor( getResources().getColor( R.color.dark_sky_blue ) )
                 .setContentIntent( contentIntent )
                 .setAutoCancel( true )
                 .build();
-        nmc.notify(1, notification);
+        nmc.notify( 1, notification );
     }
 
     @Override
@@ -237,11 +322,3 @@ public class DashboardActivity extends BaseActivity implements DashboardAdapter.
 
     }
 }
-
-
-
-
-
-
-
-

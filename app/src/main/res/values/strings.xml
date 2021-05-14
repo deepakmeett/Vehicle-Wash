@@ -24,8 +24,8 @@
     <string name="submit">Submit</string>
     <string name="image_desc">Image description</string>
     <string name="rupees_symbol">&#x20B9;</string>
-    <string name="current_vehicle_details">Current vehicle details___</string>
-    <string name="there_is_no_vehicle_to_wash">There is no vehicle to wash___</string>
+    <string name="current_vehicle_washing_details">Vehicle washing details___</string>
+    <string name="vehicle_is_not_washing">Vehicle is not washing___</string>
     <string name="_00_min">00 Min</string>
     <string name="_00">00</string>
     <string name="vehicle_washing">Vehicle washing</string>
@@ -43,4 +43,5 @@
     <string name="vehicle">Vehicle</string>
     <string name="xxx_xxx_xxx">XXX XXX XXX</string>
     <string name="internet_connection_lost">Internet Connection Lost</string>
+    <string name="logout">Logout</string>
 </resources>

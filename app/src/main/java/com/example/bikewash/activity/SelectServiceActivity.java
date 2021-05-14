@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -48,6 +49,7 @@ import static com.example.bikewash.utility.Constants.VEHICLE_TYPE;
 import static com.example.bikewash.utility.Constants.WASHING_STATUS;
 public class SelectServiceActivity extends BaseActivity implements View.OnClickListener, ShowInternetDialog {
 
+    private TextView logout;
     private CardView bikeCard, carCard, tempoCard, tractorCard, truckCard, autoCard, otherCard;
     private CheckBox bikeCheckBox, carCheckBox, tempoCheckBox, tractorCheckBox, truckCheckBox,
             autoCheckBox, otherCheckBox;
@@ -76,6 +78,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
     }
 
     private void findView() {
+        logout = findViewById( R.id.logout );
         bikeCard = findViewById( R.id.bikeCard );
         bikeCheckBox = findViewById( R.id.bikeCheckBox );
         carCard = findViewById( R.id.carCard );
@@ -93,6 +96,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         vehicleModel = findViewById( R.id.vehicleModel );
         timeToReach = findViewById( R.id.timeToReach );
         submitButton = findViewById( R.id.submitButton );
+        logout.setOnClickListener( this );
         bikeCard.setOnClickListener( this );
         carCard.setOnClickListener( this );
         tempoCard.setOnClickListener( this );
@@ -111,7 +115,15 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v == bikeCard) {
+        if (v == logout){
+            FirebaseAuth.getInstance().signOut();
+            SharePreference.removeUidKeyRunning( this );
+            SharePreference.removeWasherKeyUserExit( this );
+            Intent intent = new Intent( SelectServiceActivity.this, LoginActivity.class );
+            intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
+            startActivity( intent );
+            finish();
+        }else if (v == bikeCard) {
             checkBoxChecked( true, false, false, false, false, false, false );
             serviceSelectedIs = BIKE_SERVICE;
             vehicleModel.setText( "" );
@@ -140,14 +152,11 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
             serviceSelectedIs = OTHER_SERVICE;
             vehicleModel.setText( "" );
         } else if (v == submitButton) {
-            String reachingTime = timeToReach.getText().toString();
-            String vehicleModelData = vehicleModel.getText().toString();
+            String reachingTime = timeToReach.getText().toString().trim();
+            String vehicleModelData = vehicleModel.getText().toString().trim();
             if (vehicleModelData.equalsIgnoreCase( "" )) {
                 vehicleModel.setError( "Please provide vehicle name" );
-            }else if (vehicleModelData.length() < 10){
-                vehicleModel.setError( "Please provide valid vehicle name" );
-            }
-            else if (reachingTime.equalsIgnoreCase( "" )) {
+            } else if (reachingTime.equalsIgnoreCase( "" )) {
                 timeToReach.setError( "Please provide time to reach at service station" );
             } else {
                 hideSoftKeyboard( this );

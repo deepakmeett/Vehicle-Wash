@@ -66,8 +66,8 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v == registerBtn) {
-            email = Objects.requireNonNull( registerEmail.getText() ).toString();
-            password = Objects.requireNonNull( registerPass.getText() ).toString();
+            email = Objects.requireNonNull( registerEmail.getText() ).toString().trim();
+            password = Objects.requireNonNull( registerPass.getText() ).toString().trim();
             if (isValidEmail( email )) {
                 registerEmailTL.setError( ENTER_VALID_EMAIL_ADDRESS );
                 registerEmailTL.requestFocus();
@@ -80,6 +80,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
             }
         } else if (v == backToLogin) {
             onBackPressed();
+            hideSoftKeyboard( this );
         }
     }
 

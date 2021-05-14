@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.fragment.app.FragmentTransaction;
 
@@ -16,6 +15,7 @@ import com.example.bikewash.utility.ConnectivityReceiver;
 import com.example.bikewash.utility.SessionManager;
 import com.example.bikewash.utility.SharePreference;
 import com.example.bikewash.utility.ShowInternetDialog;
+import com.google.android.material.snackbar.Snackbar;
 
 import static com.example.bikewash.utility.Constants.NOT_SHOW;
 import static com.example.bikewash.utility.Constants.SHOW;
@@ -25,20 +25,25 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
     private Button userButton, vehicleWasherButton;
     private EditText washerKeyEditText;
     private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
+    private static final String SELECT_SERVICE = "SelectServiceActivity";
+    private static final String DASHBOARD = "DashboardActivity";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_user_or_washer );
-        checkUserExist();
+        checkUserOrWasher();
         findView();
     }
 
-    private void checkUserExist() {
-        String ifUserExist = SharePreference.getUserData( this );
+    private void checkUserOrWasher() {
+        String ifUserExist = SharePreference.getUserExit( this );
+        String washerKey = SharePreference.getWasherKey( this );
         if (ifUserExist != null && !ifUserExist.equalsIgnoreCase( "" )){
-            goToSelectService();
+            goToSelectService(SELECT_SERVICE);
+        }if (washerKey != null && !washerKey.equalsIgnoreCase( "" )){
+            goToSelectService(DASHBOARD);
         }
     }
 
@@ -53,22 +58,35 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v == userButton){
-            SharePreference.setUserData( this, USER_EXIST );
-            goToSelectService();
+            SharePreference.removeWasherKeyUserExit( this );
+            SharePreference.setUserExit( this, USER_EXIST );
+            goToSelectService(SELECT_SERVICE);
         } else if (v == vehicleWasherButton){
-            String key = washerKeyEditText.getText().toString();
+            String key = washerKeyEditText.getText().toString().trim();
             if (key.equalsIgnoreCase( "" )){
                 washerKeyEditText.setError( "Please provide vehicle washer key" );
             }else {
+                SharePreference.setWasherKey( this, "76@SevenSix" );
+                String keySharePreference = SharePreference.getWasherKey( this );
+                if (keySharePreference != null && !keySharePreference.equalsIgnoreCase( "" )){
+                    if (key.equalsIgnoreCase( keySharePreference )){
+                        goToSelectService(DASHBOARD);
+                    }else {
+                        showSnackBar( "Key not matched", Snackbar.LENGTH_SHORT );
+                    }
+                }
                 hideSoftKeyboard( this );
-                Toast.makeText( this, "Goto VehicleWasherProfileUpdate Page", Toast.LENGTH_SHORT ).show();
-                //Goto VehicleWasherProfileUpdate Page
             }
         }
     }
 
-    private void goToSelectService() {
-        Intent intent = new Intent( UserOrWasherActivity.this, SelectServiceActivity.class);
+    private void goToSelectService(String whichActivity) {
+        Intent intent;
+        if (whichActivity.equalsIgnoreCase( SELECT_SERVICE )){
+            intent = new Intent( UserOrWasherActivity.this, SelectServiceActivity.class);
+        }else {
+            intent = new Intent( UserOrWasherActivity.this, DashboardActivity.class);
+        }
         startActivity( intent );
         finish();
     }
