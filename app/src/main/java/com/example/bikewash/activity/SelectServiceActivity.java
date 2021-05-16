@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -22,6 +23,7 @@ import com.example.bikewash.utility.ConnectivityReceiver;
 import com.example.bikewash.utility.SessionManager;
 import com.example.bikewash.utility.SharePreference;
 import com.example.bikewash.utility.ShowInternetDialog;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +39,7 @@ import static com.example.bikewash.utility.Constants.AUTO_SERVICE;
 import static com.example.bikewash.utility.Constants.BIKE_SERVICE;
 import static com.example.bikewash.utility.Constants.CAR_SERVICE;
 import static com.example.bikewash.utility.Constants.FEEDBACK;
+import static com.example.bikewash.utility.Constants.FEEDBACK_RESULT;
 import static com.example.bikewash.utility.Constants.LOGOUT;
 import static com.example.bikewash.utility.Constants.NOT_COMPLETED;
 import static com.example.bikewash.utility.Constants.NOT_SHOW;
@@ -51,6 +54,7 @@ import static com.example.bikewash.utility.Constants.TEMPO_SERVICE;
 import static com.example.bikewash.utility.Constants.TRACTOR_SERVICE;
 import static com.example.bikewash.utility.Constants.TRUCK_SERVICE;
 import static com.example.bikewash.utility.Constants.UID;
+import static com.example.bikewash.utility.Constants.USER_KEY;
 import static com.example.bikewash.utility.Constants.VEHICLE_MODEL;
 import static com.example.bikewash.utility.Constants.VEHICLE_TYPE;
 import static com.example.bikewash.utility.Constants.WASHING_STATUS;
@@ -210,6 +214,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                 hashMap.put( UID, uid );
                 hashMap.put( WASHING_STATUS, PENDING );
                 hashMap.put( RUNNING_NUMBER1, String.valueOf( size + 1 ) );
+                hashMap.put( FEEDBACK, "" );
                 dr.push().setValue( hashMap ).addOnCompleteListener( task -> {
                     commonProgressbar( false, true );
                     if (task.isSuccessful()) {
@@ -235,7 +240,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
-    public void showInternetLostDialog(String showOrNot) {
+    public void showInternetLostFragment(String showOrNot) {
         if (showOrNot != null && !showOrNot.equalsIgnoreCase( "" )) {
             if (showOrNot.equalsIgnoreCase( SHOW )) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -276,10 +281,25 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
             } else if (action.equalsIgnoreCase( LOGOUT )) {
                 logout( SelectServiceActivity.this );
             } else if (action.equalsIgnoreCase( FEEDBACK )) {
-                Toast.makeText( this, "FEEDBACK", Toast.LENGTH_SHORT ).show();
+                Intent intent = new Intent(SelectServiceActivity.this, FeedbackActivity.class);
+                startActivityForResult( intent, FEEDBACK_RESULT );
             } else if (action.equalsIgnoreCase( NOT_COMPLETED )) {
                 Toast.makeText( this, "NOT_COMPLETED", Toast.LENGTH_SHORT ).show();
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult( requestCode, resultCode, data );
+        try {
+            super.onActivityResult( requestCode, resultCode, data );
+            Log.d( TAG, "onActivityResult: " + resultCode + " " +  requestCode);
+            if (requestCode == resultCode){
+                showSnackBar( "Thanks! We value your time", Snackbar.LENGTH_LONG );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

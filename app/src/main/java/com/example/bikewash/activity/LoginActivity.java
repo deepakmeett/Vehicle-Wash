@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
@@ -198,7 +199,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     @Override
-    public void showInternetLostDialog(String showOrNot) {
+    public void showInternetLostFragment(String showOrNot) {
         if (showOrNot != null && !showOrNot.equalsIgnoreCase( "" )) {
             if (showOrNot.equalsIgnoreCase( SHOW )) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

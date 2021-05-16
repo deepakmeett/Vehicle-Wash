@@ -74,6 +74,8 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
             } else if (password.isEmpty() && password.equalsIgnoreCase( "" )) {
                 registerPasswordTL.setError( ENTER_VALID_PASSWORD );
                 registerPasswordTL.requestFocus();
+            } else if (!PASSWORD_PATTERN.matcher( password).matches()) {
+                showSnackBar( "Password length should be minimum 6 and maximum 10", Snackbar.LENGTH_SHORT );
             } else {
                 hideSoftKeyboard( this );
                 registerUser();
@@ -105,7 +107,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    public void showInternetLostDialog(String showOrNot) {
+    public void showInternetLostFragment(String showOrNot) {
         if (showOrNot != null && !showOrNot.equalsIgnoreCase( "" )) {
             if (showOrNot.equalsIgnoreCase( SHOW )) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

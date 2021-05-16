@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
@@ -23,7 +24,7 @@ import static com.example.bikewash.utility.Constants.SHOW;
 import static com.example.bikewash.utility.Constants.USER_EXIST;
 public class UserOrWasherActivity extends BaseActivity implements View.OnClickListener, ShowInternetDialog {
 
-    private TextView logout;
+    private ImageView logout;
     private Button userButton, vehicleWasherButton;
     private EditText washerKeyEditText;
     private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
@@ -98,7 +99,7 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    public void showInternetLostDialog(String showOrNot) {
+    public void showInternetLostFragment(String showOrNot) {
         if (showOrNot != null && !showOrNot.equalsIgnoreCase( "" )) {
             if (showOrNot.equalsIgnoreCase( SHOW )) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

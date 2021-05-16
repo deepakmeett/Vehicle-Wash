@@ -6,9 +6,9 @@
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-<!--        <item name="colorSecondary">@color/teal_200</item>-->
-<!--        <item name="colorSecondaryVariant">@color/teal_700</item>-->
-<!--        <item name="colorOnSecondary">@color/black</item>-->
+        <!--        <item name="colorSecondary">@color/teal_200</item>-->
+        <!--        <item name="colorSecondaryVariant">@color/teal_700</item>-->
+        <!--        <item name="colorOnSecondary">@color/black</item>-->
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
@@ -28,7 +28,19 @@
         <item name="android:textSize">@dimen/_13sdp</item>
         <item name="android:theme">@style/accentColorStyle</item>
     </style>
-    
+
+    //**********View middle divider**********
+    <style name="DividerHint">
+        <item name="android:background">@color/hintTxt</item>
+    </style>
+
+    <style name="centerDivider" parent="DividerHint">
+        <item name="android:layout_width">@dimen/_50sdp</item>
+        <item name="android:layout_height">@dimen/_2sdp</item>
+        <item name="android:layout_marginTop">@dimen/_10sdp</item>
+    </style>
+    //**********View middle divider**********
+
     <style name="buttonStyle" parent="@android:style/Widget.Button.Small">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/_36sdp</item>
@@ -41,4 +53,18 @@
     <style name="progressDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/dark_sky_blue</item>
     </style>
+    
+    //**********BottomSheetDialogFragment Background transparent**********
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+    //**********BottomSheetDialogFragment Background transparent**********
+    
 </resources>

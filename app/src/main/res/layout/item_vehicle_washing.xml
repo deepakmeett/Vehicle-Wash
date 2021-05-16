@@ -115,7 +115,7 @@
                 android:layout_alignStart="@id/vehicleType"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:background="@drawable/round_blue"
+                android:background="@drawable/round_blue_btn"
                 android:gravity="center"
                 android:text="@string/completed"
                 android:textAllCaps="false"

@@ -53,6 +53,7 @@ import static com.example.bikewash.utility.Constants.SHARE;
 import static com.example.bikewash.utility.Constants.SHOW;
 import static com.example.bikewash.utility.Constants.UID;
 import static com.example.bikewash.utility.Constants.USER;
+import static com.example.bikewash.utility.Constants.USER_KEY;
 import static com.example.bikewash.utility.Constants.VEHICLE_MODEL;
 import static com.example.bikewash.utility.Constants.VEHICLE_TYPE;
 import static com.example.bikewash.utility.Constants.VEHICLE_WASHER;
@@ -65,7 +66,6 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     private TextView vehicleDetails, vehicleModel, vehicleType, runningNumber;
     private RecyclerView dashboardRecycler;
     private String vehicleModelNum, vehicleTyp, reachTime, washingNum;
-    private MoreItemsBottomSheet moreItemsBottomSheet;
     private boolean matchUID;
     private int isWashing = 0;
     private String washerKeySP;
@@ -101,7 +101,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v == moreOptions) {
-            moreItemsBottomSheet = new MoreItemsBottomSheet( this );
+            MoreItemsBottomSheet moreItemsBottomSheet = new MoreItemsBottomSheet( this );
             moreItemsBottomSheet.show( getSupportFragmentManager(), "MoreOptions" );
         }
     }
@@ -265,8 +265,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     @Override       
     public void BackFromAdapter(int back) {
         if (back == GET_BACK) {
-            Toast.makeText( DashboardActivity.this,
-                            "Thanks to choose our service!", Toast.LENGTH_SHORT ).show();
+            showSnackBar( "Thanks to choose our service!", Snackbar.LENGTH_LONG );
             Intent intent = new Intent( DashboardActivity.this, SelectServiceActivity.class );
             SharePreference.removeUidKeyRunning( this );
             startActivity( intent );
@@ -294,7 +293,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
-    public void showInternetLostDialog(String showOrNot) {
+    public void showInternetLostFragment(String showOrNot) {
         if (showOrNot != null && !showOrNot.equalsIgnoreCase( "" )) {
             if (showOrNot.equalsIgnoreCase( SHOW )) {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -335,10 +334,15 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             } else if (action.equalsIgnoreCase( LOGOUT )) {
                 logout( DashboardActivity.this );
             } else if (action.equalsIgnoreCase( FEEDBACK )) {
-                Toast.makeText( this, "FEEDBACK", Toast.LENGTH_SHORT ).show();
+                goToFeedbackPage();
             } else if (action.equalsIgnoreCase( NOT_COMPLETED )) {
                 Toast.makeText( this, "NOT_COMPLETED", Toast.LENGTH_SHORT ).show();
             }
         }
+    }
+
+    private void goToFeedbackPage() {
+        Intent intent = new Intent( DashboardActivity.this, FeedbackActivity.class);
+        startActivity( intent );
     }
 }

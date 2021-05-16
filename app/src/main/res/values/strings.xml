@@ -49,4 +49,5 @@
     <string name="review">Review</string>
     <string name="feedback_and_suggestion">Feedback and suggestion</string>
     <string name="not_completed_list">Not completed vehicle list</string>
+    <string name="please_type_feedback_or_suggestion">Please type feedback or suggestion…</string>
 </resources>

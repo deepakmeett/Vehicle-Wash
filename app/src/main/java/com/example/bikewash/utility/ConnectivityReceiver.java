@@ -35,9 +35,9 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 //                Toast.makeText( context, "Internet Available", Toast.LENGTH_SHORT ).show();
                 Log.e( TAG, "checkConnection: " + "Internet Available" );
             }
-            showInternetDialog.showInternetLostDialog( NOT_SHOW );
+            showInternetDialog.showInternetLostFragment( NOT_SHOW );
         } else {
-            showInternetDialog.showInternetLostDialog( SHOW );
+            showInternetDialog.showInternetLostFragment( SHOW );
         }
     }
 }
