@@ -53,7 +53,6 @@ import static com.example.bikewash.utility.Constants.SHARE;
 import static com.example.bikewash.utility.Constants.SHOW;
 import static com.example.bikewash.utility.Constants.UID;
 import static com.example.bikewash.utility.Constants.USER;
-import static com.example.bikewash.utility.Constants.USER_KEY;
 import static com.example.bikewash.utility.Constants.VEHICLE_MODEL;
 import static com.example.bikewash.utility.Constants.VEHICLE_TYPE;
 import static com.example.bikewash.utility.Constants.VEHICLE_WASHER;
@@ -195,7 +194,11 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         if (dashboardModelList.size() != 0) {
             if (isWashing > 0) {
                 vehicleDetails.setVisibility( View.VISIBLE );
-                vehicleDetails.setText( R.string.current_vehicle_washing_details );
+                if (washerKeySP != null && !washerKeySP.equalsIgnoreCase( "" )) {
+                    vehicleDetails.setText("Pending vehicle details");
+                }else {
+                    vehicleDetails.setText( R.string.vehicle_washing_details );
+                }
                 vehicleModel.setVisibility( View.VISIBLE );
                 vehicleType.setVisibility( View.VISIBLE );
                 runningNumber.setVisibility( View.VISIBLE );
@@ -227,7 +230,11 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                     runningNumber.setText( R.string._00 );
                 }
             } else {
-                vehicleDetails.setText( R.string.vehicle_is_not_washing );
+                if (washerKeySP != null && !washerKeySP.equalsIgnoreCase( "" )) {
+                    vehicleDetails.setText("No vehicle is pending");
+                }else {
+                    vehicleDetails.setText( R.string.vehicle_is_not_washing );
+                }
                 vehicleModel.setVisibility( View.INVISIBLE );
                 vehicleType.setVisibility( View.INVISIBLE );
                 runningNumber.setVisibility( View.INVISIBLE );

@@ -13,7 +13,6 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/blueBgRL"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -29,7 +28,7 @@
                 android:layout_toStartOf="@id/moreOptions"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@string/current_vehicle_washing_details"
+                android:text="@string/vehicle_washing_details"
                 android:textColor="@color/white"
                 android:textSize="20sp"/>
 
@@ -84,7 +83,6 @@
                 android:textSize="150sp"/>
 
             <ImageView
-                android:id="@+id/boy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

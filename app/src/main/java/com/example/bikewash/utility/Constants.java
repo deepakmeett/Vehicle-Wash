@@ -40,6 +40,7 @@ public class Constants {
     //DashboardAdapter
     public static final String PENDING = "PENDING";
     public static final String WASHING = "WASHING";
+    public static final String ABSENT = "ABSENT";
     public static final String COMPLETED = "COMPLETED";
     
     //Internet connection lost

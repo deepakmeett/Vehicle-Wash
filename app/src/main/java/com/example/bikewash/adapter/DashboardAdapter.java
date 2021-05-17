@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
+import static com.example.bikewash.utility.Constants.ABSENT;
 import static com.example.bikewash.utility.Constants.ALL;
 import static com.example.bikewash.utility.Constants.COMPLETED;
 import static com.example.bikewash.utility.Constants.GET_BACK;
@@ -44,7 +46,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     private final GetBack getBack;
     private final BaseActivity baseActivity;
 
-
     public DashboardAdapter(Context context, List<DashboardModel> list, GetBack GetBack, List<UserKeyModel> userKeyModels, BaseActivity baseActivity) {
         this.context = context;
         this.list = list;
@@ -64,7 +65,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DashboardModel model = list.get( position );
         UserKeyModel keyList = userKeyModelList.get( position );
+        
         String vehicleType = model.getVehicle_type();
+        String vehicleModelNum = model.getVehicle_model();
+        String reachTiming = model.getReach_time();
+        String washingNum = model.getRunning_number();
+        String washing_status = model.getWashing_status();
+        String washerKey = SharePreference.getWasherKey( context );
+        String phoneUID = SharePreference.getUID( context );
+        String userUId = model.getUid();
+        final boolean matchUID = phoneUID != null && !phoneUID.equalsIgnoreCase( "" )
+                                 && userUId != null && !userUId.equalsIgnoreCase( "" );
+
         if (vehicleType != null && !vehicleType.equalsIgnoreCase( "" )) {
             if (vehicleType.equalsIgnoreCase( "bike" )) {
                 Glide.with( context ).load( R.drawable.ic_bike ).into( holder.vehicleImage );
@@ -82,19 +94,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 Glide.with( context ).load( R.drawable.ic_other ).into( holder.vehicleImage );
             }
         }
-        String phoneUID = SharePreference.getUID( context );
-        String userUId = model.getUid();
-        final boolean matchUID = phoneUID != null && !phoneUID.equalsIgnoreCase( "" )
-                                 && userUId != null && !userUId.equalsIgnoreCase( "" );
-        String vehicleModelNum = model.getVehicle_model();
-        String washerKey = SharePreference.getWasherKey( context );
         if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
             holder.vehicleModel.setText( vehicleModelNum );
             if (matchUID) {
                 if (phoneUID.equalsIgnoreCase( userUId )) {
                     holder.vehicleModel.setText( vehicleModelNum );
                 }
-            }else  if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
+            } else if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
                 holder.vehicleModel.setText( vehicleModelNum );
             } else {
                 holder.vehicleModel.setText( R.string.xxx_xxx_xxx );
@@ -102,14 +108,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         } else {
             holder.vehicleModel.setText( R.string.vehicle_model_no_ );
         }
-        String reachTiming = model.getReach_time();
         if (reachTiming != null && !reachTiming.equalsIgnoreCase( "" )) {
             String reachMin = "Reach time : " + reachTiming + " min";
             holder.reachTime.setText( reachMin );
         } else {
             holder.reachTime.setText( R.string.reach_time_00_min );
         }
-        String washingNum = model.getRunning_number();
         if (washingNum != null && !washingNum.equalsIgnoreCase( "" )) {
             if (washingNum.length() == 1) {
                 String washingNumWithZero = "0" + washingNum;
@@ -123,23 +127,58 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         String isWashing = model.getWashing_status();
         if (isWashing != null && isWashing.equalsIgnoreCase( WASHING )) {
             holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
-            holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.apricot ) );
+            holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.sun_glow ) );
             holder.labelText.setText( R.string.vehicle_washing );
         }
-        String washing_status = model.getWashing_status();
         if (washing_status != null && !washing_status.equalsIgnoreCase( "" )) {
             if (washing_status.equalsIgnoreCase( PENDING )) {
                 holder.doneButton.setEnabled( false );
                 holder.doneButton.setText( washing_status );
+                holder.doneButton.setBackground( context.getResources().getDrawable( R.drawable.round_yellow_btn ) );
+
             } else if (washing_status.equalsIgnoreCase( WASHING )) {
                 holder.doneButton.setText( washing_status );
-            } else if (washing_status.equalsIgnoreCase( COMPLETED )) {
+            } else if (washing_status.equalsIgnoreCase( ABSENT )) {
                 holder.doneButton.setText( washing_status );
+                holder.doneButton.setBackground( context.getResources().getDrawable( R.drawable.round_red_btn ) );
+            }
+            else if (washing_status.equalsIgnoreCase( COMPLETED )) {
+                holder.doneButton.setText( washing_status );
+                holder.doneButton.setBackground( context.getResources().getDrawable( R.drawable.round_green_btn ) );
+
             }
         }
-        
-        holder.doneButton.setOnClickListener( v -> {
+        if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
+            if (washing_status != null && washing_status.equalsIgnoreCase( PENDING )){
+                holder.cutImageView.setVisibility( View.VISIBLE );
+            }
+        }
+        if (matchUID) {
+            if (phoneUID.equalsIgnoreCase( userUId )) {
+                holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
+                holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.dragon_green ) );
+                holder.labelText.setText( R.string.your_vehicle );
+                holder.inactiveButtonsView.setVisibility( View.GONE );
+            }
+        } else if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
+            holder.doneButton.setEnabled( true );
+            holder.inactiveButtonsView.setVisibility( View.GONE );
+        } else {
+            holder.inactiveButtonsView.setVisibility( View.VISIBLE );
+        }
 
+        holder.cutImageView.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (washing_status != null && washing_status.equalsIgnoreCase( PENDING )) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference mDatabase = database.getReference();
+                    mDatabase.child( ALL ).child( keyList.getKey() ).child( WASHING_STATUS ).setValue( ABSENT );
+                    getBack.BackFromAdapter( REFRESH_LAYOUT );
+                }
+            }
+        } );
+        holder.doneButton.setOnClickListener( v -> {
             if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
                 if (washing_status != null) {
                     if (washing_status.equalsIgnoreCase( PENDING )) {
@@ -156,7 +195,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                         baseActivity.showSnackBar( "This vehicle is washed", Snackbar.LENGTH_SHORT );
                     }
                 }
-            }else {
+            } else {
                 if (washing_status != null) {
                     if (washing_status.equalsIgnoreCase( PENDING )) {
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -171,21 +210,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                     }
                 }
             }
-            
+
         } );
-        if (matchUID) {
-            if (phoneUID.equalsIgnoreCase( userUId )) {
-                holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
-                holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.dragon_green ) );
-                holder.labelText.setText( R.string.your_vehicle );
-                holder.inactiveButtonsView.setVisibility( View.GONE );
-            }
-        } else if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
-            holder.doneButton.setEnabled( true );
-            holder.inactiveButtonsView.setVisibility( View.GONE );
-        } else {
-            holder.inactiveButtonsView.setVisibility( View.VISIBLE );
-        }
     }
 
     @Override
@@ -200,7 +226,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         RelativeLayout vehicleWashingLabel;
-        ImageView vehicleImage, labelBg;
+        ImageView cutImageView, vehicleImage, labelBg;
         TextView labelText, runningNumber, vehicleModel, reachTime;
         Button doneButton;
         View inactiveButtonsView;
@@ -210,6 +236,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             vehicleWashingLabel = itemView.findViewById( R.id.vehicleWashingLabel );
             labelBg = itemView.findViewById( R.id.labelBg );
             labelText = itemView.findViewById( R.id.labelText );
+            cutImageView = itemView.findViewById( R.id.cutImageView );
             vehicleImage = itemView.findViewById( R.id.vehicleImage );
             runningNumber = itemView.findViewById( R.id.runningNumber );
             vehicleModel = itemView.findViewById( R.id.vehicleModel );
