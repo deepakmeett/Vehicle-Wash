@@ -76,7 +76,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         String userUId = model.getUid();
         final boolean matchUID = phoneUID != null && !phoneUID.equalsIgnoreCase( "" )
                                  && userUId != null && !userUId.equalsIgnoreCase( "" );
-
+        
         if (vehicleType != null && !vehicleType.equalsIgnoreCase( "" )) {
             if (vehicleType.equalsIgnoreCase( "bike" )) {
                 Glide.with( context ).load( R.drawable.ic_bike ).into( holder.vehicleImage );
@@ -94,17 +94,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 Glide.with( context ).load( R.drawable.ic_other ).into( holder.vehicleImage );
             }
         }
+        
         if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
-            holder.vehicleModel.setText( vehicleModelNum );
             if (matchUID) {
                 if (phoneUID.equalsIgnoreCase( userUId )) {
                     holder.vehicleModel.setText( vehicleModelNum );
+                }else {
+                    holder.vehicleModel.setText( R.string.xxx_xxx_xxx );
                 }
-            } else if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
-                holder.vehicleModel.setText( vehicleModelNum );
-            } else {
-                holder.vehicleModel.setText( R.string.xxx_xxx_xxx );
             }
+            if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
+                holder.vehicleModel.setText( vehicleModelNum );
+            } 
         } else {
             holder.vehicleModel.setText( R.string.vehicle_model_no_ );
         }
@@ -138,6 +139,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
             } else if (washing_status.equalsIgnoreCase( WASHING )) {
                 holder.doneButton.setText( washing_status );
+                holder.doneButton.setBackground( context.getResources().getDrawable( R.drawable.round_blue_btn ) );
+
             } else if (washing_status.equalsIgnoreCase( ABSENT )) {
                 holder.doneButton.setText( washing_status );
                 holder.doneButton.setBackground( context.getResources().getDrawable( R.drawable.round_red_btn ) );
@@ -197,16 +200,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 }
             } else {
                 if (washing_status != null) {
-                    if (washing_status.equalsIgnoreCase( PENDING )) {
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference mDatabase = database.getReference();
-                        mDatabase.child( ALL ).child( SessionManager.userKey ).child( WASHING_STATUS ).setValue( WASHING );
-                    } else if (washing_status.equalsIgnoreCase( WASHING )) {
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference mDatabase = database.getReference();
-                        mDatabase.child( ALL ).child( SessionManager.userKey ).child( WASHING_STATUS ).setValue( COMPLETED );
-                    } else if (washing_status.equalsIgnoreCase( COMPLETED )) {
-                        getBack.BackFromAdapter( GET_BACK );
+                    if (matchUID) {
+                        if (phoneUID.equalsIgnoreCase( userUId )) {
+                            if (washing_status.equalsIgnoreCase( PENDING )) {
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                DatabaseReference mDatabase = database.getReference();
+                                mDatabase.child( ALL ).child( SessionManager.userKey ).child( WASHING_STATUS ).setValue( WASHING );
+                            } else if (washing_status.equalsIgnoreCase( WASHING )) {
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                DatabaseReference mDatabase = database.getReference();
+                                mDatabase.child( ALL ).child( SessionManager.userKey ).child( WASHING_STATUS ).setValue( COMPLETED );
+                            } else if (washing_status.equalsIgnoreCase( COMPLETED )) {
+                                getBack.BackFromAdapter( GET_BACK );
+                            }
+                        }
                     }
                 }
             }

@@ -46,4 +46,6 @@
     <string name="feedback_and_suggestion">Feedback and suggestion</string>
     <string name="not_completed_list">Not completed vehicle list</string>
     <string name="please_type_feedback_or_suggestion">Please type feedback or suggestion…</string>
+    <string name="pending_vehicle_details">Pending vehicle details</string>
+    <string name="no_vehicle_is_pending">No vehicle is pending</string>
 </resources>

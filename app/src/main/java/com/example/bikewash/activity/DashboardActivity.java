@@ -1,9 +1,17 @@
 package com.example.bikewash.activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -58,17 +66,13 @@ import static com.example.bikewash.utility.Constants.VEHICLE_TYPE;
 import static com.example.bikewash.utility.Constants.VEHICLE_WASHER;
 import static com.example.bikewash.utility.Constants.WASHING;
 import static com.example.bikewash.utility.Constants.WASHING_STATUS;
-import static com.example.bikewash.utility.NotificationChl.CHANNEL_1;
 public class DashboardActivity extends BaseActivity implements View.OnClickListener, DashboardAdapter.GetBack, ShowInternetDialog, MoreItemsBottomSheet.MoreOptionBottom {
 
     private ImageView moreOptions;
     private TextView vehicleDetails, vehicleModel, vehicleType, runningNumber;
     private RecyclerView dashboardRecycler;
-    private String vehicleModelNum, vehicleTyp, reachTime, washingNum;
-    private boolean matchUID;
+    private String vehicleModelNum, vehicleTyp, reachTime, washingNum, userIdWashing, washerKeySP, keyValue, phoneUID;
     private int isWashing = 0;
-    private String washerKeySP;
-    private String keyValue;
     private int pendingPosition = -1;
     //We are storing all data in List<DashboardModel>
     private final List<DashboardModel> dashboardModelList = new ArrayList<>();
@@ -120,12 +124,9 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                     keyValue = ds.getKey();
                     Objects.requireNonNull( userKeyMod ).setKey( keyValue );
                     userKeyModel.add( userKeyMod );
-                    if (Objects.equals( ds.child( UID ).getValue(), SharePreference.getUID( DashboardActivity.this ) )) {
+                    phoneUID = SharePreference.getUID( DashboardActivity.this );
+                    if (Objects.equals( ds.child( UID ).getValue(), phoneUID )) {
                         SessionManager.userKey = ds.getKey();
-                        String phoneUID = SharePreference.getUID( DashboardActivity.this );
-                        String userUId = Objects.requireNonNull( ds.child( UID ).getValue() ).toString();
-                        matchUID = phoneUID != null && !phoneUID.equalsIgnoreCase( "" )
-                                   && !userUId.equalsIgnoreCase( "" );
                     }
                 }
                 //We are using break inside below for loop that's we didn't put below code in above for loop
@@ -165,11 +166,14 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             vehicleTyp = Objects.requireNonNull( ds.child( VEHICLE_TYPE ).getValue() ).toString();
             reachTime = Objects.requireNonNull( ds.child( REACH_TIME ).getValue() ).toString();
             washingNum = Objects.requireNonNull( ds.child( RUNNING_NUMBER1 ).getValue() ).toString();
+            userIdWashing = Objects.requireNonNull( ds.child( UID ).getValue() ).toString();
             isWashing++;
             if (washingPending.equalsIgnoreCase( WASHING )) {
-                String userTurn = "This is your turn to wash the vehicle";
-                String currentVehicleDetail = "Current vehicle washing number is " + washingNum;
-                createNotification( userTurn, currentVehicleDetail );
+                if (phoneUID.equalsIgnoreCase( userIdWashing )) {
+                    String userTurn = "This is your turn to wash the vehicle";
+                    String currentVehicleDetail = "Current vehicle washing number is " + washingNum;
+                    createNotification( userTurn, currentVehicleDetail );
+                }
             }
             return true;
         } else {
@@ -182,11 +186,11 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         commonProgressbar( true, false );
         String ifRunningNumber = SharePreference.getRunningNumber( this );
         if (ifRunningNumber != null && !ifRunningNumber.equalsIgnoreCase( "" )) {
-            scrollToPosition( ifRunningNumber , USER);
-        }else {
-            if (pendingPosition<dashboardModelList.size()) {
+            scrollToPosition( ifRunningNumber, USER );
+        } else {
+            if (pendingPosition < dashboardModelList.size()) {
                 scrollToPosition( String.valueOf( pendingPosition ), VEHICLE_WASHER );
-            }else {
+            } else {
                 scrollToPosition( String.valueOf( 0 ), VEHICLE_WASHER );
             }
             Log.d( TAG, "setDataToUi: " + pendingPosition );
@@ -195,24 +199,27 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             if (isWashing > 0) {
                 vehicleDetails.setVisibility( View.VISIBLE );
                 if (washerKeySP != null && !washerKeySP.equalsIgnoreCase( "" )) {
-                    vehicleDetails.setText("Pending vehicle details");
-                }else {
+                    vehicleDetails.setText( R.string.pending_vehicle_details );
+                } else {
                     vehicleDetails.setText( R.string.vehicle_washing_details );
                 }
                 vehicleModel.setVisibility( View.VISIBLE );
                 vehicleType.setVisibility( View.VISIBLE );
                 runningNumber.setVisibility( View.VISIBLE );
-                if (matchUID) {
-                    if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
+                
+                if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
+                        if (phoneUID.equalsIgnoreCase( userIdWashing )) {
+                            vehicleModel.setText( vehicleModelNum );
+                        }else { 
+                            vehicleModel.setText( R.string.xxx_xxx_xxx );
+                        }
+                    if (washerKeySP != null && !washerKeySP.equalsIgnoreCase( "" )) {
                         vehicleModel.setText( vehicleModelNum );
-                    } else {
-                        vehicleModel.setText( R.string.xxx_xxx_xxx );
                     }
-                } else if (washerKeySP != null && !washerKeySP.equalsIgnoreCase( "" )) {
-                    vehicleModel.setText( vehicleModelNum );
                 } else {
                     vehicleModel.setText( R.string.model_number );
                 }
+                
                 if (vehicleTyp != null && !vehicleTyp.equalsIgnoreCase( "" )) {
                     String typeModel = reachTime + " min " + vehicleTyp;
                     vehicleType.setText( typeModel );
@@ -231,8 +238,8 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                 }
             } else {
                 if (washerKeySP != null && !washerKeySP.equalsIgnoreCase( "" )) {
-                    vehicleDetails.setText("No vehicle is pending");
-                }else {
+                    vehicleDetails.setText( R.string.no_vehicle_is_pending );
+                } else {
                     vehicleDetails.setText( R.string.vehicle_is_not_washing );
                 }
                 vehicleModel.setVisibility( View.INVISIBLE );
@@ -245,7 +252,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             vehicleModel.setVisibility( View.GONE );
             vehicleType.setVisibility( View.GONE );
             runningNumber.setVisibility( View.GONE );
-            
+
         }
         commonProgressbar( false, true );
     }
@@ -254,10 +261,10 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         if (dashboardModelList.size() != 0) {
             //Below two line for auto scroll(to reach on this user's card view instantly)
             int getPosition = dashboardModelList.size() - Integer.parseInt( ifRunningNumber );
-            if (userWasher.equalsIgnoreCase( USER )){
+            if (userWasher.equalsIgnoreCase( USER )) {
                 dashboardRecycler.scrollToPosition( dashboardModelList.size() - (getPosition + 1) );
-            }else {
-                dashboardRecycler.scrollToPosition( dashboardModelList.size() - (getPosition ) );
+            } else {
+                dashboardRecycler.scrollToPosition( dashboardModelList.size() - (getPosition) );
             }
             Log.d( TAG, "scrollToPosition: " + getPosition );
         } else {
@@ -269,7 +276,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    @Override       
+    @Override
     public void BackFromAdapter(int back) {
         if (back == GET_BACK) {
             showSnackBar( "Thanks to choose our service!", Snackbar.LENGTH_LONG );
@@ -277,14 +284,31 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             SharePreference.removeUidKeyRunning( this );
             startActivity( intent );
             finish();
-        }else if (back == REFRESH_LAYOUT){
+        } else if (back == REFRESH_LAYOUT) {
             pendingPosition = -1;
         }
     }
 
     private void createNotification(String currentUser, String currentVehicle) {
+        Uri soundUri = RingtoneManager.getDefaultUri( RingtoneManager.TYPE_NOTIFICATION );
         Intent activityIntent = new Intent( DashboardActivity.this, DashboardActivity.class );
-        PendingIntent contentIntent = PendingIntent.getActivity( DashboardActivity.this, 0, activityIntent, 0 );
+        PendingIntent contentIntent = PendingIntent.getActivity( DashboardActivity.this, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT );
+        NotificationManager mNotificationManager = (NotificationManager) getApplicationContext().getSystemService( Context.NOTIFICATION_SERVICE );
+        final String CHANNEL_1 = "channel1";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel( CHANNEL_1, "channel1", NotificationManager.IMPORTANCE_HIGH );
+            mChannel.setLightColor( Color.BLUE );
+            mChannel.enableLights( true );
+            mChannel.setVibrationPattern( new long[]{0, 500, 1000} );
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType( AudioAttributes.CONTENT_TYPE_SONIFICATION )
+                    .setUsage( AudioAttributes.USAGE_NOTIFICATION )
+                    .build();
+            mChannel.setSound( soundUri, audioAttributes );
+            if (mNotificationManager != null) {
+                mNotificationManager.createNotificationChannel( mChannel );
+            }
+        }
         NotificationManagerCompat nmc = NotificationManagerCompat.from( DashboardActivity.this );
         Notification notification = new NotificationCompat.Builder( DashboardActivity.this, CHANNEL_1 )
                 .setSmallIcon( R.mipmap.ic_launcher )
@@ -292,9 +316,13 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                 .setContentText( currentVehicle )
                 .setPriority( Notification.PRIORITY_HIGH )
                 .setCategory( Notification.CATEGORY_MESSAGE )
+                .setVibrate( new long[]{0, 500, 1000} )
+                .setSound( soundUri )
+                .setVisibility( NotificationCompat.VISIBILITY_PUBLIC )
                 .setColor( getResources().getColor( R.color.dark_sky_blue ) )
                 .setContentIntent( contentIntent )
                 .setAutoCancel( true )
+                .setFullScreenIntent( contentIntent, true )
                 .build();
         nmc.notify( 1, notification );
     }
@@ -349,7 +377,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void goToFeedbackPage() {
-        Intent intent = new Intent( DashboardActivity.this, FeedbackActivity.class);
+        Intent intent = new Intent( DashboardActivity.this, FeedbackActivity.class );
         startActivity( intent );
     }
 }

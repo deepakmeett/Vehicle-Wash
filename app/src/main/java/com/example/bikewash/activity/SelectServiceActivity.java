@@ -163,9 +163,13 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
             String reachingTime = timeToReach.getText().toString().trim();
             String vehicleModelData = vehicleModel.getText().toString().trim();
             if (vehicleModelData.equalsIgnoreCase( "" )) {
-                vehicleModel.setError( "Please provide vehicle name" );
+                vehicleModel.setError( "Please provide vehicle model number" );
+            }else if (vehicleModelData.length()<=4){
+                vehicleModel.setError( "Model number should be more than 4 digits" );
             } else if (reachingTime.equalsIgnoreCase( "" )) {
                 timeToReach.setError( "Please provide time to reach at service station" );
+            }else if (Integer.parseInt(reachingTime)<=0){
+                timeToReach.setError( "Please provide correct time" );
             } else {
                 hideSoftKeyboard( this );
                 sendDataToFireBase( serviceSelectedIs, vehicleModelData, reachingTime );
@@ -214,7 +218,6 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                 hashMap.put( UID, uid );
                 hashMap.put( WASHING_STATUS, PENDING );
                 hashMap.put( RUNNING_NUMBER1, String.valueOf( size + 1 ) );
-                hashMap.put( FEEDBACK, "" );
                 dr.push().setValue( hashMap ).addOnCompleteListener( task -> {
                     commonProgressbar( false, true );
                     if (task.isSuccessful()) {
