@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "679410083812",
-    "project_id": "bike-wash-8c322",
-    "storage_bucket": "bike-wash-8c322.appspot.com"
+    "project_number": "755170460583",
+    "project_id": "flex-1415e",
+    "storage_bucket": "flex-1415e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:679410083812:android:5f4e5a0537b27aab0249f1",
+        "mobilesdk_app_id": "1:755170460583:android:6036fd58deeacbb4cbec82",
         "android_client_info": {
-          "package_name": "com.example.bikewash"
+          "package_name": "com.dexter.flex"
         }
       },
       "oauth_client": [
         {
-          "client_id": "679410083812-tkqr4v6n8v0nrv0tc8ednnu201q6vh2a.apps.googleusercontent.com",
+          "client_id": "755170460583-veltff8iaoeqd1bru8v4s118dscl2a22.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.bikewash",
+            "package_name": "com.dexter.flex",
             "certificate_hash": "5b4f3baf50f76cd762d6a7bbf2f05b3abbee7962"
           }
         },
         {
-          "client_id": "679410083812-377dktqvdsmv56pp7035duagjcfm8aj5.apps.googleusercontent.com",
+          "client_id": "755170460583-6m09ki984v6cqp824p84t2bpslcnj8f8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBKfAu4HDxr3jWCFoNQhlyhCw8FyQSIFGg"
+          "current_key": "AIzaSyAA50JNZY3ajPj7QT0gb2zxgz2mLqX3f2o"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "679410083812-377dktqvdsmv56pp7035duagjcfm8aj5.apps.googleusercontent.com",
+              "client_id": "755170460583-6m09ki984v6cqp824p84t2bpslcnj8f8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

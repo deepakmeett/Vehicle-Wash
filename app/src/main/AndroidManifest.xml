@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.bikewash">
+    package="com.dexter.flex">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BikeWash">
         <activity
-            android:name=".activity.LoginActivity"
+            android:name="com.dexter.flex.activity.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
@@ -20,21 +20,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.SignUpActivity"
+            android:name="com.dexter.flex.activity.SignUpActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
         <activity
-            android:name=".activity.UserOrWasherActivity"
+            android:name="com.dexter.flex.activity.UserOrWasherActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
         <activity
-            android:name=".activity.SelectServiceActivity"
+            android:name="com.dexter.flex.activity.SelectServiceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
         <activity
-            android:name=".activity.DashboardActivity"
+            android:name="com.dexter.flex.activity.DashboardActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activity.FeedbackActivity"
+        <activity android:name="com.dexter.flex.activity.FeedbackActivity"
             android:windowSoftInputMode="stateAlwaysVisible"/>
 
     </application>
