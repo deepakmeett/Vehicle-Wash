@@ -11,9 +11,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.bikewash.R;
 import com.example.bikewash.utility.BaseActivity;
-import com.example.bikewash.utility.ConnectivityReceiver;
+import com.example.bikewash.receiver.ConnectivityReceiver;
 import com.example.bikewash.utility.SessionManager;
-import com.example.bikewash.utility.ShowInternetDialog;
+import com.example.bikewash.interfaces.ShowInternetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -36,7 +36,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     private Button registerBtn;
     private TextView backToLogin;
     private String email, password;
-    private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
+    private final com.example.bikewash.receiver.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
     private static final String TAG = "SignUpActivity";
 
     @Override

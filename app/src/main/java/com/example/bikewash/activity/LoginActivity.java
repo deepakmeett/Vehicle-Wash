@@ -8,16 +8,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.bikewash.R;
 import com.example.bikewash.utility.BaseActivity;
-import com.example.bikewash.utility.ConnectivityReceiver;
+import com.example.bikewash.receiver.ConnectivityReceiver;
 import com.example.bikewash.utility.SessionManager;
-import com.example.bikewash.utility.ShowInternetDialog;
+import com.example.bikewash.interfaces.ShowInternetDialog;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -51,7 +50,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private LinearLayout googleSignInButton;
     private String email, password;
     private GoogleSignInClient mGoogleSignInClient;
-    private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
+    private final com.example.bikewash.receiver.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
     private static final String TAG = "LoginActivity";
 
     @Override

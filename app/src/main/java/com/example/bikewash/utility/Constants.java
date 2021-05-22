@@ -15,7 +15,7 @@ public class Constants {
     public static final String VEHICLE_TYPE = "vehicle_type";
     public static final String UID = "uid";
     public static final String WASHING_STATUS = "washing_status";
-    public static final String RUNNING_NUMBER1 = "running_number";
+    public static final String RUNNING_NUMBER = "running_number";
     public static final String FEEDBACK = "feedback";
     public static final int BIKE_SERVICE = 1;
     public static final int CAR_SERVICE = 2;
@@ -26,7 +26,6 @@ public class Constants {
     public static final int OTHER_SERVICE = 7;
 
     //Intent
-    public static final String USER_KEY = "user_key";
     public static final int GET_BACK = 8;
     public static final int REFRESH_LAYOUT = 9;
     public static final int FEEDBACK_RESULT = 103;
@@ -35,7 +34,6 @@ public class Constants {
     public static final String WASHER_KEY = "washer_key";
     public static final String FILE_DATA = "data";
     public static final String USER_EXIST = "user_exist";
-    public static final String RUNNING_NUMBER = "running_number";
     
     //DashboardAdapter
     public static final String PENDING = "PENDING";

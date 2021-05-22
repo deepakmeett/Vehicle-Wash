@@ -19,11 +19,11 @@ public class SharePreference {
 
     public static String getWasherKey(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences( FILE_DATA, Context.MODE_PRIVATE );
-        String userkey = "";
+        String userKey = "";
         if (sharedPreferences.contains( WASHER_KEY )) {
-            userkey = sharedPreferences.getString( WASHER_KEY, "" );
+            userKey = sharedPreferences.getString( WASHER_KEY, "" );
         }
-        return userkey;
+        return userKey;
     }
 
     public static void setUserExit(Context context, String userExist) {

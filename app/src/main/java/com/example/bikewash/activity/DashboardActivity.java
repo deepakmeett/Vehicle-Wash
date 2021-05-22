@@ -31,10 +31,10 @@ import com.example.bikewash.bottom_sheet.MoreItemsBottomSheet;
 import com.example.bikewash.model.DashboardModel;
 import com.example.bikewash.model.UserKeyModel;
 import com.example.bikewash.utility.BaseActivity;
-import com.example.bikewash.utility.ConnectivityReceiver;
+import com.example.bikewash.receiver.ConnectivityReceiver;
 import com.example.bikewash.utility.SessionManager;
 import com.example.bikewash.utility.SharePreference;
-import com.example.bikewash.utility.ShowInternetDialog;
+import com.example.bikewash.interfaces.ShowInternetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,7 +56,7 @@ import static com.example.bikewash.utility.Constants.PENDING;
 import static com.example.bikewash.utility.Constants.REACH_TIME;
 import static com.example.bikewash.utility.Constants.REFRESH_LAYOUT;
 import static com.example.bikewash.utility.Constants.REVIEW;
-import static com.example.bikewash.utility.Constants.RUNNING_NUMBER1;
+import static com.example.bikewash.utility.Constants.RUNNING_NUMBER;
 import static com.example.bikewash.utility.Constants.SHARE;
 import static com.example.bikewash.utility.Constants.SHOW;
 import static com.example.bikewash.utility.Constants.UID;
@@ -78,7 +78,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     private final List<DashboardModel> dashboardModelList = new ArrayList<>();
     //We are storing all keys in the List<UserKeyModel>
     private final List<UserKeyModel> userKeyModel = new ArrayList<>();
-    private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver
+    private final com.example.bikewash.receiver.ConnectivityReceiver ConnectivityReceiver
             = new ConnectivityReceiver( this );
     private static final String TAG = "DashboardActivity";
 
@@ -147,6 +147,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                         }
                     }
                 }
+                
                 dashboardRecycler.setAdapter( new DashboardAdapter( DashboardActivity.this, dashboardModelList, DashboardActivity.this, userKeyModel, DashboardActivity.this ) );
                 setDataToUi();
             }
@@ -165,7 +166,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             vehicleModelNum = Objects.requireNonNull( ds.child( VEHICLE_MODEL ).getValue() ).toString();
             vehicleTyp = Objects.requireNonNull( ds.child( VEHICLE_TYPE ).getValue() ).toString();
             reachTime = Objects.requireNonNull( ds.child( REACH_TIME ).getValue() ).toString();
-            washingNum = Objects.requireNonNull( ds.child( RUNNING_NUMBER1 ).getValue() ).toString();
+            washingNum = Objects.requireNonNull( ds.child( RUNNING_NUMBER ).getValue() ).toString();
             userIdWashing = Objects.requireNonNull( ds.child( UID ).getValue() ).toString();
             isWashing++;
             if (washingPending.equalsIgnoreCase( WASHING )) {

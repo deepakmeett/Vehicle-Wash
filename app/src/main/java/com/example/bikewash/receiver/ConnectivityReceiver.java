@@ -1,10 +1,12 @@
-package com.example.bikewash.utility;
+package com.example.bikewash.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+
+import com.example.bikewash.interfaces.ShowInternetDialog;
 
 import static com.example.bikewash.utility.Constants.NOT_SHOW;
 import static com.example.bikewash.utility.Constants.SHOW;

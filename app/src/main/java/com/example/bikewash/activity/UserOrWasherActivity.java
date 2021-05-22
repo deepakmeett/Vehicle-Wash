@@ -7,16 +7,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.bikewash.R;
 import com.example.bikewash.utility.BaseActivity;
-import com.example.bikewash.utility.ConnectivityReceiver;
+import com.example.bikewash.receiver.ConnectivityReceiver;
 import com.example.bikewash.utility.SessionManager;
 import com.example.bikewash.utility.SharePreference;
-import com.example.bikewash.utility.ShowInternetDialog;
+import com.example.bikewash.interfaces.ShowInternetDialog;
 import com.google.android.material.snackbar.Snackbar;
 
 import static com.example.bikewash.utility.Constants.NOT_SHOW;
@@ -27,7 +26,7 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
     private ImageView logout;
     private Button userButton, vehicleWasherButton;
     private EditText washerKeyEditText;
-    private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
+    private final com.example.bikewash.receiver.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
     private static final String SELECT_SERVICE = "SelectServiceActivity";
     private static final String DASHBOARD = "DashboardActivity";
 

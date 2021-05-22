@@ -72,14 +72,4 @@
         android:textSize="@dimen/_13sdp"
         app:drawableStartCompat="@drawable/ic_baseline_feedback_24"/>
 
-    <TextView
-        android:id="@+id/notCompleted"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/_10sdp"
-        android:paddingVertical="@dimen/_10sdp"
-        android:text="@string/not_completed_list"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_13sdp"
-        app:drawableStartCompat="@drawable/ic_baseline_rule_24"/>
 </LinearLayout>

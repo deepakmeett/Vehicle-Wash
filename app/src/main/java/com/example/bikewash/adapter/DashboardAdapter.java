@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -45,6 +45,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     private final List<UserKeyModel> userKeyModelList;
     private final GetBack getBack;
     private final BaseActivity baseActivity;
+    private DatabaseReference mDatabase;
 
     public DashboardAdapter(Context context, List<DashboardModel> list, GetBack GetBack, List<UserKeyModel> userKeyModels, BaseActivity baseActivity) {
         this.context = context;
@@ -63,9 +64,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        FirebaseDatabase database1 = FirebaseDatabase.getInstance();
+        mDatabase = database1.getReference();
         DashboardModel model = list.get( position );
         UserKeyModel keyList = userKeyModelList.get( position );
-        
         String vehicleType = model.getVehicle_type();
         String vehicleModelNum = model.getVehicle_model();
         String reachTiming = model.getReach_time();
@@ -74,9 +76,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         String washerKey = SharePreference.getWasherKey( context );
         String phoneUID = SharePreference.getUID( context );
         String userUId = model.getUid();
-        final boolean matchUID = phoneUID != null && !phoneUID.equalsIgnoreCase( "" )
-                                 && userUId != null && !userUId.equalsIgnoreCase( "" );
-        
+        final boolean phoneAndUserIdNotNull = phoneUID != null && !phoneUID.equalsIgnoreCase( "" )
+                                              && userUId != null && !userUId.equalsIgnoreCase( "" );
         if (vehicleType != null && !vehicleType.equalsIgnoreCase( "" )) {
             if (vehicleType.equalsIgnoreCase( "bike" )) {
                 Glide.with( context ).load( R.drawable.ic_bike ).into( holder.vehicleImage );
@@ -94,18 +95,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 Glide.with( context ).load( R.drawable.ic_other ).into( holder.vehicleImage );
             }
         }
-        
         if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
-            if (matchUID) {
+            if (phoneAndUserIdNotNull) {
                 if (phoneUID.equalsIgnoreCase( userUId )) {
                     holder.vehicleModel.setText( vehicleModelNum );
-                }else {
+                } else {
                     holder.vehicleModel.setText( R.string.xxx_xxx_xxx );
                 }
             }
             if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
                 holder.vehicleModel.setText( vehicleModelNum );
-            } 
+            }
         } else {
             holder.vehicleModel.setText( R.string.vehicle_model_no_ );
         }
@@ -135,28 +135,24 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             if (washing_status.equalsIgnoreCase( PENDING )) {
                 holder.doneButton.setEnabled( false );
                 holder.doneButton.setText( washing_status );
-                holder.doneButton.setBackground( context.getResources().getDrawable( R.drawable.round_yellow_btn ) );
-
+                holder.doneButton.setBackground( ResourcesCompat.getDrawable( context.getResources(), R.drawable.round_yellow_btn, context.getTheme() ) );
             } else if (washing_status.equalsIgnoreCase( WASHING )) {
                 holder.doneButton.setText( washing_status );
-                holder.doneButton.setBackground( context.getResources().getDrawable( R.drawable.round_blue_btn ) );
-
+                holder.doneButton.setBackground( ResourcesCompat.getDrawable( context.getResources(), R.drawable.round_blue_btn, context.getTheme() ) );
             } else if (washing_status.equalsIgnoreCase( ABSENT )) {
                 holder.doneButton.setText( washing_status );
-                holder.doneButton.setBackground( context.getResources().getDrawable( R.drawable.round_red_btn ) );
-            }
-            else if (washing_status.equalsIgnoreCase( COMPLETED )) {
+                holder.doneButton.setBackground( ResourcesCompat.getDrawable( context.getResources(), R.drawable.round_red_btn, context.getTheme() ) );
+            } else if (washing_status.equalsIgnoreCase( COMPLETED )) {
                 holder.doneButton.setText( washing_status );
-                holder.doneButton.setBackground( context.getResources().getDrawable( R.drawable.round_green_btn ) );
-
+                holder.doneButton.setBackground( ResourcesCompat.getDrawable( context.getResources(), R.drawable.round_green_btn, context.getTheme() ) );
             }
         }
         if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
-            if (washing_status != null && washing_status.equalsIgnoreCase( PENDING )){
+            if (washing_status != null && washing_status.equalsIgnoreCase( PENDING )) {
                 holder.cutImageView.setVisibility( View.VISIBLE );
             }
         }
-        if (matchUID) {
+        if (phoneAndUserIdNotNull) {
             if (phoneUID.equalsIgnoreCase( userUId )) {
                 holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
                 holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.dragon_green ) );
@@ -169,16 +165,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         } else {
             holder.inactiveButtonsView.setVisibility( View.VISIBLE );
         }
-
-        holder.cutImageView.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (washing_status != null && washing_status.equalsIgnoreCase( PENDING )) {
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference mDatabase = database.getReference();
-                    mDatabase.child( ALL ).child( keyList.getKey() ).child( WASHING_STATUS ).setValue( ABSENT );
-                    getBack.BackFromAdapter( REFRESH_LAYOUT );
-                }
+        holder.cutImageView.setOnClickListener( v -> {
+            if (washing_status != null && washing_status.equalsIgnoreCase( PENDING )) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference mDatabase = database.getReference();
+                mDatabase.child( ALL ).child( keyList.getKey() ).child( WASHING_STATUS ).setValue( ABSENT );
+                getBack.BackFromAdapter( REFRESH_LAYOUT );
             }
         } );
         holder.doneButton.setOnClickListener( v -> {
@@ -200,17 +192,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 }
             } else {
                 if (washing_status != null) {
-                    if (matchUID) {
+                    if (phoneAndUserIdNotNull) {
                         if (phoneUID.equalsIgnoreCase( userUId )) {
                             if (washing_status.equalsIgnoreCase( PENDING )) {
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference mDatabase = database.getReference();
                                 mDatabase.child( ALL ).child( SessionManager.userKey ).child( WASHING_STATUS ).setValue( WASHING );
                             } else if (washing_status.equalsIgnoreCase( WASHING )) {
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference mDatabase = database.getReference();
                                 mDatabase.child( ALL ).child( SessionManager.userKey ).child( WASHING_STATUS ).setValue( COMPLETED );
                             } else if (washing_status.equalsIgnoreCase( COMPLETED )) {
+                                if (list.size() > position + 1) {
+                                    UserKeyModel nextKeyList = userKeyModelList.get( position + 1 );
+                                    mDatabase.child( ALL ).child( nextKeyList.getKey() ).child( WASHING_STATUS ).setValue( WASHING );
+                                }
                                 getBack.BackFromAdapter( GET_BACK );
                             }
                         }

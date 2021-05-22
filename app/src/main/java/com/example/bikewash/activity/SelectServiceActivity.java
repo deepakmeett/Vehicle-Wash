@@ -19,10 +19,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.bikewash.R;
 import com.example.bikewash.bottom_sheet.MoreItemsBottomSheet;
 import com.example.bikewash.utility.BaseActivity;
-import com.example.bikewash.utility.ConnectivityReceiver;
+import com.example.bikewash.receiver.ConnectivityReceiver;
 import com.example.bikewash.utility.SessionManager;
 import com.example.bikewash.utility.SharePreference;
-import com.example.bikewash.utility.ShowInternetDialog;
+import com.example.bikewash.interfaces.ShowInternetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -47,14 +47,13 @@ import static com.example.bikewash.utility.Constants.OTHER_SERVICE;
 import static com.example.bikewash.utility.Constants.PENDING;
 import static com.example.bikewash.utility.Constants.REACH_TIME;
 import static com.example.bikewash.utility.Constants.REVIEW;
-import static com.example.bikewash.utility.Constants.RUNNING_NUMBER1;
+import static com.example.bikewash.utility.Constants.RUNNING_NUMBER;
 import static com.example.bikewash.utility.Constants.SHARE;
 import static com.example.bikewash.utility.Constants.SHOW;
 import static com.example.bikewash.utility.Constants.TEMPO_SERVICE;
 import static com.example.bikewash.utility.Constants.TRACTOR_SERVICE;
 import static com.example.bikewash.utility.Constants.TRUCK_SERVICE;
 import static com.example.bikewash.utility.Constants.UID;
-import static com.example.bikewash.utility.Constants.USER_KEY;
 import static com.example.bikewash.utility.Constants.VEHICLE_MODEL;
 import static com.example.bikewash.utility.Constants.VEHICLE_TYPE;
 import static com.example.bikewash.utility.Constants.WASHING_STATUS;
@@ -70,8 +69,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
     int serviceSelectedIs = BIKE_SERVICE;
     private DatabaseReference dr, dr1;
     private FirebaseAuth firebaseAuth;
-    private MoreItemsBottomSheet moreItemsBottomSheet;
-    private final com.example.bikewash.utility.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
+    private final ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
     private static final String TAG = "SelectServiceActivity";
 
     @Override
@@ -129,7 +127,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (v == moreOptions) {
-            moreItemsBottomSheet = new MoreItemsBottomSheet( this );
+            MoreItemsBottomSheet moreItemsBottomSheet = new MoreItemsBottomSheet( this );
             moreItemsBottomSheet.show( getSupportFragmentManager(), "MoreOptions" );
         } else if (v == bikeCard) {
             checkBoxChecked( true, false, false, false, false, false, false );
@@ -217,7 +215,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                 hashMap.put( VEHICLE_TYPE, vehicle_type );
                 hashMap.put( UID, uid );
                 hashMap.put( WASHING_STATUS, PENDING );
-                hashMap.put( RUNNING_NUMBER1, String.valueOf( size + 1 ) );
+                hashMap.put( RUNNING_NUMBER, String.valueOf( size + 1 ) );
                 dr.push().setValue( hashMap ).addOnCompleteListener( task -> {
                     commonProgressbar( false, true );
                     if (task.isSuccessful()) {

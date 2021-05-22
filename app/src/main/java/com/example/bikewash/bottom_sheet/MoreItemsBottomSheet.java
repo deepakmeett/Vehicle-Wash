@@ -13,7 +13,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import static com.example.bikewash.utility.Constants.FEEDBACK;
 import static com.example.bikewash.utility.Constants.LOGOUT;
-import static com.example.bikewash.utility.Constants.NOT_COMPLETED;
 import static com.example.bikewash.utility.Constants.REVIEW;
 import static com.example.bikewash.utility.Constants.SHARE;
 public class MoreItemsBottomSheet extends BottomSheetDialogFragment implements View.OnClickListener {
@@ -23,7 +22,7 @@ public class MoreItemsBottomSheet extends BottomSheetDialogFragment implements V
         void bottomSheet(String action);
     }
 
-    TextView share, review, logout, feedback, notCompleted;
+    TextView share, review, logout, feedback;
     MoreOptionBottom moreOptionBottom;
 
     public MoreItemsBottomSheet(MoreOptionBottom moreOptionBottom) {
@@ -49,12 +48,10 @@ public class MoreItemsBottomSheet extends BottomSheetDialogFragment implements V
         review = view.findViewById( R.id.review );
         logout = view.findViewById( R.id.logout );
         feedback = view.findViewById( R.id.feedback );
-        notCompleted = view.findViewById( R.id.notCompleted );
         share.setOnClickListener( this );
         review.setOnClickListener( this );
         logout.setOnClickListener( this );
         feedback.setOnClickListener( this );
-        notCompleted.setOnClickListener( this );
     }
 
     @Override
@@ -67,8 +64,6 @@ public class MoreItemsBottomSheet extends BottomSheetDialogFragment implements V
             moreOptionBottom.bottomSheet( LOGOUT );
         } else if (v == feedback) {
             moreOptionBottom.bottomSheet( FEEDBACK );
-        } else if (v == notCompleted) {
-            moreOptionBottom.bottomSheet( NOT_COMPLETED );
         }
         dismiss();
     }

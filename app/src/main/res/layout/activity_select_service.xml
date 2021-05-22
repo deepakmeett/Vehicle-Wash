@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:contentDescription="@string/image_desc"
-                android:src="@drawable/ic_baseline_more_vert_24"/>
+                android:src="@drawable/ic_baseline_more_options_24"/>
             
             <TextView
                 android:layout_width="match_parent"
