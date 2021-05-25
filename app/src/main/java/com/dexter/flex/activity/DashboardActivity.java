@@ -28,13 +28,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dexter.flex.R;
 import com.dexter.flex.adapter.DashboardAdapter;
 import com.dexter.flex.bottom_sheet.MoreItemsBottomSheet;
+import com.dexter.flex.interfaces.ShowInternetDialog;
 import com.dexter.flex.model.DashboardModel;
 import com.dexter.flex.model.UserKeyModel;
-import com.dexter.flex.utility.BaseActivity;
 import com.dexter.flex.receiver.ConnectivityReceiver;
+import com.dexter.flex.utility.BaseActivity;
 import com.dexter.flex.utility.SessionManager;
 import com.dexter.flex.utility.SharePreference;
-import com.dexter.flex.interfaces.ShowInternetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,10 +49,13 @@ import java.util.Objects;
 import static com.dexter.flex.utility.Constants.ALL;
 import static com.dexter.flex.utility.Constants.FEEDBACK;
 import static com.dexter.flex.utility.Constants.GET_BACK;
+import static com.dexter.flex.utility.Constants.HOW_TO_USE;
 import static com.dexter.flex.utility.Constants.LOGOUT;
+import static com.dexter.flex.utility.Constants.NOT_ALLOWED;
 import static com.dexter.flex.utility.Constants.NOT_COMPLETED;
 import static com.dexter.flex.utility.Constants.NOT_SHOW;
 import static com.dexter.flex.utility.Constants.PENDING;
+import static com.dexter.flex.utility.Constants.PLEASE_WAIT;
 import static com.dexter.flex.utility.Constants.REACH_TIME;
 import static com.dexter.flex.utility.Constants.REFRESH_LAYOUT;
 import static com.dexter.flex.utility.Constants.REVIEW;
@@ -84,6 +87,10 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        // This below code make notification bar disappear
+//        requestWindowFeature( Window.FEATURE_NO_TITLE );
+//        getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                              WindowManager.LayoutParams.FLAG_FULLSCREEN );
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_dashboard );
         findView();
@@ -147,7 +154,6 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                         }
                     }
                 }
-                
                 dashboardRecycler.setAdapter( new DashboardAdapter( DashboardActivity.this, dashboardModelList, DashboardActivity.this, userKeyModel, DashboardActivity.this ) );
                 setDataToUi();
             }
@@ -207,20 +213,18 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                 vehicleModel.setVisibility( View.VISIBLE );
                 vehicleType.setVisibility( View.VISIBLE );
                 runningNumber.setVisibility( View.VISIBLE );
-                
                 if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
-                        if (phoneUID.equalsIgnoreCase( userIdWashing )) {
-                            vehicleModel.setText( vehicleModelNum );
-                        }else { 
-                            vehicleModel.setText( R.string.xxx_xxx_xxx );
-                        }
+                    if (phoneUID.equalsIgnoreCase( userIdWashing )) {
+                        vehicleModel.setText( vehicleModelNum );
+                    } else {
+                        vehicleModel.setText( R.string.xxx_xxx_xxx );
+                    }
                     if (washerKeySP != null && !washerKeySP.equalsIgnoreCase( "" )) {
                         vehicleModel.setText( vehicleModelNum );
                     }
                 } else {
                     vehicleModel.setText( R.string.model_number );
                 }
-                
                 if (vehicleTyp != null && !vehicleTyp.equalsIgnoreCase( "" )) {
                     String typeModel = reachTime + " min " + vehicleTyp;
                     vehicleType.setText( typeModel );
@@ -287,6 +291,10 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             finish();
         } else if (back == REFRESH_LAYOUT) {
             pendingPosition = -1;
+        } else if (back == NOT_ALLOWED){
+            showSnackBar( "Not allowed for someone else's vehicle", Snackbar.LENGTH_SHORT );
+        } else if (back == PLEASE_WAIT){
+            showSnackBar( "Please wait for your number", Snackbar.LENGTH_SHORT );
         }
     }
 
@@ -373,6 +381,9 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                 goToFeedbackPage();
             } else if (action.equalsIgnoreCase( NOT_COMPLETED )) {
                 Toast.makeText( this, "NOT_COMPLETED", Toast.LENGTH_SHORT ).show();
+            } else if (action.equalsIgnoreCase( HOW_TO_USE )) {
+                Toast.makeText( this, "HOW TO USE THIS APP", Toast.LENGTH_SHORT ).show();
+                SharePreference.setHowTo( this, HOW_TO_USE );
             }
         }
     }

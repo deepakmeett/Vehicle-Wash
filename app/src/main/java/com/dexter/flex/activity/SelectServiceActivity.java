@@ -18,11 +18,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.dexter.flex.R;
 import com.dexter.flex.bottom_sheet.MoreItemsBottomSheet;
-import com.dexter.flex.utility.BaseActivity;
+import com.dexter.flex.interfaces.ShowInternetDialog;
 import com.dexter.flex.receiver.ConnectivityReceiver;
+import com.dexter.flex.utility.BaseActivity;
 import com.dexter.flex.utility.SessionManager;
 import com.dexter.flex.utility.SharePreference;
-import com.dexter.flex.interfaces.ShowInternetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -40,6 +40,7 @@ import static com.dexter.flex.utility.Constants.BIKE_SERVICE;
 import static com.dexter.flex.utility.Constants.CAR_SERVICE;
 import static com.dexter.flex.utility.Constants.FEEDBACK;
 import static com.dexter.flex.utility.Constants.FEEDBACK_RESULT;
+import static com.dexter.flex.utility.Constants.HOW_TO_USE;
 import static com.dexter.flex.utility.Constants.LOGOUT;
 import static com.dexter.flex.utility.Constants.NOT_COMPLETED;
 import static com.dexter.flex.utility.Constants.NOT_SHOW;
@@ -60,7 +61,7 @@ import static com.dexter.flex.utility.Constants.WASHING_STATUS;
 public class SelectServiceActivity extends BaseActivity implements View.OnClickListener, ShowInternetDialog
         , MoreItemsBottomSheet.MoreOptionBottom {
 
-    private ImageView moreOptions;
+    private ImageView threeDot;
     private CardView bikeCard, carCard, tempoCard, tractorCard, truckCard, autoCard, otherCard;
     private CheckBox bikeCheckBox, carCheckBox, tempoCheckBox, tractorCheckBox, truckCheckBox,
             autoCheckBox, otherCheckBox;
@@ -77,6 +78,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_select_service );
         checkRunningNumber();
+        openMoreOption();
         findView();
         initialize();
     }
@@ -88,8 +90,15 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         }
     }
 
+    private void openMoreOption() {
+        String howToUse = SharePreference.getHowTo( this );
+        if (howToUse.equalsIgnoreCase( "" )) {
+            moreOptions();
+        }
+    }
+
     private void findView() {
-        moreOptions = findViewById( R.id.moreOptions );
+        threeDot = findViewById( R.id.moreOptions );
         bikeCard = findViewById( R.id.bikeCard );
         bikeCheckBox = findViewById( R.id.bikeCheckBox );
         carCard = findViewById( R.id.carCard );
@@ -107,7 +116,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         vehicleModel = findViewById( R.id.vehicleModel );
         timeToReach = findViewById( R.id.timeToReach );
         submitButton = findViewById( R.id.submitButton );
-        moreOptions.setOnClickListener( this );
+        threeDot.setOnClickListener( this );
         bikeCard.setOnClickListener( this );
         carCard.setOnClickListener( this );
         tempoCard.setOnClickListener( this );
@@ -126,9 +135,8 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v == moreOptions) {
-            MoreItemsBottomSheet moreItemsBottomSheet = new MoreItemsBottomSheet( this );
-            moreItemsBottomSheet.show( getSupportFragmentManager(), "MoreOptions" );
+        if (v == threeDot) {
+            moreOptions();
         } else if (v == bikeCard) {
             checkBoxChecked( true, false, false, false, false, false, false );
             serviceSelectedIs = BIKE_SERVICE;
@@ -162,17 +170,22 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
             String vehicleModelData = vehicleModel.getText().toString().trim();
             if (vehicleModelData.equalsIgnoreCase( "" )) {
                 vehicleModel.setError( "Please provide vehicle model number" );
-            }else if (vehicleModelData.length()<=4){
+            } else if (vehicleModelData.length() <= 4) {
                 vehicleModel.setError( "Model number should be more than 4 digits" );
             } else if (reachingTime.equalsIgnoreCase( "" )) {
                 timeToReach.setError( "Please provide time to reach at service station" );
-            }else if (Integer.parseInt(reachingTime)<=0){
+            } else if (Integer.parseInt( reachingTime ) <= 0) {
                 timeToReach.setError( "Please provide correct time" );
             } else {
                 hideSoftKeyboard( this );
                 sendDataToFireBase( serviceSelectedIs, vehicleModelData, reachingTime );
             }
         }
+    }
+
+    private void moreOptions() {
+        MoreItemsBottomSheet moreItemsBottomSheet = new MoreItemsBottomSheet( this );
+        moreItemsBottomSheet.show( getSupportFragmentManager(), "MoreOptions" );
     }
 
     private void checkBoxChecked(boolean bike, boolean car, boolean tempo, boolean truck, boolean tractor, boolean auto, boolean other) {
@@ -282,10 +295,13 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
             } else if (action.equalsIgnoreCase( LOGOUT )) {
                 logout( SelectServiceActivity.this );
             } else if (action.equalsIgnoreCase( FEEDBACK )) {
-                Intent intent = new Intent(SelectServiceActivity.this, FeedbackActivity.class);
+                Intent intent = new Intent( SelectServiceActivity.this, FeedbackActivity.class );
                 startActivityForResult( intent, FEEDBACK_RESULT );
             } else if (action.equalsIgnoreCase( NOT_COMPLETED )) {
                 Toast.makeText( this, "NOT_COMPLETED", Toast.LENGTH_SHORT ).show();
+            } else if (action.equalsIgnoreCase( HOW_TO_USE )) {
+                Toast.makeText( this, "HOW TO USE THIS APP", Toast.LENGTH_SHORT ).show();
+                SharePreference.setHowTo( this, HOW_TO_USE );
             }
         }
     }
@@ -295,8 +311,8 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         super.onActivityResult( requestCode, resultCode, data );
         try {
             super.onActivityResult( requestCode, resultCode, data );
-            Log.d( TAG, "onActivityResult: " + resultCode + " " +  requestCode);
-            if (requestCode == resultCode){
+            Log.d( TAG, "onActivityResult: " + resultCode + " " + requestCode );
+            if (requestCode == resultCode) {
                 showSnackBar( "Thanks! We value your time", Snackbar.LENGTH_LONG );
             }
         } catch (Exception e) {

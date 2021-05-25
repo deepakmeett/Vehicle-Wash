@@ -28,12 +28,15 @@ public class Constants {
     //Intent
     public static final int GET_BACK = 8;
     public static final int REFRESH_LAYOUT = 9;
+    public static final int NOT_ALLOWED = 10;
+    public static final int PLEASE_WAIT = 11;
     public static final int FEEDBACK_RESULT = 103;
     
     //SharePreference
     public static final String WASHER_KEY = "washer_key";
     public static final String FILE_DATA = "data";
     public static final String USER_EXIST = "user_exist";
+    public static final String HOW_TO_USE = "howToUse";
     
     //DashboardAdapter
     public static final String PENDING = "PENDING";

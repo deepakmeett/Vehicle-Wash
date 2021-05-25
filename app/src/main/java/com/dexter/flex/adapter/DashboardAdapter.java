@@ -29,7 +29,9 @@ import static com.dexter.flex.utility.Constants.ABSENT;
 import static com.dexter.flex.utility.Constants.ALL;
 import static com.dexter.flex.utility.Constants.COMPLETED;
 import static com.dexter.flex.utility.Constants.GET_BACK;
+import static com.dexter.flex.utility.Constants.NOT_ALLOWED;
 import static com.dexter.flex.utility.Constants.PENDING;
+import static com.dexter.flex.utility.Constants.PLEASE_WAIT;
 import static com.dexter.flex.utility.Constants.REFRESH_LAYOUT;
 import static com.dexter.flex.utility.Constants.WASHING;
 import static com.dexter.flex.utility.Constants.WASHING_STATUS;
@@ -128,12 +130,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         String isWashing = model.getWashing_status();
         if (isWashing != null && isWashing.equalsIgnoreCase( WASHING )) {
             holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
-            holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.sun_glow ) );
+            holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.purple_200 ) );
             holder.labelText.setText( R.string.vehicle_washing );
         }
         if (washing_status != null && !washing_status.equalsIgnoreCase( "" )) {
             if (washing_status.equalsIgnoreCase( PENDING )) {
-                holder.doneButton.setEnabled( false );
                 holder.doneButton.setText( washing_status );
                 holder.doneButton.setBackground( ResourcesCompat.getDrawable( context.getResources(), R.drawable.round_yellow_btn, context.getTheme() ) );
             } else if (washing_status.equalsIgnoreCase( WASHING )) {
@@ -155,12 +156,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         if (phoneAndUserIdNotNull) {
             if (phoneUID.equalsIgnoreCase( userUId )) {
                 holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
-                holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.dragon_green ) );
+                holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.rich_carmine ) );
                 holder.labelText.setText( R.string.your_vehicle );
                 holder.inactiveButtonsView.setVisibility( View.GONE );
             }
         } else if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
-            holder.doneButton.setEnabled( true );
             holder.inactiveButtonsView.setVisibility( View.GONE );
         } else {
             holder.inactiveButtonsView.setVisibility( View.VISIBLE );
@@ -175,6 +175,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         } );
         holder.doneButton.setOnClickListener( v -> {
             if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
+                //Vehicle washer click will happen here
                 if (washing_status != null) {
                     if (washing_status.equalsIgnoreCase( PENDING )) {
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -191,11 +192,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                     }
                 }
             } else {
+                //User click will happen here
+                getBack.BackFromAdapter( NOT_ALLOWED );
                 if (washing_status != null) {
                     if (phoneAndUserIdNotNull) {
                         if (phoneUID.equalsIgnoreCase( userUId )) {
                             if (washing_status.equalsIgnoreCase( PENDING )) {
-                                mDatabase.child( ALL ).child( SessionManager.userKey ).child( WASHING_STATUS ).setValue( WASHING );
+                                getBack.BackFromAdapter( PLEASE_WAIT );
                             } else if (washing_status.equalsIgnoreCase( WASHING )) {
                                 mDatabase.child( ALL ).child( SessionManager.userKey ).child( WASHING_STATUS ).setValue( COMPLETED );
                             } else if (washing_status.equalsIgnoreCase( COMPLETED )) {

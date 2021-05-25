@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.dexter.flex.utility.Constants.FILE_DATA;
+import static com.dexter.flex.utility.Constants.HOW_TO_USE;
 import static com.dexter.flex.utility.Constants.RUNNING_NUMBER;
 import static com.dexter.flex.utility.Constants.UID;
 import static com.dexter.flex.utility.Constants.USER_EXIST;
@@ -72,6 +73,22 @@ public class SharePreference {
             uid = sharedPreferences.getString( UID, "" );
         }
         return uid;
+    }
+    
+    public static void setHowTo(Context context, String howTo) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences( FILE_DATA, MODE_PRIVATE );
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString( HOW_TO_USE, howTo );
+        editor.apply();
+    }
+
+    public static String getHowTo(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences( FILE_DATA, Context.MODE_PRIVATE );
+        String howTo = "";
+        if (sharedPreferences.contains( HOW_TO_USE )) {
+            howTo = sharedPreferences.getString( HOW_TO_USE, "" );
+        }
+        return howTo;
     }
 
     public static void removeUidKeyRunning(Context context) {
