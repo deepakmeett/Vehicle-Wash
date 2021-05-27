@@ -1,20 +1,29 @@
 package com.dexter.flex.utility;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.dexter.flex.R;
 import com.dexter.flex.activity.LoginActivity;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.review.model.ReviewErrorCode;
+import com.google.android.play.core.tasks.OnCompleteListener;
+import com.google.android.play.core.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.regex.Pattern;
@@ -86,6 +95,28 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
     
+    public void review(Context context){
+        ReviewManager manager = ReviewManagerFactory.create( this);
+        Task<ReviewInfo> request = manager.requestReviewFlow();
+        request.addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                // We can get the ReviewInfo object
+                ReviewInfo reviewInfo = task.getResult();
+                Task<Void> flow = manager.launchReviewFlow( (Activity) context, reviewInfo);
+                flow.addOnCompleteListener( task1 -> {
+                    // The flow has finished. The API does not indicate whether the user
+                    // reviewed or not, or even whether the review dialog was shown. Thus, no
+                    // matter the result, we continue our app flow.
+                } );
+                
+            } else {
+                // There was some problem, log or handle the error code.
+//                @ReviewErrorCode int reviewErrorCode = ((TaskException) task.getException()).getErrorCode();
+                
+            }
+        });
+    }
+    
     public void logout(Activity activity){
         FirebaseAuth.getInstance().signOut();
         SharePreference.removeUidKeyRunning( this );
@@ -95,5 +126,4 @@ public class BaseActivity extends AppCompatActivity {
         startActivity( intent );
         finish();
     }
-    
 }

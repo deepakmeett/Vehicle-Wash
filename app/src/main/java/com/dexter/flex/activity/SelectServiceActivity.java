@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -37,14 +38,18 @@ import java.util.Objects;
 import static com.dexter.flex.utility.Constants.ALL;
 import static com.dexter.flex.utility.Constants.AUTO_SERVICE;
 import static com.dexter.flex.utility.Constants.BIKE_SERVICE;
+import static com.dexter.flex.utility.Constants.BOOKING;
 import static com.dexter.flex.utility.Constants.CAR_SERVICE;
+import static com.dexter.flex.utility.Constants.CLOSE;
 import static com.dexter.flex.utility.Constants.FEEDBACK;
 import static com.dexter.flex.utility.Constants.FEEDBACK_RESULT;
 import static com.dexter.flex.utility.Constants.HOW_TO_USE;
 import static com.dexter.flex.utility.Constants.LOGOUT;
 import static com.dexter.flex.utility.Constants.NOT_COMPLETED;
 import static com.dexter.flex.utility.Constants.NOT_SHOW;
+import static com.dexter.flex.utility.Constants.OPEN;
 import static com.dexter.flex.utility.Constants.OTHER_SERVICE;
+import static com.dexter.flex.utility.Constants.PASSWORD;
 import static com.dexter.flex.utility.Constants.PENDING;
 import static com.dexter.flex.utility.Constants.REACH_TIME;
 import static com.dexter.flex.utility.Constants.REVIEW;
@@ -61,7 +66,7 @@ import static com.dexter.flex.utility.Constants.WASHING_STATUS;
 public class SelectServiceActivity extends BaseActivity implements View.OnClickListener, ShowInternetDialog
         , MoreItemsBottomSheet.MoreOptionBottom {
 
-    private ImageView threeDot;
+    private FrameLayout threeDot;
     private CardView bikeCard, carCard, tempoCard, tractorCard, truckCard, autoCard, otherCard;
     private CheckBox bikeCheckBox, carCheckBox, tempoCheckBox, tractorCheckBox, truckCheckBox,
             autoCheckBox, otherCheckBox;
@@ -178,7 +183,23 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                 timeToReach.setError( "Please provide correct time" );
             } else {
                 hideSoftKeyboard( this );
-                sendDataToFireBase( serviceSelectedIs, vehicleModelData, reachingTime );
+                DatabaseReference mUsersDatabase = FirebaseDatabase.getInstance().getReference();
+                mUsersDatabase.child( PASSWORD ).child( BOOKING ).get()
+                        .addOnCompleteListener( task -> {
+                            if (!task.isSuccessful()) {
+                                Log.e( "firebase", "Error getting data", task.getException() );
+                            } else {
+                                Log.d( "firebase", String.valueOf( task.getResult().getValue() ) );
+                                String value = (String) task.getResult().getValue();
+                                DatabaseReference mDatabase = FirebaseDatabase.getInstance()
+                                        .getReference().child( PASSWORD );
+                                if (value == null || value.equalsIgnoreCase( OPEN )){
+                                    sendDataToFireBase( serviceSelectedIs, vehicleModelData, reachingTime );
+                                }else if (value.equalsIgnoreCase( CLOSE )){
+                                    showSnackBar( "Booking closed", Snackbar.LENGTH_LONG );
+                                }
+                            }
+                        } );
             }
         }
     }
@@ -292,6 +313,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                 Toast.makeText( this, "SHARE", Toast.LENGTH_SHORT ).show();
             } else if (action.equalsIgnoreCase( REVIEW )) {
                 Toast.makeText( this, "REVIEW", Toast.LENGTH_SHORT ).show();
+                review( this );
             } else if (action.equalsIgnoreCase( LOGOUT )) {
                 logout( SelectServiceActivity.this );
             } else if (action.equalsIgnoreCase( FEEDBACK )) {

@@ -41,7 +41,7 @@ public class Constants {
     //DashboardAdapter
     public static final String PENDING = "PENDING";
     public static final String WASHING = "WASHING";
-    public static final String ABSENT = "ABSENT";
+    public static final String CANCELLED = "CANCELLED";
     public static final String COMPLETED = "COMPLETED";
     
     //Internet connection lost
@@ -53,9 +53,13 @@ public class Constants {
     public static final String VEHICLE_WASHER = "VEHICLE_WASHER";
 
     //MoreBottomSheet
+    public static final String BOOKING = "booking";
+    public static final String PASSWORD = "password";
     public static final String SHARE = "share";
     public static final String REVIEW = "review";
     public static final String LOGOUT = "logout";
     public static final String NOT_COMPLETED = "not_completed";
+    public static final String OPEN = "open";
+    public static final String CLOSE = "close";
     
 }

@@ -25,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
-import static com.dexter.flex.utility.Constants.ABSENT;
+import static com.dexter.flex.utility.Constants.CANCELLED;
 import static com.dexter.flex.utility.Constants.ALL;
 import static com.dexter.flex.utility.Constants.COMPLETED;
 import static com.dexter.flex.utility.Constants.GET_BACK;
@@ -140,7 +140,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             } else if (washing_status.equalsIgnoreCase( WASHING )) {
                 holder.doneButton.setText( washing_status );
                 holder.doneButton.setBackground( ResourcesCompat.getDrawable( context.getResources(), R.drawable.round_blue_btn, context.getTheme() ) );
-            } else if (washing_status.equalsIgnoreCase( ABSENT )) {
+            } else if (washing_status.equalsIgnoreCase( CANCELLED )) {
                 holder.doneButton.setText( washing_status );
                 holder.doneButton.setBackground( ResourcesCompat.getDrawable( context.getResources(), R.drawable.round_red_btn, context.getTheme() ) );
             } else if (washing_status.equalsIgnoreCase( COMPLETED )) {
@@ -169,7 +169,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             if (washing_status != null && washing_status.equalsIgnoreCase( PENDING )) {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference mDatabase = database.getReference();
-                mDatabase.child( ALL ).child( keyList.getKey() ).child( WASHING_STATUS ).setValue( ABSENT );
+                mDatabase.child( ALL ).child( keyList.getKey() ).child( WASHING_STATUS ).setValue( CANCELLED );
                 getBack.BackFromAdapter( REFRESH_LAYOUT );
             }
         } );

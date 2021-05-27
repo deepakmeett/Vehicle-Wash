@@ -15,7 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.dexter.flex.utility.Constants.ALL;
+import static com.dexter.flex.utility.Constants.CLOSE;
 import static com.dexter.flex.utility.Constants.FEEDBACK;
 import static com.dexter.flex.utility.Constants.GET_BACK;
 import static com.dexter.flex.utility.Constants.HOW_TO_USE;
@@ -54,12 +55,15 @@ import static com.dexter.flex.utility.Constants.LOGOUT;
 import static com.dexter.flex.utility.Constants.NOT_ALLOWED;
 import static com.dexter.flex.utility.Constants.NOT_COMPLETED;
 import static com.dexter.flex.utility.Constants.NOT_SHOW;
+import static com.dexter.flex.utility.Constants.OPEN;
+import static com.dexter.flex.utility.Constants.PASSWORD;
 import static com.dexter.flex.utility.Constants.PENDING;
 import static com.dexter.flex.utility.Constants.PLEASE_WAIT;
 import static com.dexter.flex.utility.Constants.REACH_TIME;
 import static com.dexter.flex.utility.Constants.REFRESH_LAYOUT;
 import static com.dexter.flex.utility.Constants.REVIEW;
 import static com.dexter.flex.utility.Constants.RUNNING_NUMBER;
+import static com.dexter.flex.utility.Constants.BOOKING;
 import static com.dexter.flex.utility.Constants.SHARE;
 import static com.dexter.flex.utility.Constants.SHOW;
 import static com.dexter.flex.utility.Constants.UID;
@@ -71,7 +75,7 @@ import static com.dexter.flex.utility.Constants.WASHING;
 import static com.dexter.flex.utility.Constants.WASHING_STATUS;
 public class DashboardActivity extends BaseActivity implements View.OnClickListener, DashboardAdapter.GetBack, ShowInternetDialog, MoreItemsBottomSheet.MoreOptionBottom {
 
-    private ImageView moreOptions;
+    private FrameLayout threeDot;
     private TextView vehicleDetails, vehicleModel, vehicleType, runningNumber;
     private RecyclerView dashboardRecycler;
     private String vehicleModelNum, vehicleTyp, reachTime, washingNum, userIdWashing, washerKeySP, keyValue, phoneUID;
@@ -81,8 +85,8 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     private final List<DashboardModel> dashboardModelList = new ArrayList<>();
     //We are storing all keys in the List<UserKeyModel>
     private final List<UserKeyModel> userKeyModel = new ArrayList<>();
-    private final com.dexter.flex.receiver.ConnectivityReceiver ConnectivityReceiver
-            = new ConnectivityReceiver( this );
+    private final ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
+    private DatabaseReference mUsersDatabase;
     private static final String TAG = "DashboardActivity";
 
     @Override
@@ -99,18 +103,18 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
     private void findView() {
         vehicleDetails = findViewById( R.id.vehicleDetails );
-        moreOptions = findViewById( R.id.moreOptions );
+        threeDot = findViewById( R.id.moreOptions );
         vehicleModel = findViewById( R.id.vehicleModel );
         vehicleType = findViewById( R.id.vehicleType );
         runningNumber = findViewById( R.id.runningNumber );
         dashboardRecycler = findViewById( R.id.dashboardRecycler );
         dashboardRecycler.setHasFixedSize( true );
-        moreOptions.setOnClickListener( this );
+        threeDot.setOnClickListener( this );
     }
 
     @Override
     public void onClick(View v) {
-        if (v == moreOptions) {
+        if (v == threeDot) {
             MoreItemsBottomSheet moreItemsBottomSheet = new MoreItemsBottomSheet( this );
             moreItemsBottomSheet.show( getSupportFragmentManager(), "MoreOptions" );
         }
@@ -118,8 +122,8 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
     private void setDataToRecyclerview() {
         commonProgressbar( true, false );
-        DatabaseReference mUsersDatabase = FirebaseDatabase.getInstance().getReference().child( ALL );
-        mUsersDatabase.addValueEventListener( new ValueEventListener() {
+        mUsersDatabase = FirebaseDatabase.getInstance().getReference();
+        mUsersDatabase.child( ALL ).addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 commonProgressbar( false, true );
@@ -291,9 +295,9 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             finish();
         } else if (back == REFRESH_LAYOUT) {
             pendingPosition = -1;
-        } else if (back == NOT_ALLOWED){
+        } else if (back == NOT_ALLOWED) {
             showSnackBar( "Not allowed for someone else's vehicle", Snackbar.LENGTH_SHORT );
-        } else if (back == PLEASE_WAIT){
+        } else if (back == PLEASE_WAIT) {
             showSnackBar( "Please wait for your number", Snackbar.LENGTH_SHORT );
         }
     }
@@ -371,10 +375,28 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void bottomSheet(String action) {
         if (action != null && !action.equalsIgnoreCase( "" )) {
-            if (action.equalsIgnoreCase( SHARE )) {
+            if (action.equalsIgnoreCase( BOOKING )) {
+                mUsersDatabase.child( PASSWORD ).child( BOOKING ).get()
+                        .addOnCompleteListener( task -> {
+                    if (!task.isSuccessful()) {
+                        Log.e( "firebase", "Error getting data", task.getException() );
+                    } else {
+                        Log.d( "firebase", String.valueOf( task.getResult().getValue() ) );
+                        String value = (String) task.getResult().getValue();
+                        DatabaseReference mDatabase = FirebaseDatabase.getInstance()
+                                .getReference().child( PASSWORD );
+                        if (value == null || value.equalsIgnoreCase( OPEN )){
+                            mDatabase.child( BOOKING ).setValue( CLOSE );
+                        }else if (value.equalsIgnoreCase( CLOSE )){
+                            mDatabase.child( BOOKING ).setValue( OPEN );
+                        }
+                    }
+                } );
+            } else if (action.equalsIgnoreCase( SHARE )) {
                 Toast.makeText( this, "SHARE", Toast.LENGTH_SHORT ).show();
             } else if (action.equalsIgnoreCase( REVIEW )) {
                 Toast.makeText( this, "REVIEW", Toast.LENGTH_SHORT ).show();
+                review( this );
             } else if (action.equalsIgnoreCase( LOGOUT )) {
                 logout( DashboardActivity.this );
             } else if (action.equalsIgnoreCase( FEEDBACK )) {

@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,14 +12,17 @@ import android.widget.ImageView;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.dexter.flex.R;
-import com.dexter.flex.utility.BaseActivity;
+import com.dexter.flex.interfaces.ShowInternetDialog;
 import com.dexter.flex.receiver.ConnectivityReceiver;
+import com.dexter.flex.utility.BaseActivity;
 import com.dexter.flex.utility.SessionManager;
 import com.dexter.flex.utility.SharePreference;
-import com.dexter.flex.interfaces.ShowInternetDialog;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static com.dexter.flex.utility.Constants.NOT_SHOW;
+import static com.dexter.flex.utility.Constants.PASSWORD;
 import static com.dexter.flex.utility.Constants.SHOW;
 import static com.dexter.flex.utility.Constants.USER_EXIST;
 public class UserOrWasherActivity extends BaseActivity implements View.OnClickListener, ShowInternetDialog {
@@ -29,7 +33,7 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
     private final com.dexter.flex.receiver.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
     private static final String SELECT_SERVICE = "SelectServiceActivity";
     private static final String DASHBOARD = "DashboardActivity";
-
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +46,11 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
     private void checkUserOrWasher() {
         String ifUserExist = SharePreference.getUserExit( this );
         String washerKey = SharePreference.getWasherKey( this );
-        if (ifUserExist != null && !ifUserExist.equalsIgnoreCase( "" )){
-            goToSelectService(SELECT_SERVICE);
-        }if (washerKey != null && !washerKey.equalsIgnoreCase( "" )){
-            goToSelectService(DASHBOARD);
+        if (ifUserExist != null && !ifUserExist.equalsIgnoreCase( "" )) {
+            goToSelectService( SELECT_SERVICE );
+        }
+        if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
+            goToSelectService( DASHBOARD );
         }
     }
 
@@ -61,23 +66,32 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (v == logout){
+        if (v == logout) {
             logout( UserOrWasherActivity.this );
-        }else if (v == userButton){
+        } else if (v == userButton) {
             SharePreference.removeWasherKeyUserExit( this );
             SharePreference.setUserExit( this, USER_EXIST );
-            goToSelectService(SELECT_SERVICE);
-        } else if (v == vehicleWasherButton){
+            goToSelectService( SELECT_SERVICE );
+        } else if (v == vehicleWasherButton) {
             String key = washerKeyEditText.getText().toString().trim();
-            if (key.equalsIgnoreCase( "" )){
+            if (key.equalsIgnoreCase( "" )) {
                 washerKeyEditText.setError( "Please provide vehicle washer key" );
-            }else {
-                SharePreference.setWasherKey( this, "76@SevenSix" );
+            } else {
+                mDatabase = FirebaseDatabase.getInstance().getReference();
+                mDatabase.child( PASSWORD ).child( "washer" ).get().addOnCompleteListener( task -> {
+                    if (!task.isSuccessful()) {
+                        Log.e( "firebase", "Error getting data", task.getException() );
+                    } else {
+                        Log.d( "firebase", String.valueOf( task.getResult().getValue() ) );
+                        SharePreference.setWasherKey( UserOrWasherActivity.this,
+                                                      String.valueOf( task.getResult().getValue() ) );
+                    }
+                } );
                 String keySharePreference = SharePreference.getWasherKey( this );
-                if (keySharePreference != null && !keySharePreference.equalsIgnoreCase( "" )){
-                    if (key.equalsIgnoreCase( keySharePreference )){
-                        goToSelectService(DASHBOARD);
-                    }else {
+                if (keySharePreference != null && !keySharePreference.equalsIgnoreCase( "" )) {
+                    if (key.equalsIgnoreCase( keySharePreference )) {
+                        goToSelectService( DASHBOARD );
+                    } else {
                         showSnackBar( "Key not matched", Snackbar.LENGTH_SHORT );
                     }
                 }
@@ -88,10 +102,10 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
 
     private void goToSelectService(String whichActivity) {
         Intent intent;
-        if (whichActivity.equalsIgnoreCase( SELECT_SERVICE )){
-            intent = new Intent( UserOrWasherActivity.this, SelectServiceActivity.class);
-        }else {
-            intent = new Intent( UserOrWasherActivity.this, DashboardActivity.class);
+        if (whichActivity.equalsIgnoreCase( SELECT_SERVICE )) {
+            intent = new Intent( UserOrWasherActivity.this, SelectServiceActivity.class );
+        } else {
+            intent = new Intent( UserOrWasherActivity.this, DashboardActivity.class );
         }
         startActivity( intent );
         finish();

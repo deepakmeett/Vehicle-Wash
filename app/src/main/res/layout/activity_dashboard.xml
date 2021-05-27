@@ -14,8 +14,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="@dimen/_270sdp"
             android:background="@drawable/round_blue_bottom"
             android:paddingHorizontal="@dimen/_10sdp"
             android:paddingTop="@dimen/_10sdp">
@@ -32,14 +31,20 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"/>
 
-            <ImageView
+            <FrameLayout
                 android:id="@+id/moreOptions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/image_desc"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_baseline_more_options_24"/>
+                android:layout_gravity="end">
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:contentDescription="@string/image_desc"
+                    android:src="@drawable/ic_baseline_more_options_24"/>
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/vehicleModel"
@@ -95,9 +100,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dashboardRecycler"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
             android:orientation="vertical"
             android:paddingHorizontal="@dimen/_10sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
