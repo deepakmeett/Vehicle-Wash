@@ -34,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.dexter.flex.utility.Constants.ALL;
 import static com.dexter.flex.utility.Constants.AUTO_SERVICE;
@@ -225,7 +226,8 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int size = (int) snapshot.getChildrenCount();
-                String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
+//                String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
+                String uid = UUID.randomUUID().toString();
                 SharePreference.setUID( SelectServiceActivity.this, uid );
                 String vehicle_type = "";
                 if (serviceSelectedIs == BIKE_SERVICE) {

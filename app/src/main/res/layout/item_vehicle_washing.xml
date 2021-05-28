@@ -132,15 +132,5 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13sdp"/>
         </RelativeLayout>
-
-        <View
-            android:id="@+id/inactiveButtonsView"
-            android:layout_width="@dimen/_177sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_gravity="end|bottom"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_3sdp"
-            android:background="@drawable/round_white_blur"
-            android:visibility="gone"/>
     </FrameLayout>
 </androidx.cardview.widget.CardView>

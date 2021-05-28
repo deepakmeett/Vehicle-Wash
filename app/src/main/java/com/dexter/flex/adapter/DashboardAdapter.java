@@ -158,12 +158,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
                 holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.rich_carmine ) );
                 holder.labelText.setText( R.string.your_vehicle );
-                holder.inactiveButtonsView.setVisibility( View.GONE );
             }
-        } else if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
-            holder.inactiveButtonsView.setVisibility( View.GONE );
-        } else {
-            holder.inactiveButtonsView.setVisibility( View.VISIBLE );
         }
         holder.cutImageView.setOnClickListener( v -> {
             if (washing_status != null && washing_status.equalsIgnoreCase( PENDING )) {
@@ -231,7 +226,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         ImageView cutImageView, vehicleImage, labelBg;
         TextView labelText, runningNumber, vehicleModel, reachTime;
         Button doneButton;
-        View inactiveButtonsView;
 
         public ViewHolder(@NonNull View itemView) {
             super( itemView );
@@ -244,7 +238,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             vehicleModel = itemView.findViewById( R.id.vehicleModel );
             reachTime = itemView.findViewById( R.id.vehicleType );
             doneButton = itemView.findViewById( R.id.doneButton );
-            inactiveButtonsView = itemView.findViewById( R.id.inactiveButtonsView );
         }
     }
 }
