@@ -52,6 +52,7 @@ import static com.dexter.flex.utility.Constants.OPEN;
 import static com.dexter.flex.utility.Constants.OTHER_SERVICE;
 import static com.dexter.flex.utility.Constants.PASSWORD;
 import static com.dexter.flex.utility.Constants.PENDING;
+import static com.dexter.flex.utility.Constants.RANDOM;
 import static com.dexter.flex.utility.Constants.REACH_TIME;
 import static com.dexter.flex.utility.Constants.REVIEW;
 import static com.dexter.flex.utility.Constants.RUNNING_NUMBER;
@@ -226,9 +227,10 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int size = (int) snapshot.getChildrenCount();
-//                String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
-                String uid = UUID.randomUUID().toString();
+                String uid = Objects.requireNonNull( firebaseAuth.getCurrentUser() ).getUid();
+                String random = UUID.randomUUID().toString();
                 SharePreference.setUID( SelectServiceActivity.this, uid );
+                SharePreference.setRANDOM( SelectServiceActivity.this, random );
                 String vehicle_type = "";
                 if (serviceSelectedIs == BIKE_SERVICE) {
                     vehicle_type = "Bike";
@@ -250,6 +252,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                 hashMap.put( REACH_TIME, reachTime );
                 hashMap.put( VEHICLE_TYPE, vehicle_type );
                 hashMap.put( UID, uid );
+                hashMap.put( RANDOM, random );
                 hashMap.put( WASHING_STATUS, PENDING );
                 hashMap.put( RUNNING_NUMBER, String.valueOf( size + 1 ) );
                 dr.push().setValue( hashMap ).addOnCompleteListener( task -> {

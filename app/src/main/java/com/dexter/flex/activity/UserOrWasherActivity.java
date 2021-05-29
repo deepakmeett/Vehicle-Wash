@@ -85,16 +85,17 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
                         Log.d( "firebase", String.valueOf( task.getResult().getValue() ) );
                         SharePreference.setWasherKey( UserOrWasherActivity.this,
                                                       String.valueOf( task.getResult().getValue() ) );
+                        String keySharePreference = String.valueOf( task.getResult().getValue() );
+                        if (!keySharePreference.equalsIgnoreCase( "" )) {
+                            if (key.equalsIgnoreCase( keySharePreference )) {
+                                goToSelectService( DASHBOARD );
+                            } else {
+                                showSnackBar( "Key not matched", Snackbar.LENGTH_SHORT );
+                            }
+                        }
                     }
                 } );
-                String keySharePreference = SharePreference.getWasherKey( this );
-                if (keySharePreference != null && !keySharePreference.equalsIgnoreCase( "" )) {
-                    if (key.equalsIgnoreCase( keySharePreference )) {
-                        goToSelectService( DASHBOARD );
-                    } else {
-                        showSnackBar( "Key not matched", Snackbar.LENGTH_SHORT );
-                    }
-                }
+                
                 hideSoftKeyboard( this );
             }
         }

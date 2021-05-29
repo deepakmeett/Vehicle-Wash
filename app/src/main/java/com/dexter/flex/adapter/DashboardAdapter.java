@@ -25,11 +25,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
-import static com.dexter.flex.utility.Constants.CANCELLED;
 import static com.dexter.flex.utility.Constants.ALL;
+import static com.dexter.flex.utility.Constants.CANCELLED;
 import static com.dexter.flex.utility.Constants.COMPLETED;
 import static com.dexter.flex.utility.Constants.GET_BACK;
 import static com.dexter.flex.utility.Constants.NOT_ALLOWED;
+import static com.dexter.flex.utility.Constants.ONE_VEHICLE_AT_A_TIME;
 import static com.dexter.flex.utility.Constants.PENDING;
 import static com.dexter.flex.utility.Constants.PLEASE_WAIT;
 import static com.dexter.flex.utility.Constants.REFRESH_LAYOUT;
@@ -46,6 +47,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     private final List<DashboardModel> list;
     private final List<UserKeyModel> userKeyModelList;
     private final GetBack getBack;
+    private String washingStatus;
     private final BaseActivity baseActivity;
     private DatabaseReference mDatabase;
 
@@ -77,7 +79,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         String washing_status = model.getWashing_status();
         String washerKey = SharePreference.getWasherKey( context );
         String phoneUID = SharePreference.getUID( context );
+        String phoneRandom = SharePreference.getRANDOM( context );
         String userUId = model.getUid();
+        String random = model.getRandom();
         final boolean phoneAndUserIdNotNull = phoneUID != null && !phoneUID.equalsIgnoreCase( "" )
                                               && userUId != null && !userUId.equalsIgnoreCase( "" );
         if (vehicleType != null && !vehicleType.equalsIgnoreCase( "" )) {
@@ -99,7 +103,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         }
         if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
             if (phoneAndUserIdNotNull) {
-                if (phoneUID.equalsIgnoreCase( userUId )) {
+                if (phoneRandom.equalsIgnoreCase( random )) {
                     holder.vehicleModel.setText( vehicleModelNum );
                 } else {
                     holder.vehicleModel.setText( R.string.xxx_xxx_xxx );
@@ -154,7 +158,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             }
         }
         if (phoneAndUserIdNotNull) {
-            if (phoneUID.equalsIgnoreCase( userUId )) {
+            if (phoneRandom.equalsIgnoreCase( random )) {
                 holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
                 holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.rich_carmine ) );
                 holder.labelText.setText( R.string.your_vehicle );
@@ -173,10 +177,20 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 //Vehicle washer click will happen here
                 if (washing_status != null) {
                     if (washing_status.equalsIgnoreCase( PENDING )) {
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference mDatabase = database.getReference();
-                        mDatabase.child( ALL ).child( keyList.getKey() ).child( WASHING_STATUS ).setValue( WASHING );
-                        getBack.BackFromAdapter( REFRESH_LAYOUT );
+                        for (int i = 0; i < list.size(); i++) {
+                            washingStatus = list.get( i ).getWashing_status();
+                            if (washingStatus.equalsIgnoreCase( WASHING )) {
+                                break;
+                            }
+                        }
+                        if (!washingStatus.equalsIgnoreCase( WASHING )) {
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference mDatabase = database.getReference();
+                            mDatabase.child( ALL ).child( keyList.getKey() ).child( WASHING_STATUS ).setValue( WASHING );
+                            getBack.BackFromAdapter( REFRESH_LAYOUT );
+                        } else {
+                            getBack.BackFromAdapter( ONE_VEHICLE_AT_A_TIME );
+                        }
                     } else if (washing_status.equalsIgnoreCase( WASHING )) {
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference mDatabase = database.getReference();
@@ -191,7 +205,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 getBack.BackFromAdapter( NOT_ALLOWED );
                 if (washing_status != null) {
                     if (phoneAndUserIdNotNull) {
-                        if (phoneUID.equalsIgnoreCase( userUId )) {
+                        if (phoneRandom.equalsIgnoreCase( random )) {
                             if (washing_status.equalsIgnoreCase( PENDING )) {
                                 getBack.BackFromAdapter( PLEASE_WAIT );
                             } else if (washing_status.equalsIgnoreCase( WASHING )) {

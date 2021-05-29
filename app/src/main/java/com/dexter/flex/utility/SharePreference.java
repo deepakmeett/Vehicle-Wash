@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import static android.content.Context.MODE_PRIVATE;
 import static com.dexter.flex.utility.Constants.FILE_DATA;
 import static com.dexter.flex.utility.Constants.HOW_TO_USE;
+import static com.dexter.flex.utility.Constants.RANDOM;
 import static com.dexter.flex.utility.Constants.RUNNING_NUMBER;
 import static com.dexter.flex.utility.Constants.UID;
 import static com.dexter.flex.utility.Constants.USER_EXIST;
@@ -73,6 +74,21 @@ public class SharePreference {
             uid = sharedPreferences.getString( UID, "" );
         }
         return uid;
+    } 
+    public static void setRANDOM(Context context, String random) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences( FILE_DATA, MODE_PRIVATE );
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString( RANDOM, random );
+        editor.apply();
+    }
+
+    public static String getRANDOM(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences( FILE_DATA, Context.MODE_PRIVATE );
+        String random = "";
+        if (sharedPreferences.contains( RANDOM )) {
+            random = sharedPreferences.getString( RANDOM, "" );
+        }
+        return random;
     }
     
     public static void setHowTo(Context context, String howTo) {

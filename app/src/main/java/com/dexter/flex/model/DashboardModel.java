@@ -4,6 +4,7 @@ public class DashboardModel {
     private String reach_time;
     private String running_number;
     private String uid;
+    private String random;
     private String vehicle_model;
     private String vehicle_type;
     private String washing_status;
@@ -33,6 +34,14 @@ public class DashboardModel {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getRandom() {
+        return random;
+    }
+
+    public void setRandom(String random) {
+        this.random = random;
     }
 
     public String getVehicle_model() {

@@ -14,6 +14,7 @@ public class Constants {
     public static final String REACH_TIME = "reach_time";
     public static final String VEHICLE_TYPE = "vehicle_type";
     public static final String UID = "uid";
+    public static final String RANDOM = "random";
     public static final String WASHING_STATUS = "washing_status";
     public static final String RUNNING_NUMBER = "running_number";
     public static final String FEEDBACK = "feedback";
@@ -30,6 +31,7 @@ public class Constants {
     public static final int REFRESH_LAYOUT = 9;
     public static final int NOT_ALLOWED = 10;
     public static final int PLEASE_WAIT = 11;
+    public static final int ONE_VEHICLE_AT_A_TIME = 12;
     public static final int FEEDBACK_RESULT = 103;
     
     //SharePreference

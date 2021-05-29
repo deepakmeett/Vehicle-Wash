@@ -7,12 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.media.AudioAttributes;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -47,6 +48,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.dexter.flex.utility.Constants.ALL;
+import static com.dexter.flex.utility.Constants.BOOKING;
 import static com.dexter.flex.utility.Constants.CLOSE;
 import static com.dexter.flex.utility.Constants.FEEDBACK;
 import static com.dexter.flex.utility.Constants.GET_BACK;
@@ -55,18 +57,18 @@ import static com.dexter.flex.utility.Constants.LOGOUT;
 import static com.dexter.flex.utility.Constants.NOT_ALLOWED;
 import static com.dexter.flex.utility.Constants.NOT_COMPLETED;
 import static com.dexter.flex.utility.Constants.NOT_SHOW;
+import static com.dexter.flex.utility.Constants.ONE_VEHICLE_AT_A_TIME;
 import static com.dexter.flex.utility.Constants.OPEN;
 import static com.dexter.flex.utility.Constants.PASSWORD;
 import static com.dexter.flex.utility.Constants.PENDING;
 import static com.dexter.flex.utility.Constants.PLEASE_WAIT;
+import static com.dexter.flex.utility.Constants.RANDOM;
 import static com.dexter.flex.utility.Constants.REACH_TIME;
 import static com.dexter.flex.utility.Constants.REFRESH_LAYOUT;
 import static com.dexter.flex.utility.Constants.REVIEW;
 import static com.dexter.flex.utility.Constants.RUNNING_NUMBER;
-import static com.dexter.flex.utility.Constants.BOOKING;
 import static com.dexter.flex.utility.Constants.SHARE;
 import static com.dexter.flex.utility.Constants.SHOW;
-import static com.dexter.flex.utility.Constants.UID;
 import static com.dexter.flex.utility.Constants.USER;
 import static com.dexter.flex.utility.Constants.VEHICLE_MODEL;
 import static com.dexter.flex.utility.Constants.VEHICLE_TYPE;
@@ -78,7 +80,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     private FrameLayout threeDot;
     private TextView vehicleDetails, vehicleModel, vehicleType, runningNumber;
     private RecyclerView dashboardRecycler;
-    private String vehicleModelNum, vehicleTyp, reachTime, washingNum, userIdWashing, washerKeySP, keyValue, phoneUID;
+    private String vehicleModelNum, vehicleTyp, reachTime, washingNum, userRandomWashing, washerKeySP, keyValue, phoneRandom;
     private int isWashing = 0;
     private int pendingPosition = -1;
     //We are storing all data in List<DashboardModel>
@@ -88,6 +90,8 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     private final ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
     private DatabaseReference mUsersDatabase;
     private static final String TAG = "DashboardActivity";
+    private Ringtone ringtone;
+    private String washingForLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,8 +139,8 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                     keyValue = ds.getKey();
                     Objects.requireNonNull( userKeyMod ).setKey( keyValue );
                     userKeyModel.add( userKeyMod );
-                    phoneUID = SharePreference.getUID( DashboardActivity.this );
-                    if (Objects.equals( ds.child( UID ).getValue(), phoneUID )) {
+                    phoneRandom = SharePreference.getRANDOM( DashboardActivity.this );
+                    if (Objects.equals( ds.child( RANDOM ).getValue(), phoneRandom )) {
                         SessionManager.userKey = ds.getKey();
                     }
                 }
@@ -177,12 +181,21 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             vehicleTyp = Objects.requireNonNull( ds.child( VEHICLE_TYPE ).getValue() ).toString();
             reachTime = Objects.requireNonNull( ds.child( REACH_TIME ).getValue() ).toString();
             washingNum = Objects.requireNonNull( ds.child( RUNNING_NUMBER ).getValue() ).toString();
-            userIdWashing = Objects.requireNonNull( ds.child( UID ).getValue() ).toString();
+            userRandomWashing = Objects.requireNonNull( ds.child( RANDOM ).getValue() ).toString();
             isWashing++;
             if (washingPending.equalsIgnoreCase( WASHING )) {
-                if (phoneUID.equalsIgnoreCase( userIdWashing )) {
+                washingForLogout = washingPending;
+                if (phoneRandom.equalsIgnoreCase( userRandomWashing )) {
                     String userTurn = "This is your turn to wash the vehicle";
                     String currentVehicleDetail = "Current vehicle washing number is " + washingNum;
+                    createNotification( userTurn, currentVehicleDetail );
+                }
+            }
+            
+            if (washingPending.equalsIgnoreCase( PENDING )) {
+                if (!washerKeySP.equalsIgnoreCase( "" )) {
+                    String userTurn = "Please confirm the booking";
+                    String currentVehicleDetail = "Click pending button to activate washing";
                     createNotification( userTurn, currentVehicleDetail );
                 }
             }
@@ -218,7 +231,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                 vehicleType.setVisibility( View.VISIBLE );
                 runningNumber.setVisibility( View.VISIBLE );
                 if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
-                    if (phoneUID.equalsIgnoreCase( userIdWashing )) {
+                    if (phoneRandom.equalsIgnoreCase( userRandomWashing )) {
                         vehicleModel.setText( vehicleModelNum );
                     } else {
                         vehicleModel.setText( R.string.xxx_xxx_xxx );
@@ -299,11 +312,19 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             showSnackBar( "Not allowed for someone else's vehicle", Snackbar.LENGTH_SHORT );
         } else if (back == PLEASE_WAIT) {
             showSnackBar( "Please wait for your number", Snackbar.LENGTH_SHORT );
+        } else if (back == ONE_VEHICLE_AT_A_TIME) {
+            showSnackBar( "One vehicle at a time can wash", Snackbar.LENGTH_SHORT );
         }
     }
 
     private void createNotification(String currentUser, String currentVehicle) {
-        Uri soundUri = RingtoneManager.getDefaultUri( RingtoneManager.TYPE_NOTIFICATION );
+        try {
+            Uri soundUri = RingtoneManager.getDefaultUri( RingtoneManager.TYPE_RINGTONE );
+            ringtone = RingtoneManager.getRingtone( getApplicationContext(), soundUri );
+            ringtone.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Intent activityIntent = new Intent( DashboardActivity.this, DashboardActivity.class );
         PendingIntent contentIntent = PendingIntent.getActivity( DashboardActivity.this, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT );
         NotificationManager mNotificationManager = (NotificationManager) getApplicationContext().getSystemService( Context.NOTIFICATION_SERVICE );
@@ -313,31 +334,41 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             mChannel.setLightColor( Color.BLUE );
             mChannel.enableLights( true );
             mChannel.setVibrationPattern( new long[]{0, 500, 1000} );
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setContentType( AudioAttributes.CONTENT_TYPE_SONIFICATION )
-                    .setUsage( AudioAttributes.USAGE_NOTIFICATION )
-                    .build();
-            mChannel.setSound( soundUri, audioAttributes );
+//            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+//                    .setUsage( AudioAttributes.USAGE_NOTIFICATION )
+//                    .build();
+//            mChannel.setSound( soundUri, audioAttributes );
             if (mNotificationManager != null) {
                 mNotificationManager.createNotificationChannel( mChannel );
             }
+            try {
+                new Handler().postDelayed( () -> ringtone.stop(), 5000 );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                new Handler().postDelayed( () -> ringtone.stop(), 8000 );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            NotificationManagerCompat nmc = NotificationManagerCompat.from( DashboardActivity.this );
+            Notification notification = new NotificationCompat.Builder( DashboardActivity.this, CHANNEL_1 )
+                    .setSmallIcon( R.mipmap.ic_launcher )
+                    .setContentTitle( currentUser )
+                    .setContentText( currentVehicle )
+                    .setPriority( Notification.PRIORITY_HIGH )
+                    .setCategory( Notification.CATEGORY_MESSAGE )
+                    .setVibrate( new long[]{0, 500, 1000} )
+//                    .setSound( soundUri )
+                    .setVisibility( NotificationCompat.VISIBILITY_PUBLIC )
+                    .setColor( getResources().getColor( R.color.dark_sky_blue ) )
+                    .setContentIntent( contentIntent )
+                    .setAutoCancel( true )
+                    .setFullScreenIntent( contentIntent, true )
+                    .build();
+            nmc.notify( 1, notification );
         }
-        NotificationManagerCompat nmc = NotificationManagerCompat.from( DashboardActivity.this );
-        Notification notification = new NotificationCompat.Builder( DashboardActivity.this, CHANNEL_1 )
-                .setSmallIcon( R.mipmap.ic_launcher )
-                .setContentTitle( currentUser )
-                .setContentText( currentVehicle )
-                .setPriority( Notification.PRIORITY_HIGH )
-                .setCategory( Notification.CATEGORY_MESSAGE )
-                .setVibrate( new long[]{0, 500, 1000} )
-                .setSound( soundUri )
-                .setVisibility( NotificationCompat.VISIBILITY_PUBLIC )
-                .setColor( getResources().getColor( R.color.dark_sky_blue ) )
-                .setContentIntent( contentIntent )
-                .setAutoCancel( true )
-                .setFullScreenIntent( contentIntent, true )
-                .build();
-        nmc.notify( 1, notification );
     }
 
     @Override
@@ -378,27 +409,33 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             if (action.equalsIgnoreCase( BOOKING )) {
                 mUsersDatabase.child( PASSWORD ).child( BOOKING ).get()
                         .addOnCompleteListener( task -> {
-                    if (!task.isSuccessful()) {
-                        Log.e( "firebase", "Error getting data", task.getException() );
-                    } else {
-                        Log.d( "firebase", String.valueOf( task.getResult().getValue() ) );
-                        String value = (String) task.getResult().getValue();
-                        DatabaseReference mDatabase = FirebaseDatabase.getInstance()
-                                .getReference().child( PASSWORD );
-                        if (value == null || value.equalsIgnoreCase( OPEN )){
-                            mDatabase.child( BOOKING ).setValue( CLOSE );
-                        }else if (value.equalsIgnoreCase( CLOSE )){
-                            mDatabase.child( BOOKING ).setValue( OPEN );
-                        }
-                    }
-                } );
+                            if (!task.isSuccessful()) {
+                                Log.e( "firebase", "Error getting data", task.getException() );
+                            } else {
+                                Log.d( "firebase", String.valueOf( Objects.requireNonNull( task.getResult() ).getValue() ) );
+                                String value = (String) task.getResult().getValue();
+                                DatabaseReference mDatabase = FirebaseDatabase.getInstance()
+                                        .getReference().child( PASSWORD );
+                                if (value == null || value.equalsIgnoreCase( OPEN )) {
+                                    mDatabase.child( BOOKING ).setValue( CLOSE );
+                                } else if (value.equalsIgnoreCase( CLOSE )) {
+                                    mDatabase.child( BOOKING ).setValue( OPEN );
+                                }
+                            }
+                        } );
             } else if (action.equalsIgnoreCase( SHARE )) {
                 Toast.makeText( this, "SHARE", Toast.LENGTH_SHORT ).show();
             } else if (action.equalsIgnoreCase( REVIEW )) {
                 Toast.makeText( this, "REVIEW", Toast.LENGTH_SHORT ).show();
                 review( this );
             } else if (action.equalsIgnoreCase( LOGOUT )) {
-                logout( DashboardActivity.this );
+                if (phoneRandom.equalsIgnoreCase( userRandomWashing )) {
+                    if ( washingForLogout.equalsIgnoreCase( WASHING )){
+                        showSnackBar( "Please complete your vehicle washing", Snackbar.LENGTH_SHORT );
+                    }
+                }else {
+                    logout( DashboardActivity.this );
+                }
             } else if (action.equalsIgnoreCase( FEEDBACK )) {
                 goToFeedbackPage();
             } else if (action.equalsIgnoreCase( NOT_COMPLETED )) {
