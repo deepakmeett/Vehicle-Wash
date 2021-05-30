@@ -3,15 +3,15 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <group android:scaleX="0.09703125"
-        android:scaleY="0.09703125"
-        android:translateX="29.16"
-        android:translateY="29.16">
+    <group android:scaleX="0.09492187"
+        android:scaleY="0.09492187"
+        android:translateX="29.7"
+        android:translateY="29.7">
         <path
             android:pathData="M411.894,0L199.066,0A53.269,53.269 0,0 0,145.859 53.331L145.859,501.314a10.636,10.636 0,0 0,18.176 7.552l141.446,-141.8L446.926,508.845a10.642,10.642 0,0 0,18.176 -7.531L465.102,53.331A53.27,53.27 0,0 0,411.894 0Z"
-            android:fillColor="#ffcb34"/>
+            android:fillColor="#2196f3"/>
         <path
             android:pathData="M512.001,314.929L512.001,102.101A53.269,53.269 45,0 0,458.67 48.894L10.687,48.894a10.636,10.636 45,0 0,-7.552 18.176l141.8,141.446L3.156,349.961a10.642,10.642 0,0 0,7.531 18.176L458.67,368.137A53.27,53.27 0,0 0,512.001 314.929Z"
-            android:fillColor="#2196f3"/>
+            android:fillColor="#ffcb34"/>
     </group>
 </vector>
