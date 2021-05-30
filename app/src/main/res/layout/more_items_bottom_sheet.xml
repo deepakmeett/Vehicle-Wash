@@ -73,17 +73,6 @@
         android:layout_marginVertical="@dimen/_5sdp"
         android:background="@android:color/darker_gray"/>
 
-    <TextView
-        android:id="@+id/feedback"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="@dimen/_10sdp"
-        android:paddingVertical="@dimen/_10sdp"
-        android:text="@string/feedback_and_suggestion"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_13sdp"
-        app:drawableStartCompat="@drawable/ic_baseline_feedback_24"/>
-
     <LinearLayout
         android:id="@+id/howToUse"
         android:layout_width="match_parent"
@@ -110,4 +99,15 @@
             android:rotation="270"
             android:src="@drawable/ic_baseline_touch_app_24"/>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_10sdp"
+        android:text="@string/feedback_and_suggestion"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_13sdp"
+        app:drawableStartCompat="@drawable/ic_baseline_feedback_24"/>
 </LinearLayout>

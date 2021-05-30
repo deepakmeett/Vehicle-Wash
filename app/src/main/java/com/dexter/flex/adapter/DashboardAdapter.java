@@ -1,5 +1,6 @@
 package com.dexter.flex.adapter;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,8 @@ import static com.dexter.flex.utility.Constants.REFRESH_LAYOUT;
 import static com.dexter.flex.utility.Constants.WASHING;
 import static com.dexter.flex.utility.Constants.WASHING_STATUS;
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
+
+    private static final String TAG = "DashboardAdapter";
 
     public interface GetBack {
 
@@ -136,6 +139,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
             holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.purple_200 ) );
             holder.labelText.setText( R.string.vehicle_washing );
+        }else {
+            holder.vehicleWashingLabel.setVisibility( View.GONE );
         }
         if (washing_status != null && !washing_status.equalsIgnoreCase( "" )) {
             if (washing_status.equalsIgnoreCase( PENDING )) {
@@ -155,13 +160,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         if (washerKey != null && !washerKey.equalsIgnoreCase( "" )) {
             if (washing_status != null && washing_status.equalsIgnoreCase( PENDING )) {
                 holder.cutImageView.setVisibility( View.VISIBLE );
+            }else {
+                holder.cutImageView.setVisibility( View.GONE );
             }
         }
         if (phoneAndUserIdNotNull) {
+            Log.d( TAG, "onBindViewHolder: " + random );
             if (phoneRandom.equalsIgnoreCase( random )) {
                 holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
                 holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.rich_carmine ) );
                 holder.labelText.setText( R.string.your_vehicle );
+            }else {
+                holder.vehicleWashingLabel.setVisibility( View.GONE );
             }
         }
         holder.cutImageView.setOnClickListener( v -> {
@@ -202,7 +212,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 }
             } else {
                 //User click will happen here
-                getBack.BackFromAdapter( NOT_ALLOWED );
                 if (washing_status != null) {
                     if (phoneAndUserIdNotNull) {
                         if (phoneRandom.equalsIgnoreCase( random )) {
@@ -217,6 +226,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                                 }
                                 getBack.BackFromAdapter( GET_BACK );
                             }
+                        }else {
+                            getBack.BackFromAdapter( NOT_ALLOWED );
                         }
                     }
                 }

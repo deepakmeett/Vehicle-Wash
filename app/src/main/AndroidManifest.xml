@@ -34,8 +34,7 @@
             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name="com.dexter.flex.activity.DashboardActivity"
-            android:screenOrientation="portrait"
-            android:showOnLockScreen="true"/>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.dexter.flex.activity.FeedbackActivity"
             android:windowSoftInputMode="stateAlwaysVisible"/>

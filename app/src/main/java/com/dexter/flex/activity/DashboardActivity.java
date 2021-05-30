@@ -7,7 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.media.Ringtone;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -50,6 +51,7 @@ import java.util.Objects;
 import static com.dexter.flex.utility.Constants.ALL;
 import static com.dexter.flex.utility.Constants.BOOKING;
 import static com.dexter.flex.utility.Constants.CLOSE;
+import static com.dexter.flex.utility.Constants.COMPLETED;
 import static com.dexter.flex.utility.Constants.FEEDBACK;
 import static com.dexter.flex.utility.Constants.GET_BACK;
 import static com.dexter.flex.utility.Constants.HOW_TO_USE;
@@ -90,8 +92,10 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     private final ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
     private DatabaseReference mUsersDatabase;
     private static final String TAG = "DashboardActivity";
-    private Ringtone ringtone;
-    private String washingForLogout;
+    private MediaPlayer mediaPlayer;
+    private String random;
+    private Uri soundUri;
+    private boolean showNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,19 +188,17 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             userRandomWashing = Objects.requireNonNull( ds.child( RANDOM ).getValue() ).toString();
             isWashing++;
             if (washingPending.equalsIgnoreCase( WASHING )) {
-                washingForLogout = washingPending;
                 if (phoneRandom.equalsIgnoreCase( userRandomWashing )) {
-                    String userTurn = "This is your turn to wash the vehicle";
-                    String currentVehicleDetail = "Current vehicle washing number is " + washingNum;
-                    createNotification( userTurn, currentVehicleDetail );
+                    String title = "This is your turn to wash the vehicle";
+                    String message = "Current vehicle washing number is " + washingNum;
+                    createNotification( title, message );
                 }
             }
-            
             if (washingPending.equalsIgnoreCase( PENDING )) {
                 if (!washerKeySP.equalsIgnoreCase( "" )) {
-                    String userTurn = "Please confirm the booking";
-                    String currentVehicleDetail = "Click pending button to activate washing";
-                    createNotification( userTurn, currentVehicleDetail );
+                    String title = "Please confirm the booking";
+                    String message = "Click pending button to activate washing";
+                    createNotification( title, message );
                 }
             }
             return true;
@@ -318,13 +320,17 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void createNotification(String currentUser, String currentVehicle) {
-        try {
-            Uri soundUri = RingtoneManager.getDefaultUri( RingtoneManager.TYPE_RINGTONE );
-            ringtone = RingtoneManager.getRingtone( getApplicationContext(), soundUri );
-            ringtone.play();
-        } catch (Exception e) {
-            e.printStackTrace();
+        mediaPlayer = MediaPlayer.create( getApplicationContext(), R.raw.we_dont_talk_anymore );
+        if (showNotification) {
+            try {
+                if (!mediaPlayer.isPlaying()) {
+                    mediaPlayer.start();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        Uri soundUri = RingtoneManager.getDefaultUri( RingtoneManager.TYPE_NOTIFICATION );
         Intent activityIntent = new Intent( DashboardActivity.this, DashboardActivity.class );
         PendingIntent contentIntent = PendingIntent.getActivity( DashboardActivity.this, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT );
         NotificationManager mNotificationManager = (NotificationManager) getApplicationContext().getSystemService( Context.NOTIFICATION_SERVICE );
@@ -334,40 +340,40 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             mChannel.setLightColor( Color.BLUE );
             mChannel.enableLights( true );
             mChannel.setVibrationPattern( new long[]{0, 500, 1000} );
-//            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-//                    .setUsage( AudioAttributes.USAGE_NOTIFICATION )
-//                    .build();
-//            mChannel.setSound( soundUri, audioAttributes );
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType( AudioAttributes.CONTENT_TYPE_SONIFICATION )
+                    .setUsage( AudioAttributes.USAGE_NOTIFICATION )
+                    .build();
+            mChannel.setSound( soundUri, audioAttributes );
             if (mNotificationManager != null) {
                 mNotificationManager.createNotificationChannel( mChannel );
             }
             try {
-                new Handler().postDelayed( () -> ringtone.stop(), 5000 );
+                new Handler().postDelayed( () -> mediaPlayer.stop(), 5000 );
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-            try {
-                new Handler().postDelayed( () -> ringtone.stop(), 8000 );
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            NotificationManagerCompat nmc = NotificationManagerCompat.from( DashboardActivity.this );
-            Notification notification = new NotificationCompat.Builder( DashboardActivity.this, CHANNEL_1 )
-                    .setSmallIcon( R.mipmap.ic_launcher )
-                    .setContentTitle( currentUser )
-                    .setContentText( currentVehicle )
-                    .setPriority( Notification.PRIORITY_HIGH )
-                    .setCategory( Notification.CATEGORY_MESSAGE )
-                    .setVibrate( new long[]{0, 500, 1000} )
-//                    .setSound( soundUri )
-                    .setVisibility( NotificationCompat.VISIBILITY_PUBLIC )
-                    .setColor( getResources().getColor( R.color.dark_sky_blue ) )
-                    .setContentIntent( contentIntent )
-                    .setAutoCancel( true )
-                    .setFullScreenIntent( contentIntent, true )
-                    .build();
-            nmc.notify( 1, notification );
+        }
+        NotificationManagerCompat nmc = NotificationManagerCompat.from( DashboardActivity.this );
+        Notification notification = new NotificationCompat.Builder( DashboardActivity.this, CHANNEL_1 )
+                .setSmallIcon( R.mipmap.ic_launcher )
+                .setContentTitle( currentUser )
+                .setContentText( currentVehicle )
+                .setPriority( Notification.PRIORITY_HIGH )
+                .setCategory( Notification.CATEGORY_MESSAGE )
+                .setVibrate( new long[]{0, 500, 1000} )
+                .setSound( soundUri )
+                .setVisibility( NotificationCompat.VISIBILITY_PUBLIC )
+                .setColor( getResources().getColor( R.color.dark_sky_blue ) )
+                .setContentIntent( contentIntent )
+                .setAutoCancel( true )
+                .setFullScreenIntent( contentIntent, true )
+                .build();
+        nmc.notify( 1, notification );
+        try {
+            new Handler().postDelayed( () -> mediaPlayer.stop(), 8000 );
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -387,10 +393,12 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                 transaction.commit();
             }
         }
+
     }
 
     @Override
     protected void onResume() {
+        showNotification = false;
         IntentFilter filter = new IntentFilter( ConnectivityManager.CONNECTIVITY_ACTION );
         this.registerReceiver( ConnectivityReceiver, filter );
         super.onResume();
@@ -398,6 +406,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onPause() {
+        showNotification = true;
         this.unregisterReceiver( ConnectivityReceiver );
         super.onPause();
 
@@ -429,13 +438,36 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                 Toast.makeText( this, "REVIEW", Toast.LENGTH_SHORT ).show();
                 review( this );
             } else if (action.equalsIgnoreCase( LOGOUT )) {
-                if (phoneRandom.equalsIgnoreCase( userRandomWashing )) {
-                    if ( washingForLogout.equalsIgnoreCase( WASHING )){
-                        showSnackBar( "Please complete your vehicle washing", Snackbar.LENGTH_SHORT );
+                mUsersDatabase.child( ALL ).child( SessionManager.userKey ).child( RANDOM ).get().addOnCompleteListener( task -> {
+                    if (!task.isSuccessful()) {
+                        Log.e( "firebase", "Error getting data", task.getException() );
+                    } else {
+                        random = (String) Objects.requireNonNull( task.getResult() ).getValue();
                     }
-                }else {
-                    logout( DashboardActivity.this );
-                }
+                } );
+                mUsersDatabase.child( ALL ).child( SessionManager.userKey ).child( WASHING_STATUS ).get().addOnCompleteListener( task -> {
+                    if (!task.isSuccessful()) {
+                        Log.e( "firebase", "Error getting data", task.getException() );
+                    } else {
+                        String washingSTU = (String) Objects.requireNonNull( task.getResult() ).getValue();
+                        if (phoneRandom.equalsIgnoreCase( random )) {
+                            if (washingSTU != null) {
+                                if (washingSTU.equalsIgnoreCase( WASHING )
+                                    || washingSTU.equalsIgnoreCase( PENDING )
+                                    || washingSTU.equalsIgnoreCase( COMPLETED )) {
+                                    showSnackBar( "Please complete your vehicle washing"
+                                            , Snackbar.LENGTH_SHORT );
+                                } else {
+                                    logout( DashboardActivity.this );
+                                }
+                            }
+                        } else {
+                            logout( DashboardActivity.this );
+                        }
+
+                    }
+                } );
+
             } else if (action.equalsIgnoreCase( FEEDBACK )) {
                 goToFeedbackPage();
             } else if (action.equalsIgnoreCase( NOT_COMPLETED )) {
