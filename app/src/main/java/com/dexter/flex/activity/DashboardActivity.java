@@ -450,16 +450,20 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                         Log.e( "firebase", "Error getting data", task.getException() );
                     } else {
                         String washingSTU = (String) Objects.requireNonNull( task.getResult() ).getValue();
-                        if (phoneRandom.equalsIgnoreCase( random )) {
-                            if (washingSTU != null) {
-                                if (washingSTU.equalsIgnoreCase( WASHING )
-                                    || washingSTU.equalsIgnoreCase( PENDING )
-                                    || washingSTU.equalsIgnoreCase( COMPLETED )) {
-                                    showSnackBar( "Please complete your vehicle washing"
-                                            , Snackbar.LENGTH_SHORT );
-                                } else {
-                                    logout( DashboardActivity.this );
+                        if (random != null) {
+                            if (phoneRandom.equalsIgnoreCase( random )) {
+                                if (washingSTU != null) {
+                                    if (washingSTU.equalsIgnoreCase( WASHING )
+                                        || washingSTU.equalsIgnoreCase( PENDING )
+                                        || washingSTU.equalsIgnoreCase( COMPLETED )) {
+                                        showSnackBar( "Please complete your vehicle washing"
+                                                , Snackbar.LENGTH_SHORT );
+                                    } else {
+                                        logout( DashboardActivity.this );
+                                    }
                                 }
+                            } else {
+                                logout( DashboardActivity.this );
                             }
                         } else {
                             logout( DashboardActivity.this );

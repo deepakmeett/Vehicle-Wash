@@ -112,6 +112,7 @@ public class SharePreference {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove( UID );
         editor.remove( RUNNING_NUMBER );
+        editor.remove( RANDOM );
         editor.apply();
     }
 
