@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,7 +17,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.dexter.flex.R;
-import com.dexter.flex.bottom_sheet.MoreItemsBottomSheet;
+import com.dexter.flex.bottom_sheet.SettingsBottomSheet;
 import com.dexter.flex.interfaces.ShowInternetDialog;
 import com.dexter.flex.receiver.ConnectivityReceiver;
 import com.dexter.flex.utility.BaseActivity;
@@ -46,7 +45,6 @@ import static com.dexter.flex.utility.Constants.FEEDBACK;
 import static com.dexter.flex.utility.Constants.FEEDBACK_RESULT;
 import static com.dexter.flex.utility.Constants.HOW_TO_USE;
 import static com.dexter.flex.utility.Constants.LOGOUT;
-import static com.dexter.flex.utility.Constants.NOT_COMPLETED;
 import static com.dexter.flex.utility.Constants.NOT_SHOW;
 import static com.dexter.flex.utility.Constants.OPEN;
 import static com.dexter.flex.utility.Constants.OTHER_SERVICE;
@@ -66,7 +64,7 @@ import static com.dexter.flex.utility.Constants.VEHICLE_MODEL;
 import static com.dexter.flex.utility.Constants.VEHICLE_TYPE;
 import static com.dexter.flex.utility.Constants.WASHING_STATUS;
 public class SelectServiceActivity extends BaseActivity implements View.OnClickListener, ShowInternetDialog
-        , MoreItemsBottomSheet.MoreOptionBottom {
+        , SettingsBottomSheet.SettingsBottom {
 
     private FrameLayout threeDot;
     private CardView bikeCard, carCard, tempoCard, tractorCard, truckCard, autoCard, otherCard;
@@ -85,7 +83,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_select_service );
         checkRunningNumber();
-        openMoreOption();
+        openSettings();
         findView();
         initialize();
     }
@@ -97,15 +95,15 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    private void openMoreOption() {
+    private void openSettings() {
         String howToUse = SharePreference.getHowTo( this );
         if (howToUse.equalsIgnoreCase( "" )) {
-            moreOptions();
+            settings();
         }
     }
 
     private void findView() {
-        threeDot = findViewById( R.id.moreOptions );
+        threeDot = findViewById( R.id.settings );
         bikeCard = findViewById( R.id.bikeCard );
         bikeCheckBox = findViewById( R.id.bikeCheckBox );
         carCard = findViewById( R.id.carCard );
@@ -143,7 +141,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (v == threeDot) {
-            moreOptions();
+            settings();
         } else if (v == bikeCard) {
             checkBoxChecked( true, false, false, false, false, false, false );
             serviceSelectedIs = BIKE_SERVICE;
@@ -191,13 +189,11 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                             if (!task.isSuccessful()) {
                                 Log.e( "firebase", "Error getting data", task.getException() );
                             } else {
-                                Log.d( "firebase", String.valueOf( task.getResult().getValue() ) );
+                                Log.d( "firebase", String.valueOf( Objects.requireNonNull( task.getResult() ).getValue() ) );
                                 String value = (String) task.getResult().getValue();
-                                DatabaseReference mDatabase = FirebaseDatabase.getInstance()
-                                        .getReference().child( PASSWORD );
-                                if (value == null || value.equalsIgnoreCase( OPEN )){
+                                if (value == null || value.equalsIgnoreCase( OPEN )) {
                                     sendDataToFireBase( serviceSelectedIs, vehicleModelData, reachingTime );
-                                }else if (value.equalsIgnoreCase( CLOSE )){
+                                } else if (value.equalsIgnoreCase( CLOSE )) {
                                     showSnackBar( "Booking closed", Snackbar.LENGTH_LONG );
                                 }
                             }
@@ -206,9 +202,9 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    private void moreOptions() {
-        MoreItemsBottomSheet moreItemsBottomSheet = new MoreItemsBottomSheet( this );
-        moreItemsBottomSheet.show( getSupportFragmentManager(), "MoreOptions" );
+    private void settings() {
+        SettingsBottomSheet settingsBottomSheet = new SettingsBottomSheet( this );
+        settingsBottomSheet.show( getSupportFragmentManager(), "Settings" );
     }
 
     private void checkBoxChecked(boolean bike, boolean car, boolean tempo, boolean truck, boolean tractor, boolean auto, boolean other) {
@@ -315,17 +311,14 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
     public void bottomSheet(String action) {
         if (action != null && !action.equalsIgnoreCase( "" )) {
             if (action.equalsIgnoreCase( SHARE )) {
-                Toast.makeText( this, "SHARE", Toast.LENGTH_SHORT ).show();
+                share();
             } else if (action.equalsIgnoreCase( REVIEW )) {
-                Toast.makeText( this, "REVIEW", Toast.LENGTH_SHORT ).show();
                 review( this );
             } else if (action.equalsIgnoreCase( LOGOUT )) {
                 logout( SelectServiceActivity.this );
             } else if (action.equalsIgnoreCase( FEEDBACK )) {
                 Intent intent = new Intent( SelectServiceActivity.this, FeedbackActivity.class );
                 startActivityForResult( intent, FEEDBACK_RESULT );
-            } else if (action.equalsIgnoreCase( NOT_COMPLETED )) {
-                Toast.makeText( this, "NOT_COMPLETED", Toast.LENGTH_SHORT ).show();
             } else if (action.equalsIgnoreCase( HOW_TO_USE )) {
                 Toast.makeText( this, "HOW TO USE THIS APP", Toast.LENGTH_SHORT ).show();
                 SharePreference.setHowTo( this, HOW_TO_USE );

@@ -48,5 +48,7 @@
     <string name="pending_vehicle_details">Pending vehicle details</string>
     <string name="no_vehicle_is_pending">No vehicle is pending</string>
     <string name="how_to_use_this_app">How to use this app</string>
+    <string name="settings">Settings</string>
     <string name="booking_open">Booking open</string>
+    <string name="booking_close">Booking close</string>
 </resources>

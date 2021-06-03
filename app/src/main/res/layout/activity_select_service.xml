@@ -24,7 +24,7 @@
             android:padding="@dimen/_8sdp">
 
             <FrameLayout
-                android:id="@+id/moreOptions"
+                android:id="@+id/settings"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_gravity="end">

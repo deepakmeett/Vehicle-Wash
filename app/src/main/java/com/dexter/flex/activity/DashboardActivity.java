@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dexter.flex.R;
 import com.dexter.flex.adapter.DashboardAdapter;
-import com.dexter.flex.bottom_sheet.MoreItemsBottomSheet;
+import com.dexter.flex.bottom_sheet.SettingsBottomSheet;
 import com.dexter.flex.interfaces.ShowInternetDialog;
 import com.dexter.flex.model.DashboardModel;
 import com.dexter.flex.model.UserKeyModel;
@@ -57,7 +57,6 @@ import static com.dexter.flex.utility.Constants.GET_BACK;
 import static com.dexter.flex.utility.Constants.HOW_TO_USE;
 import static com.dexter.flex.utility.Constants.LOGOUT;
 import static com.dexter.flex.utility.Constants.NOT_ALLOWED;
-import static com.dexter.flex.utility.Constants.NOT_COMPLETED;
 import static com.dexter.flex.utility.Constants.NOT_SHOW;
 import static com.dexter.flex.utility.Constants.ONE_VEHICLE_AT_A_TIME;
 import static com.dexter.flex.utility.Constants.OPEN;
@@ -77,7 +76,7 @@ import static com.dexter.flex.utility.Constants.VEHICLE_TYPE;
 import static com.dexter.flex.utility.Constants.VEHICLE_WASHER;
 import static com.dexter.flex.utility.Constants.WASHING;
 import static com.dexter.flex.utility.Constants.WASHING_STATUS;
-public class DashboardActivity extends BaseActivity implements View.OnClickListener, DashboardAdapter.GetBack, ShowInternetDialog, MoreItemsBottomSheet.MoreOptionBottom {
+public class DashboardActivity extends BaseActivity implements View.OnClickListener, DashboardAdapter.GetBack, ShowInternetDialog, SettingsBottomSheet.SettingsBottom {
 
     private FrameLayout threeDot;
     private TextView vehicleDetails, vehicleModel, vehicleType, runningNumber;
@@ -94,7 +93,6 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     private static final String TAG = "DashboardActivity";
     private MediaPlayer mediaPlayer;
     private String random;
-    private Uri soundUri;
     private boolean showNotification;
 
     @Override
@@ -111,7 +109,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
     private void findView() {
         vehicleDetails = findViewById( R.id.vehicleDetails );
-        threeDot = findViewById( R.id.moreOptions );
+        threeDot = findViewById( R.id.settings );
         vehicleModel = findViewById( R.id.vehicleModel );
         vehicleType = findViewById( R.id.vehicleType );
         runningNumber = findViewById( R.id.runningNumber );
@@ -123,8 +121,8 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v == threeDot) {
-            MoreItemsBottomSheet moreItemsBottomSheet = new MoreItemsBottomSheet( this );
-            moreItemsBottomSheet.show( getSupportFragmentManager(), "MoreOptions" );
+            SettingsBottomSheet settingsBottomSheet = new SettingsBottomSheet( this );
+            settingsBottomSheet.show( getSupportFragmentManager(), "Settings" );
         }
     }
 
@@ -433,7 +431,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                             }
                         } );
             } else if (action.equalsIgnoreCase( SHARE )) {
-                Toast.makeText( this, "SHARE", Toast.LENGTH_SHORT ).show();
+                share();
             } else if (action.equalsIgnoreCase( REVIEW )) {
                 Toast.makeText( this, "REVIEW", Toast.LENGTH_SHORT ).show();
                 review( this );
@@ -474,9 +472,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
             } else if (action.equalsIgnoreCase( FEEDBACK )) {
                 goToFeedbackPage();
-            } else if (action.equalsIgnoreCase( NOT_COMPLETED )) {
-                Toast.makeText( this, "NOT_COMPLETED", Toast.LENGTH_SHORT ).show();
-            } else if (action.equalsIgnoreCase( HOW_TO_USE )) {
+            }  else if (action.equalsIgnoreCase( HOW_TO_USE )) {
                 Toast.makeText( this, "HOW TO USE THIS APP", Toast.LENGTH_SHORT ).show();
                 SharePreference.setHowTo( this, HOW_TO_USE );
             }

@@ -21,6 +21,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Objects;
+
 import static com.dexter.flex.utility.Constants.NOT_SHOW;
 import static com.dexter.flex.utility.Constants.PASSWORD;
 import static com.dexter.flex.utility.Constants.SHOW;
@@ -33,7 +35,6 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
     private final com.dexter.flex.receiver.ConnectivityReceiver ConnectivityReceiver = new ConnectivityReceiver( this );
     private static final String SELECT_SERVICE = "SelectServiceActivity";
     private static final String DASHBOARD = "DashboardActivity";
-    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void findView() {
-        logout = findViewById( R.id.moreOptions );
+        logout = findViewById( R.id.settings );
         userButton = findViewById( R.id.userButton );
         washerKeyEditText = findViewById( R.id.washerKeyEditText );
         vehicleWasherButton = findViewById( R.id.vehicleWasherButton );
@@ -77,12 +78,12 @@ public class UserOrWasherActivity extends BaseActivity implements View.OnClickLi
             if (key.equalsIgnoreCase( "" )) {
                 washerKeyEditText.setError( "Please provide vehicle washer key" );
             } else {
-                mDatabase = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                 mDatabase.child( PASSWORD ).child( "washer" ).get().addOnCompleteListener( task -> {
                     if (!task.isSuccessful()) {
                         Log.e( "firebase", "Error getting data", task.getException() );
                     } else {
-                        Log.d( "firebase", String.valueOf( task.getResult().getValue() ) );
+                        Log.d( "firebase", String.valueOf( Objects.requireNonNull( task.getResult() ).getValue() ) );
                         SharePreference.setWasherKey( UserOrWasherActivity.this,
                                                       String.valueOf( task.getResult().getValue() ) );
                         String keySharePreference = String.valueOf( task.getResult().getValue() );

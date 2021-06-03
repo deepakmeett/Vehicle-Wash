@@ -19,6 +19,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Objects;
+
 import static com.dexter.flex.utility.Constants.CLOSE;
 import static com.dexter.flex.utility.Constants.FEEDBACK;
 import static com.dexter.flex.utility.Constants.HOW_TO_USE;
@@ -28,9 +30,9 @@ import static com.dexter.flex.utility.Constants.PASSWORD;
 import static com.dexter.flex.utility.Constants.REVIEW;
 import static com.dexter.flex.utility.Constants.BOOKING;
 import static com.dexter.flex.utility.Constants.SHARE;
-public class MoreItemsBottomSheet extends BottomSheetDialogFragment implements View.OnClickListener {
+public class SettingsBottomSheet extends BottomSheetDialogFragment implements View.OnClickListener {
 
-    public interface MoreOptionBottom {
+    public interface SettingsBottom {
 
         void bottomSheet(String action);
     }
@@ -38,10 +40,10 @@ public class MoreItemsBottomSheet extends BottomSheetDialogFragment implements V
     private TextView bookingOpenClose, share, review, logout, feedback;
     private LinearLayout howToUse;
     private ImageView clickFingerImg;
-    private final MoreOptionBottom moreOptionBottom;
+    private final SettingsBottom settingsBottom;
 
-    public MoreItemsBottomSheet(MoreOptionBottom moreOptionBottom) {
-        this.moreOptionBottom = moreOptionBottom;
+    public SettingsBottomSheet(SettingsBottom settingsBottom) {
+        this.settingsBottom = settingsBottom;
     }
 
     @Override
@@ -53,7 +55,7 @@ public class MoreItemsBottomSheet extends BottomSheetDialogFragment implements V
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate( R.layout.more_items_bottom_sheet, container, false );
+        View view = inflater.inflate( R.layout.settings_bottom_sheet, container, false );
         findView( view );
         clickFingerShowOrNot();
         serviceOpenClose();
@@ -82,14 +84,14 @@ public class MoreItemsBottomSheet extends BottomSheetDialogFragment implements V
     }
 
     private void clickFingerShowOrNot() {
-        String howToUse = SharePreference.getHowTo( getContext() );
+        String howToUse = SharePreference.getHowTo( requireContext() );
         if (howToUse.equalsIgnoreCase( HOW_TO_USE )) {
             clickFingerImg.setVisibility( View.GONE );
         }
     }
 
     private void serviceOpenClose() {
-        String washerKey = SharePreference.getWasherKey( getContext() );
+        String washerKey = SharePreference.getWasherKey( requireContext() );
         if (!washerKey.equalsIgnoreCase( "" )){
             bookingOpenClose.setVisibility( View.VISIBLE );
         }
@@ -101,16 +103,16 @@ public class MoreItemsBottomSheet extends BottomSheetDialogFragment implements V
                     if (!task.isSuccessful()) {
                         Log.e( "firebase", "Error getting data", task.getException() );
                     } else {
-                        Log.d( "firebase", String.valueOf( task.getResult().getValue() ) );
+                        Log.d( "firebase", String.valueOf( Objects.requireNonNull( task.getResult() ).getValue() ) );
                         String value = (String) task.getResult().getValue();
                         if (value != null) {
                             if (value.equalsIgnoreCase( OPEN )) {
-                                bookingOpenClose.setText( "Booking open" );
+                                bookingOpenClose.setText( R.string.booking_open );
                                 bookingOpenClose.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_baseline_check_circle_24, 0, 0, 0 );
     
                             } else if (value.equalsIgnoreCase( CLOSE )) {
                                 bookingOpenClose.setCompoundDrawablesWithIntrinsicBounds( R.drawable.ic_baseline_cancel_24, 0, 0, 0 );
-                                bookingOpenClose.setText( "Booking close" );
+                                bookingOpenClose.setText( R.string.booking_close );
                             }
                         }
                     }
@@ -120,17 +122,17 @@ public class MoreItemsBottomSheet extends BottomSheetDialogFragment implements V
     @Override
     public void onClick(View v) {
         if (v == bookingOpenClose) {
-            moreOptionBottom.bottomSheet( BOOKING );
+            settingsBottom.bottomSheet( BOOKING );
         } else if (v == share) {
-            moreOptionBottom.bottomSheet( SHARE );
+            settingsBottom.bottomSheet( SHARE );
         } else if (v == review) {
-            moreOptionBottom.bottomSheet( REVIEW );
+            settingsBottom.bottomSheet( REVIEW );
         } else if (v == logout) {
-            moreOptionBottom.bottomSheet( LOGOUT );
+            settingsBottom.bottomSheet( LOGOUT );
         } else if (v == feedback) {
-            moreOptionBottom.bottomSheet( FEEDBACK );
+            settingsBottom.bottomSheet( FEEDBACK );
         } else if (v == howToUse) {
-            moreOptionBottom.bottomSheet( HOW_TO_USE );
+            settingsBottom.bottomSheet( HOW_TO_USE );
         }
         dismiss();
     }

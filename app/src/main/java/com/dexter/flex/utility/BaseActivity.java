@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,8 +19,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
-import com.google.android.play.core.review.model.ReviewErrorCode;
-import com.google.android.play.core.tasks.OnCompleteListener;
 import com.google.android.play.core.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -31,10 +27,9 @@ public class BaseActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+        super.onCreate( savedInstanceState, persistentState );
     }
 
     public void showSnackBar(String msg, int duration) {
@@ -54,18 +49,18 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public static final Pattern PASSWORD_PATTERN = Pattern.compile( "^" +
-                             //"(?=.*[0-9])" +         //at least 1 digit
-                             //"(?=.*[a-z])" +         //at least 1 lower case letter
-                             //"(?=.*[A-Z])" +         //at least 1 upper case letter
-                             //"(?=.*[a-zA-Z])" +      //any letter
-                             // "(?=.*[@#$%^&+=])" +    //at least 1 special character
-                             "(?=\\S+$)" +           //no white spaces
-                             ".{6,10}" +               //at least 4 characters
-                             "$" );
+                                                                    //"(?=.*[0-9])" +         //at least 1 digit
+                                                                    //"(?=.*[a-z])" +         //at least 1 lower case letter
+                                                                    //"(?=.*[A-Z])" +         //at least 1 upper case letter
+                                                                    //"(?=.*[a-zA-Z])" +      //any letter
+                                                                    // "(?=.*[@#$%^&+=])" +    //at least 1 special character
+                                                                    "(?=\\S+$)" +           //no white spaces
+                                                                    ".{6,10}" +               //at least 4 characters
+                                                                    "$" );
 
     public void commonProgressbar(boolean isShown, boolean notShown) {
         if (isShown) {
-            progressDialog = new ProgressDialog( this, R.style.progressDialogStyle);
+            progressDialog = new ProgressDialog( this, R.style.progressDialogStyle );
             progressDialog.setMessage( "Please wait..." );
             progressDialog.setCancelable( false );
             try {
@@ -86,38 +81,46 @@ public class BaseActivity extends AppCompatActivity {
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) activity.getSystemService(
-                        Activity.INPUT_METHOD_SERVICE);
-        if(inputMethodManager.isAcceptingText()){
+                        Activity.INPUT_METHOD_SERVICE );
+        if (inputMethodManager.isAcceptingText()) {
             inputMethodManager.hideSoftInputFromWindow(
                     activity.getCurrentFocus().getWindowToken(),
                     0
             );
         }
     }
-    
-    public void review(Context context){
-        ReviewManager manager = ReviewManagerFactory.create( this);
+
+    public void review(Context context) {
+        ReviewManager manager = ReviewManagerFactory.create( this );
         Task<ReviewInfo> request = manager.requestReviewFlow();
-        request.addOnCompleteListener(task -> {
+        request.addOnCompleteListener( task -> {
             if (task.isSuccessful()) {
                 // We can get the ReviewInfo object
                 ReviewInfo reviewInfo = task.getResult();
-                Task<Void> flow = manager.launchReviewFlow( (Activity) context, reviewInfo);
+                Task<Void> flow = manager.launchReviewFlow( (Activity) context, reviewInfo );
                 flow.addOnCompleteListener( task1 -> {
                     // The flow has finished. The API does not indicate whether the user
                     // reviewed or not, or even whether the review dialog was shown. Thus, no
                     // matter the result, we continue our app flow.
                 } );
-                
+
             } else {
                 // There was some problem, log or handle the error code.
 //                @ReviewErrorCode int reviewErrorCode = ((TaskException) task.getException()).getErrorCode();
-                
             }
-        });
+        } );
     }
     
-    public void logout(Activity activity){
+    public void share(){
+        Intent sharingIntent = new Intent( android.content.Intent.ACTION_SEND );
+        sharingIntent.setType( "text/plain" );
+        String shareBody = "https://play.google.com/store/apps/details?id=com.dexter.flex";
+        sharingIntent.putExtra( android.content.Intent.EXTRA_SUBJECT, "App link: " );
+        sharingIntent.putExtra( android.content.Intent.EXTRA_TEXT, shareBody );
+        startActivity( Intent.createChooser( sharingIntent, "Share via" ) );
+    }
+
+    public void logout(Activity activity) {
         FirebaseAuth.getInstance().signOut();
         SharePreference.removeUidKeyRunning( this );
         SharePreference.removeWasherKeyUserExit( this );

@@ -54,13 +54,12 @@ public class Constants {
     public static final String USER = "USER";
     public static final String VEHICLE_WASHER = "VEHICLE_WASHER";
 
-    //MoreBottomSheet
+    //SettingsBottomSheet
     public static final String BOOKING = "booking";
     public static final String PASSWORD = "password";
     public static final String SHARE = "share";
     public static final String REVIEW = "review";
     public static final String LOGOUT = "logout";
-    public static final String NOT_COMPLETED = "not_completed";
     public static final String OPEN = "open";
     public static final String CLOSE = "close";
     

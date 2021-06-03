@@ -17,7 +17,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_10sdp"
         android:fontFamily="sans-serif-light"
-        android:text="More Options: -)"
+        android:text="@string/settings"
         android:textColor="@color/black"
         android:textSize="@dimen/_20sdp"/>
 
