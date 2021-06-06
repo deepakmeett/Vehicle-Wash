@@ -88,7 +88,7 @@
             android:text="@string/how_to_use_this_app"
             android:textColor="@color/black"
             android:textSize="@dimen/_13sdp"
-            app:drawableStartCompat="@drawable/ic_baseline_ondemand_video_24"/>
+            app:drawableStartCompat="@drawable/ic_baseline_on_demand_video_24"/>
 
         <ImageView
             android:id="@+id/clickFingerImg"

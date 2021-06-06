@@ -16,28 +16,14 @@
         android:layout_marginVertical="@dimen/_95sdp"
         app:cardCornerRadius="@dimen/_10sdp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/_15sdp"
-            android:paddingVertical="@dimen/_10sdp">
-
-            <ImageView
-                android:layout_width="@dimen/_200sdp"
-                android:layout_height="@dimen/_200sdp"
-                android:layout_gravity="center"
-                android:contentDescription="@string/image_desc"
-                android:src="@drawable/ic_vehicle_washer"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:text="@string/internet_connection_lost"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/_16sdp"/>
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="@dimen/_20sdp"
+            android:text="@string/internet_connection_lost"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_16sdp"
+            app:drawableTopCompat="@drawable/ic_vehicle_washer"/>
     </androidx.cardview.widget.CardView>
 </FrameLayout>

@@ -247,10 +247,15 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        RelativeLayout vehicleWashingLabel;
-        ImageView cutImageView, vehicleImage, labelBg;
-        TextView labelText, runningNumber, vehicleModel, reachTime;
-        Button doneButton;
+        final RelativeLayout vehicleWashingLabel;
+        final ImageView cutImageView;
+        final ImageView vehicleImage;
+        final ImageView labelBg;
+        final TextView labelText;
+        final TextView runningNumber;
+        final TextView vehicleModel;
+        final TextView reachTime;
+        final Button doneButton;
 
         public ViewHolder(@NonNull View itemView) {
             super( itemView );

@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -99,6 +100,7 @@ public class BaseActivity extends AppCompatActivity {
                 ReviewInfo reviewInfo = task.getResult();
                 Task<Void> flow = manager.launchReviewFlow( (Activity) context, reviewInfo );
                 flow.addOnCompleteListener( task1 -> {
+                    Toast.makeText( context, "Review Successful", Toast.LENGTH_SHORT ).show();
                     // The flow has finished. The API does not indicate whether the user
                     // reviewed or not, or even whether the review dialog was shown. Thus, no
                     // matter the result, we continue our app flow.

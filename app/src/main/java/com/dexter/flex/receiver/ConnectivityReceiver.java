@@ -12,7 +12,7 @@ import static com.dexter.flex.utility.Constants.NOT_SHOW;
 import static com.dexter.flex.utility.Constants.SHOW;
 public class ConnectivityReceiver extends BroadcastReceiver {
 
-    public ShowInternetDialog showInternetDialog;
+    public final ShowInternetDialog showInternetDialog;
 
     public ConnectivityReceiver(ShowInternetDialog showInternetDialog) {
         this.showInternetDialog = showInternetDialog;

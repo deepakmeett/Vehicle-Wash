@@ -6,8 +6,6 @@ public class Constants {
     public static final String ENTER_VALID_PASSWORD = "Enter valid password";
     public static final String AUTHENTICATION_FAILED = "Authentication failed";
     public static final int FROM_SIGN_UP = 101;
-    public static final int RC_SIGN_IN = 102;
-    
     //SelectServiceActivity
     public static final String ALL = "all";
     public static final String VEHICLE_MODEL = "vehicle_model";

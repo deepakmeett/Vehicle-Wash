@@ -34,8 +34,10 @@ public class Internet_lost_fragment extends Fragment implements View.OnClickList
     public void onClick(View view) {
         if (view == cardView) {
             //do nothing
+            System.out.println("We don't want to click on cardView");
         } else if (view == frameLayout) {
             //do nothing
+            System.out.println("We don't want to click on frameLayout");
         }
     }
 }

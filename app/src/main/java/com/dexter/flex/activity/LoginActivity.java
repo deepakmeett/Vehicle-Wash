@@ -1,4 +1,5 @@
 package com.dexter.flex.activity;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -9,14 +10,15 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.dexter.flex.R;
-import com.dexter.flex.utility.BaseActivity;
-import com.dexter.flex.receiver.ConnectivityReceiver;
-import com.dexter.flex.utility.SessionManager;
 import com.dexter.flex.interfaces.ShowInternetDialog;
+import com.dexter.flex.receiver.ConnectivityReceiver;
+import com.dexter.flex.utility.BaseActivity;
+import com.dexter.flex.utility.SessionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -38,7 +40,6 @@ import static com.dexter.flex.utility.Constants.ENTER_VALID_EMAIL_ADDRESS;
 import static com.dexter.flex.utility.Constants.ENTER_VALID_PASSWORD;
 import static com.dexter.flex.utility.Constants.FROM_SIGN_UP;
 import static com.dexter.flex.utility.Constants.NOT_SHOW;
-import static com.dexter.flex.utility.Constants.RC_SIGN_IN;
 import static com.dexter.flex.utility.Constants.SHOW;
 public class LoginActivity extends BaseActivity implements View.OnClickListener, ShowInternetDialog {
 
@@ -68,7 +69,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             Intent intent = new Intent( LoginActivity.this, UserOrWasherActivity.class );
-            startActivityForResult( intent, FROM_SIGN_UP );
+//            startActivityForResult( intent, FROM_SIGN_UP );
+            someActivityResultLauncher.launch( intent );
             finish();
         }
     }
@@ -115,7 +117,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             }
         } else if (v == loginNewSignUp) {
             Intent intent = new Intent( LoginActivity.this, SignUpActivity.class );
-            startActivityForResult( intent, FROM_SIGN_UP );
+//            startActivityForResult( intent, FROM_SIGN_UP );
+            someActivityResultLauncher.launch( intent );
             hideSoftKeyboard( this );
         } else if (v == googleSignInButton) {
             signIn();
@@ -123,8 +126,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult( signInIntent, RC_SIGN_IN );
+        someActivityResultLauncher.launch( new Intent( mGoogleSignInClient.getSignInIntent() ) );
     }
 
     private void loginUser() {
@@ -151,31 +153,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         finish();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult( requestCode, resultCode, data );
+    final ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult( new ActivityResultContracts.StartActivityForResult(), result -> {
         try {
-            super.onActivityResult( requestCode, resultCode, data );
-            if (requestCode == resultCode) {
-                showSnackBar( "SignUp Successful", Snackbar.LENGTH_SHORT );
-            } else  // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-                if (requestCode == RC_SIGN_IN) {
-                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent( data );
-                    try {
-                        // Google Sign In was successful, authenticate with Firebase
-                        GoogleSignInAccount account = task.getResult( ApiException.class );
-//                        Log.d( TAG, "firebaseAuthWithGoogle:" + account.getId() );
-                        assert account != null;
-                        firebaseAuthWithGoogle( account.getIdToken() );
-                    } catch (ApiException e) {
-                        // Google Sign In failed, update UI appropriately
-                        Log.w( TAG, "Google sign in failed", e );
-                    }
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent data = result.getData();
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent( data );
+                try {
+                    // Google Sign In was successful, authenticate with Firebase
+                    GoogleSignInAccount account = task.getResult( ApiException.class );
+                    //                        Log.d( TAG, "firebaseAuthWithGoogle:" + account.getId() );
+                    assert account != null;
+                    firebaseAuthWithGoogle( account.getIdToken() );
+                } catch (ApiException e) {
+                    // Google Sign In failed, update UI appropriately
+                    Log.w( TAG, "Google sign in failed", e );
                 }
+            } else if (result.getResultCode() == FROM_SIGN_UP) {
+                showSnackBar( "SignUp Successful", Snackbar.LENGTH_SHORT );
+            }
         } catch (Exception e) {
-            Log.e( TAG, "onActivityResult: " + e );
+            e.printStackTrace();
         }
-    }
+    } );
 
     private void firebaseAuthWithGoogle(String idToken) {
         commonProgressbar( true, false );
@@ -227,4 +226,5 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         this.unregisterReceiver( ConnectivityReceiver );
         super.onPause();
 
-    }}
+    }
+}

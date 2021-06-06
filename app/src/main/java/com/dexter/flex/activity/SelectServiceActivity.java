@@ -11,8 +11,9 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -318,7 +319,7 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                 logout( SelectServiceActivity.this );
             } else if (action.equalsIgnoreCase( FEEDBACK )) {
                 Intent intent = new Intent( SelectServiceActivity.this, FeedbackActivity.class );
-                startActivityForResult( intent, FEEDBACK_RESULT );
+                someActivityResultLauncher.launch( intent );
             } else if (action.equalsIgnoreCase( HOW_TO_USE )) {
                 Toast.makeText( this, "HOW TO USE THIS APP", Toast.LENGTH_SHORT ).show();
                 SharePreference.setHowTo( this, HOW_TO_USE );
@@ -326,17 +327,9 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult( requestCode, resultCode, data );
-        try {
-            super.onActivityResult( requestCode, resultCode, data );
-            Log.d( TAG, "onActivityResult: " + resultCode + " " + requestCode );
-            if (requestCode == resultCode) {
-                showSnackBar( "Thanks! We value your time", Snackbar.LENGTH_LONG );
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    final ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult( new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == FEEDBACK_RESULT) {
+            showSnackBar( "Thanks! We value your time", Snackbar.LENGTH_LONG );
         }
-    }
+    } );
 }
