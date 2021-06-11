@@ -84,9 +84,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         String phoneUID = SharePreference.getUID( context );
         String phoneRandom = SharePreference.getRANDOM( context );
         String userUId = model.getUid();
-        String random = model.getRandom();
-        final boolean phoneAndUserIdNotNull = phoneUID != null && !phoneUID.equalsIgnoreCase( "" )
-                                              && userUId != null && !userUId.equalsIgnoreCase( "" );
+        String userRandom = model.getRandom();
+        final boolean phoneAndUserRandomNotNull 
+                = phoneRandom != null && !phoneRandom.equalsIgnoreCase( "" )                   
+                  && userRandom != null && !userRandom.equalsIgnoreCase( "" );
+        
         if (vehicleType != null && !vehicleType.equalsIgnoreCase( "" )) {
             if (vehicleType.equalsIgnoreCase( "bike" )) {
                 Glide.with( context ).load( R.drawable.ic_bike ).into( holder.vehicleImage );
@@ -105,8 +107,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             }
         }
         if (vehicleModelNum != null && !vehicleModelNum.equalsIgnoreCase( "" )) {
-            if (phoneAndUserIdNotNull) {
-                if (phoneRandom.equalsIgnoreCase( random )) {
+            if (phoneAndUserRandomNotNull) {
+                if (phoneRandom.equalsIgnoreCase( userRandom )) {
                     holder.vehicleModel.setText( vehicleModelNum );
                 } else {
                     holder.vehicleModel.setText( R.string.xxx_xxx_xxx );
@@ -164,14 +166,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 holder.cutImageView.setVisibility( View.GONE );
             }
         }
-        if (phoneAndUserIdNotNull) {
-            Log.d( TAG, "onBindViewHolder: " + random );
-            if (phoneRandom.equalsIgnoreCase( random )) {
-                holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
-                holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.rich_carmine ) );
-                holder.labelText.setText( R.string.your_vehicle );
-            }else {
-                holder.vehicleWashingLabel.setVisibility( View.GONE );
+        if (phoneAndUserRandomNotNull) {
+            Log.d( TAG, "onBindViewHolder: " + userRandom );
+            if (phoneRandom.equalsIgnoreCase( userRandom )) {
+                if (phoneRandom.equalsIgnoreCase( userRandom )) {
+                    holder.vehicleWashingLabel.setVisibility( View.VISIBLE );
+                    holder.labelBg.setBackgroundColor( context.getResources().getColor( R.color.rich_carmine ) );
+                    holder.labelText.setText( R.string.your_vehicle );
+                }else {
+                    holder.vehicleWashingLabel.setVisibility( View.GONE );
+                }
             }
         }
         holder.cutImageView.setOnClickListener( v -> {
@@ -196,6 +200,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                         if (!washingStatus.equalsIgnoreCase( WASHING )) {
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference mDatabase = database.getReference();
+                            Log.d( TAG, "onBindViewHolder: " + keyList.getKey() );
                             mDatabase.child( ALL ).child( keyList.getKey() ).child( WASHING_STATUS ).setValue( WASHING );
                             getBack.BackFromAdapter( REFRESH_LAYOUT );
                         } else {
@@ -213,8 +218,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             } else {
                 //User click will happen here
                 if (washing_status != null) {
-                    if (phoneAndUserIdNotNull) {
-                        if (phoneRandom.equalsIgnoreCase( random )) {
+                    if (phoneAndUserRandomNotNull) {
+                        if (phoneRandom.equalsIgnoreCase( userRandom )) {
                             if (washing_status.equalsIgnoreCase( PENDING )) {
                                 getBack.BackFromAdapter( PLEASE_WAIT );
                             } else if (washing_status.equalsIgnoreCase( WASHING )) {

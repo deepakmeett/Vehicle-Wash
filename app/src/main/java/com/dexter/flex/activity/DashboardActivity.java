@@ -134,6 +134,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 commonProgressbar( false, true );
                 dashboardModelList.clear();
+                userKeyModel.clear();
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     DashboardModel dashboardModel = ds.getValue( DashboardModel.class );
                     dashboardModelList.add( dashboardModel );
@@ -452,8 +453,8 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                             if (phoneRandom.equalsIgnoreCase( random )) {
                                 if (washingSTU != null) {
                                     if (washingSTU.equalsIgnoreCase( WASHING )
-                                        || washingSTU.equalsIgnoreCase( PENDING )
-                                        || washingSTU.equalsIgnoreCase( COMPLETED )) {
+                                        || washingSTU.equalsIgnoreCase( PENDING )) {
+                                        
                                         showSnackBar( "Please complete your vehicle washing"
                                                 , Snackbar.LENGTH_SHORT );
                                     } else {
