@@ -51,7 +51,6 @@ import java.util.Objects;
 import static com.dexter.flex.utility.Constants.ALL;
 import static com.dexter.flex.utility.Constants.BOOKING;
 import static com.dexter.flex.utility.Constants.CLOSE;
-import static com.dexter.flex.utility.Constants.COMPLETED;
 import static com.dexter.flex.utility.Constants.FEEDBACK;
 import static com.dexter.flex.utility.Constants.GET_BACK;
 import static com.dexter.flex.utility.Constants.HOW_TO_USE;
@@ -454,7 +453,6 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
                                 if (washingSTU != null) {
                                     if (washingSTU.equalsIgnoreCase( WASHING )
                                         || washingSTU.equalsIgnoreCase( PENDING )) {
-                                        
                                         showSnackBar( "Please complete your vehicle washing"
                                                 , Snackbar.LENGTH_SHORT );
                                     } else {
@@ -473,9 +471,9 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
             } else if (action.equalsIgnoreCase( FEEDBACK )) {
                 goToFeedbackPage();
-            }  else if (action.equalsIgnoreCase( HOW_TO_USE )) {
-                Toast.makeText( this, "HOW TO USE THIS APP", Toast.LENGTH_SHORT ).show();
+            } else if (action.equalsIgnoreCase( HOW_TO_USE )) {
                 SharePreference.setHowTo( this, HOW_TO_USE );
+                howToUseThisApp();
             }
         }
     }

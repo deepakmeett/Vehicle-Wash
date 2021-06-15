@@ -1,15 +1,16 @@
 package com.dexter.flex.utility;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -91,6 +92,15 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public void share() {
+        Intent sharingIntent = new Intent( android.content.Intent.ACTION_SEND );
+        sharingIntent.setType( "text/plain" );
+        String shareBody = "https://play.google.com/store/apps/details?id=com.dexter.flex";
+        sharingIntent.putExtra( android.content.Intent.EXTRA_SUBJECT, "App link: " );
+        sharingIntent.putExtra( android.content.Intent.EXTRA_TEXT, shareBody );
+        startActivity( Intent.createChooser( sharingIntent, "Share via" ) );
+    }
+
     public void review(Context context) {
         ReviewManager manager = ReviewManagerFactory.create( this );
         Task<ReviewInfo> request = manager.requestReviewFlow();
@@ -100,26 +110,12 @@ public class BaseActivity extends AppCompatActivity {
                 ReviewInfo reviewInfo = task.getResult();
                 Task<Void> flow = manager.launchReviewFlow( (Activity) context, reviewInfo );
                 flow.addOnCompleteListener( task1 -> {
-                    Toast.makeText( context, "Review Successful", Toast.LENGTH_SHORT ).show();
                     // The flow has finished. The API does not indicate whether the user
                     // reviewed or not, or even whether the review dialog was shown. Thus, no
                     // matter the result, we continue our app flow.
                 } );
-
-            } else {
-                // There was some problem, log or handle the error code.
-//                @ReviewErrorCode int reviewErrorCode = ((TaskException) task.getException()).getErrorCode();
             }
         } );
-    }
-    
-    public void share(){
-        Intent sharingIntent = new Intent( android.content.Intent.ACTION_SEND );
-        sharingIntent.setType( "text/plain" );
-        String shareBody = "https://play.google.com/store/apps/details?id=com.dexter.flex";
-        sharingIntent.putExtra( android.content.Intent.EXTRA_SUBJECT, "App link: " );
-        sharingIntent.putExtra( android.content.Intent.EXTRA_TEXT, shareBody );
-        startActivity( Intent.createChooser( sharingIntent, "Share via" ) );
     }
 
     public void logout(Activity activity) {
@@ -130,5 +126,11 @@ public class BaseActivity extends AppCompatActivity {
         intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP );
         startActivity( intent );
         finish();
+    }
+    
+    public void howToUseThisApp(){
+        Uri uri = Uri.parse( "https://youtu.be/SqVk7Hi2F7E"); 
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 }

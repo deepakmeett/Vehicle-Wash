@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -321,8 +320,8 @@ public class SelectServiceActivity extends BaseActivity implements View.OnClickL
                 Intent intent = new Intent( SelectServiceActivity.this, FeedbackActivity.class );
                 someActivityResultLauncher.launch( intent );
             } else if (action.equalsIgnoreCase( HOW_TO_USE )) {
-                Toast.makeText( this, "HOW TO USE THIS APP", Toast.LENGTH_SHORT ).show();
                 SharePreference.setHowTo( this, HOW_TO_USE );
+                howToUseThisApp();
             }
         }
     }
