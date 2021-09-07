@@ -1,13 +1,13 @@
 package com.dexter.flex.utility;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -110,6 +110,7 @@ public class BaseActivity extends AppCompatActivity {
                 ReviewInfo reviewInfo = task.getResult();
                 Task<Void> flow = manager.launchReviewFlow( (Activity) context, reviewInfo );
                 flow.addOnCompleteListener( task1 -> {
+                    Log.d( "TAG", "review: " );
                     // The flow has finished. The API does not indicate whether the user
                     // reviewed or not, or even whether the review dialog was shown. Thus, no
                     // matter the result, we continue our app flow.
@@ -127,10 +128,10 @@ public class BaseActivity extends AppCompatActivity {
         startActivity( intent );
         finish();
     }
-    
-    public void howToUseThisApp(){
-        Uri uri = Uri.parse( "https://youtu.be/SqVk7Hi2F7E"); 
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
+
+    public void howToUseThisApp() {
+        Uri uri = Uri.parse( "https://youtu.be/SqVk7Hi2F7E" );
+        Intent intent = new Intent( Intent.ACTION_VIEW, uri );
+        startActivity( intent );
     }
 }

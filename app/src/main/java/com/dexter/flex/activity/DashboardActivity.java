@@ -433,7 +433,6 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
             } else if (action.equalsIgnoreCase( SHARE )) {
                 share();
             } else if (action.equalsIgnoreCase( REVIEW )) {
-                Toast.makeText( this, "REVIEW", Toast.LENGTH_SHORT ).show();
                 review( this );
             } else if (action.equalsIgnoreCase( LOGOUT )) {
                 mUsersDatabase.child( ALL ).child( SessionManager.userKey ).child( RANDOM ).get().addOnCompleteListener( task -> {
